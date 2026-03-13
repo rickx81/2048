@@ -12,6 +12,8 @@
       value === 0 ? 'bg-transparent' : getTileColor(value),
       value === 0 ? '' : getTextColor(value),
       value === 0 ? '' : getFontSize(value),
+      isNew ? 'tile-new' : '',
+      isMerged ? 'tile-merged' : '',
       value !== 0 ? 'will-change-transform' : ''
     ]"
     :style="{
@@ -23,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
 interface Props {
   value: number
   row: number
@@ -30,6 +34,27 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// 动画状态
+const isNew = ref(false)
+const isMerged = ref(false)
+
+// 监听值变化，判断是否是新方块或合并
+const previousValue = ref(props.value)
+
+watch(() => props.value, (newValue, oldValue) => {
+  if (oldValue === 0 && newValue !== 0) {
+    // 从空位变为有数字 = 新生成的方块
+    isNew.value = true
+    setTimeout(() => { isNew.value = false }, 200) // 动画时长后重置
+  } else if (oldValue !== 0 && newValue !== oldValue && newValue !== 0) {
+    // 数字变化且不为0 = 合并的方块
+    isMerged.value = true
+    setTimeout(() => { isMerged.value = false }, 200) // 动画时长后重置
+  }
+
+  previousValue.value = newValue
+})
 
 // 颜色映射函数
 function getTileColor(value: number): string {
