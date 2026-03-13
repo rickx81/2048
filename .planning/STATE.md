@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-13T12:36:38.647Z"
+last_updated: "2026-03-13T15:29:35.113Z"
 progress:
   total_phases: 2
   completed_phases: 2
@@ -24,14 +24,14 @@ progress:
 ## 当前位置
 
 **当前阶段：** Phase 3 - 用户界面
-**当前计划：** 03-04 - 游戏控制（键盘和触摸）
-**状态：** Plan 04 完成，Phase 3 进行中
-**进度条：** ▓▓▓▓▓▓▓▓▓▓ 92%
+**当前计划：** 03-05 - 游戏状态反馈覆盖层
+**状态：** Phase 3 完成 ✓
+**进度条：** ▓▓▓▓▓▓▓▓▓▓ 100%
 
 **阶段进度：**
 - Phase 1: 核心游戏逻辑 - 4/4 计划完成 ✓
 - Phase 2: 游戏增强功能 - 3/3 计划完成 ✓
-- Phase 3: 用户界面 - 4/5 计划完成
+- Phase 3: 用户界面 - 5/5 计划完成 ✓
 
 ## 性能指标
 
@@ -206,10 +206,41 @@ progress:
 - 键盘映射：方向键 + WASD，兼容不同用户习惯
 - 输入优先级：同时生效，桌面端用键盘，移动端用触摸，互不冲突
 
+**2026-03-13 - Plan 03-05：创建游戏状态反馈覆盖层**
+- 创建 `src/components/GameOverOverlay.vue`：游戏结束覆盖层组件（224 行）
+- 创建 `src/components/GameWonOverlay.vue`：游戏胜利覆盖层组件（231 行）
+- 显示最终分数和最高分（玻璃态效果，渐变背景）
+- 提供操作按钮：关闭/继续游戏、再试一次/新游戏
+- 使用 Vue Transition 实现进出场动画（opacity + transform）
+- 暗色/霓虹风格配色（渐变背景，玻璃态效果）
+- 响应式设计（移动端按钮垂直布局）
+- 集成覆盖层到 GameContainer.vue：
+  - 添加 showGameOver 和 showGameWon 响应式状态
+  - 使用 watch 监听游戏状态变化（isGameOver, isGameWon）
+  - 实现覆盖层事件处理（handleOverlayClose, handleOverlayRetry）
+  - 支持胜利后继续游戏（关闭覆盖层后可继续玩）
+- 修复方块颜色问题（Tile.vue）：
+  - 项目使用 Tailwind CSS v4，但 Tile.vue 使用 v3 类名语法
+  - 将 Tailwind 类名改为内联样式，使用 JavaScript 对象映射颜色值
+  - 确保方块颜色正确显示（2=青色，4=绿色，8=黄色等）
+- 修复覆盖层文字居中问题：
+  - 在 GameOverOverlay.vue 和 GameWonOverlay.vue 添加 flexbox 对齐
+  - 确保所有元素（标题、消息、分数、按钮）完全居中
+- 总测试数：111 个（100% 通过，无新增测试）
+- Phase 3 全部完成！UI 需求 UI-01 到 UI-12 全部完成（12 个需求）
+
+**关键决策：**
+- 覆盖层模式：fixed 全屏遮罩 + flex 居中内容
+- 状态监听：使用 watch + computed 自动触发覆盖层显示
+- 事件委托：覆盖层组件通过 emit 与父组件通信
+- 胜利后可继续游戏：关闭覆盖层后 store.status 保持为 'won'，moveGrid 允许继续移动
+- 内联样式替代 Tailwind 类名：确保 Tailwind v4 兼容性，解决颜色不显示问题
+
 ### 待办事项
 
 **下一步行动：**
-1. Phase 3 计划 03-05：创建游戏状态覆盖层（胜利/失败提示）
+1. Phase 3 已完成 ✓
+2. 建议：Phase 2（游戏增强功能）或 Phase 4（优化和发布）
 
 **阶段顺序：**
 1. Phase 1: 核心游戏逻辑（8 个需求）
@@ -233,11 +264,11 @@ progress:
 
 ## 会话连续性
 
-**上次工作：** Plan 03-04 完成，实现游戏控制系统（键盘和触摸）
+**上次工作：** Plan 03-05 完成，创建游戏状态反馈覆盖层
 
-**下次工作：** Plan 03-05，创建游戏状态覆盖层（胜利/失败提示）
+**下次工作：** Phase 3 已完成，建议开始 Phase 2 或 Phase 4
 
-**上下文转移：** 游戏控制系统已完成。useGameControls.ts composable 封装键盘和触摸控制逻辑（105 行）。键盘控制支持方向键和 WASD，阻止默认行为，游戏结束时不响应。触摸控制使用 VueUse useSwipe，阈值 50px，自动判断主体方向，只允许正交方向。GameBoard.vue 已集成游戏控制（+9 行），创建 boardRef 并调用 useGameControls。键盘和触摸同时可用，无冲突。事件监听器正确管理（mount/unmount）。下一步创建游戏状态覆盖层，显示胜利/失败提示和重新开始按钮。
+**上下文转移：** Phase 3 全部完成。Plan 03-05 创建游戏结束和胜利覆盖层组件（GameOverOverlay.vue 和 GameWonOverlay.vue），支持自动显示、关闭和重新开始。修复方块颜色问题（Tile.vue 使用内联样式，确保 Tailwind v4 兼容性）。修复覆盖层文字居中问题（flexbox 对齐）。集成覆盖层到 GameContainer.vue，使用 watch 监听游戏状态变化。UI 需求 UI-01 到 UI-12 全部完成（12 个需求）。游戏功能完整：核心逻辑、撤销、持久化、网格、头部、控制、覆盖层。下一步可以选择 Phase 2（游戏增强功能，3 个计划）或 Phase 4（优化和发布）。
 
 ---
 
