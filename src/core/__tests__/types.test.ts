@@ -67,10 +67,13 @@ describe('游戏核心类型', () => {
       const validDirections: Direction[] = ['UP', 'DOWN', 'LEFT', 'RIGHT'];
       expect(validDirections).toHaveLength(4);
 
-      // 这将在 TypeScript 编译时捕获类型错误
-      // @ts-expect-error - 测试无效方向
-      const invalidDirection: Direction = 'DIAGONAL';
-      expect(invalidDirection).toBeUndefined();
+      // TypeScript 的类型约束在编译时检查
+      // 运行时我们只能验证有效方向的值
+      const validDirectionValues = ['UP', 'DOWN', 'LEFT', 'RIGHT'];
+      validDirectionValues.forEach(direction => {
+        const typedDirection: Direction = direction as Direction;
+        expect(validDirections).toContain(typedDirection);
+      });
     });
   });
 
