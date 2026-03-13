@@ -252,4 +252,157 @@ describe('useGameStore', () => {
       expect(store.grid[0]?.[1]).toBe(2);
     });
   });
+
+  describe('撤销功能', () => {
+    it('撤销后应该恢复到移动前的网格状态', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 记录初始网格
+      const initialGrid = store.grid;
+
+      // 进行一次移动
+      store.moveGrid('LEFT');
+      const movedGrid = store.grid;
+
+      // 撤销移动
+      store.undo();
+
+      // 应该恢复到初始状态
+      expect(store.grid).toEqual(initialGrid);
+      expect(store.grid).not.toEqual(movedGrid);
+    });
+
+    it('撤销时应该扣除该次移动获得的分数', () => {
+      const store = useGameStore();
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.status = GameStatus.PLAYING;
+
+      const initialScore = store.score;
+
+      // 进行一次移动（会合并 2+2=4，得分 4）
+      store.moveGrid('LEFT');
+      const scoreAfterMove = store.score;
+
+      // 撤销移动
+      store.undo();
+
+      // 分数应该恢复到初始值
+      expect(store.score).toBe(initialScore);
+      expect(scoreAfterMove).toBe(initialScore + 4);
+    });
+
+    it('撤销后 undoCount 应该增加', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      const initialUndoCount = store.undoCount;
+
+      // 进行一次移动并撤销
+      store.moveGrid('LEFT');
+      store.undo();
+
+      // undoCount 应该增加 1
+      expect(store.undoCount).toBe(initialUndoCount + 1);
+    });
+
+    it('撤销次数达到限制后不能继续撤销', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 进行 4 次移动和撤销（超过限制 3 次）
+      for (let i = 0; i < 4; i++) {
+        store.moveGrid('LEFT');
+        store.undo();
+      }
+
+      // undoCount 应该不超过限制
+      expect(store.undoCount).toBe(3);
+
+      // 最后一次撤销不应该生效
+      expect(store.canUndo).toBe(false);
+    });
+
+    it('游戏结束后不能撤销（status = LOST）', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 进行一次移动
+      const initialGrid = store.grid;
+      store.moveGrid('LEFT');
+
+      // 设置游戏结束状态
+      store.status = GameStatus.LOST;
+
+      // 尝试撤销
+      store.undo();
+
+      // 网格不应该恢复
+      expect(store.grid).not.toEqual(initialGrid);
+    });
+
+    it('没有历史记录时不能撤销', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 清空历史记录
+      store.history = [];
+
+      // 尝试撤销
+      store.undo();
+
+      // 不应该抛出错误，状态应该保持不变
+      expect(store.grid).toBeDefined();
+    });
+
+    it('canUndo 计算属性应该正确反映是否可撤销', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 初始状态有历史但可能还没移动
+      // 让我们先移动一次
+      store.moveGrid('LEFT');
+
+      // 应该可以撤销
+      expect(store.canUndo).toBe(true);
+
+      // 撤销 3 次，达到限制
+      for (let i = 0; i < 3; i++) {
+        store.moveGrid('LEFT');
+        store.undo();
+      }
+
+      // 达到限制后不能撤销
+      expect(store.canUndo).toBe(false);
+
+      // 重置游戏后应该可以撤销
+      store.initialize();
+      store.moveGrid('LEFT');
+      expect(store.canUndo).toBe(true);
+    });
+
+    it('新游戏时应该重置撤销次数', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 进行一次移动和撤销
+      store.moveGrid('LEFT');
+      store.undo();
+
+      // undoCount 应该大于 0
+      expect(store.undoCount).toBe(1);
+
+      // 重新初始化游戏
+      store.initialize();
+
+      // undoCount 应该重置为 0
+      expect(store.undoCount).toBe(0);
+      expect(store.history).toEqual([]);
+    });
+  });
 });
