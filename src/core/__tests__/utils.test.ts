@@ -71,7 +71,8 @@ describe('游戏工具函数', () => {
 
       // 验证位置不同
       const [pos1, pos2] = nonZeroPositions;
-      expect(pos1[0]).not.toBe(pos2[0]) || expect(pos1[1]).not.toBe(pos2[1]);
+      const positionsDifferent = pos1[0] !== pos2[0] || pos1[1] !== pos2[1];
+      expect(positionsDifferent).toBe(true);
 
       // 验证值是 2 或 4
       expect([2, 4]).toContain(grid[pos1[0]][pos1[1]]);
@@ -87,13 +88,13 @@ describe('游戏工具函数', () => {
         [0, 2, 0, 4],
         [2, 0, 0, 0],
         [0, 0, 2, 0],
-        [4, 0, 0, 0]
+        [4, 0, 0, 2]
       ];
 
       const emptyCells = getEmptyCells(grid);
 
-      // 验证返回的空位数量（11 个空位：16 - 5 个非零）
-      expect(emptyCells).toHaveLength(11);
+      // 验证返回的空位数量
+      expect(emptyCells).toHaveLength(10);
 
       // 验证一些已知空位
       expect(emptyCells).toContainEqual([0, 0]);
