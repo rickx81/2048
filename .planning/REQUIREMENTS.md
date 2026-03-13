@@ -15,8 +15,8 @@
 - [x] **GAME-04**: 相同数字的方块在碰撞时合并为两倍值（2+2=4, 4+4=8）✓
 - [x] **GAME-05**: 每次有效移动后，在空位随机生成一个新数字（90% 概率为 2，10% 概率为 4）✓
 - [x] **GAME-06**: 每次合并时，增加对应分数（合并 4 得 4 分，合并 8 得 8 分）✓
-- [ ] **GAME-07**: 当网格填满且无法进行任何合并时，游戏结束
-- [ ] **GAME-08**: 当有方块达到 2048 时，游戏胜利（可选择继续）
+- [x] **GAME-07**: 当网格填满且无法进行任何合并时，游戏结束 ✓
+- [x] **GAME-08**: 当有方块达到 2048 时，游戏胜利（可选择继续）✓
 
 ### 游戏增强
 
@@ -78,8 +78,8 @@
 | GAME-04 | Phase 1 | Completed ✓ |
 | GAME-05 | Phase 1 | Completed ✓ |
 | GAME-06 | Phase 1 | Completed ✓ |
-| GAME-07 | Phase 1 | Pending |
-| GAME-08 | Phase 1 | Pending |
+| GAME-07 | Phase 1 | Completed ✓ |
+| GAME-08 | Phase 1 | Completed ✓ |
 | ENHANCE-01 | Phase 2 | Pending |
 | ENHANCE-02 | Phase 2 | Pending |
 | ENHANCE-03 | Phase 2 | Pending |
