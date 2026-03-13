@@ -2,37 +2,17 @@
   <Transition name="overlay">
     <div v-if="visible" class="overlay-mask">
       <div class="overlay-content">
-        <div class="overlay-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="15" y1="9" x2="9" y2="15"/>
-            <line x1="9" y1="9" x2="15" y2="15"/>
-          </svg>
-        </div>
-
-        <h2 class="overlay-title">游戏结束</h2>
-
-        <p class="overlay-message">
-          无法继续移动了
-        </p>
+        <h2 class="overlay-title">游戏结束!</h2>
 
         <div class="score-display">
-          <div class="score-item">
+          <div class="final-score">
             <span class="score-label">最终分数</span>
             <span class="score-value">{{ store.score }}</span>
-          </div>
-
-          <div class="score-item">
-            <span class="score-label">最高分</span>
-            <span class="score-value">{{ store.highScore }}</span>
           </div>
         </div>
 
         <div class="overlay-actions">
-          <button @click="handleClose" class="action-btn secondary-btn">
-            关闭
-          </button>
-          <button @click="handleRetry" class="action-btn primary-btn">
+          <button @click="handleRetry" class="retry-btn">
             再试一次
           </button>
         </div>
@@ -72,8 +52,7 @@ function handleRetry() {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
+  background-color: rgba(238, 228, 218, 0.73);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,123 +62,75 @@ function handleRetry() {
 }
 
 .overlay-content {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 1.25rem;
-  padding: 2.5rem 2rem;
+  background-color: #faf8ef;
+  border-radius: 6px;
+  padding: 3rem 2rem;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-}
-
-.overlay-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1.25rem;
-  color: #f87171;
+  animation: pop-in 0.3s ease-out;
 }
 
 .overlay-title {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
-  color: rgb(248, 250, 252);
-  margin: 0 0 0.5rem 0;
-  text-align: center;
-}
-
-.overlay-message {
-  color: rgb(203, 213, 225);
-  font-size: 1rem;
-  margin: 0 0 1.75rem 0;
-  text-align: center;
+  color: #776e65;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
 }
 
 .score-display {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.score-item {
-  background-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border-radius: 0.75rem;
-  padding: 1.125rem 1rem;
-  min-width: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.final-score {
+  background-color: #bbada0;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  display: inline-block;
+  min-width: 140px;
 }
 
-.score-label {
+.final-score .score-label {
   display: block;
-  color: rgb(148, 163, 184);
-  font-size: 0.75rem;
+  color: #eee4da;
+  font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  text-align: center;
+  margin-bottom: 0.25rem;
 }
 
-.score-value {
+.final-score .score-value {
   display: block;
-  color: rgb(248, 250, 252);
-  font-size: 1.625rem;
+  color: white;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-top: 0.375rem;
-  text-align: center;
 }
 
 .overlay-actions {
   display: flex;
+  justify-content: center;
   gap: 0.75rem;
-  justify-content: center;
 }
 
-.action-btn {
-  flex: 1;
-  padding: 0.875rem 1.5rem;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.retry-btn {
+  background-color: #8f7a66;
   border: none;
-  user-select: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  border-radius: 3px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-.primary-btn {
-  background: linear-gradient(135deg, rgb(34, 211, 238), rgb(139, 92, 246));
-  color: rgb(248, 250, 252);
+.retry-btn:hover {
+  background-color: #9f8b77;
 }
 
-.primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.25);
-}
-
-.secondary-btn {
-  background-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgb(248, 250, 252);
-}
-
-.secondary-btn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+.retry-btn:active {
+  background-color: #7f6a56;
 }
 
 /* Vue Transition 动画 */
@@ -215,29 +146,30 @@ function handleRetry() {
 
 .overlay-enter-active .overlay-content,
 .overlay-leave-active .overlay-content {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .overlay-enter-from .overlay-content,
 .overlay-leave-to .overlay-content {
-  transform: scale(0.9);
+  transform: scale(0.8);
+  opacity: 0;
 }
 
 /* 移动端适配 */
 @media (max-width: 640px) {
   .overlay-content {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
   }
 
   .overlay-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
-  .overlay-actions {
-    flex-direction: column;
+  .final-score .score-value {
+    font-size: 2rem;
   }
 
-  .action-btn {
+  .retry-btn {
     width: 100%;
   }
 }

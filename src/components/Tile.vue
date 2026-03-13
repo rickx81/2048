@@ -55,44 +55,30 @@ function getTileStyle() {
   if (props.value === 0) {
     return {
       ...baseStyle,
-      backgroundColor: 'transparent',
-      color: 'transparent',
+      backgroundColor: '#cdc1b4', // 经典空格子颜色
+      borderRadius: '3px',
     }
   }
 
-  // 背景颜色映射 - 更柔和的配色
+  // 经典 2048 背景颜色映射
   const backgroundColors: Record<number, string> = {
-    2: '#67e8f9',      // cyan-300 (更柔和)
-    4: '#86efac',      // green-300
-    8: '#fde047',      // yellow-300
-    16: '#fdba74',     // orange-300
-    32: '#fca5a5',     // red-300
-    64: '#d8b4fe',     // purple-300
-    128: '#f9a8d4',    // pink-300
-    256: '#fda4af',    // rose-300
-    512: '#f87171',    // red-400
-    1024: '#c084fc',   // purple-400
-    2048: '#fbbf24',   // amber-400
+    2: '#eee4da',
+    4: '#ede0c8',
+    8: '#f2b179',
+    16: '#f59563',
+    32: '#f67c5f',
+    64: '#f65e3b',
+    128: '#edcf72',
+    256: '#edcc61',
+    512: '#edc850',
+    1024: '#edc53f',
+    2048: '#edc22e',
   }
-
-  // 文本颜色映射
-  const textColors: Record<number, string> = {
-    2: '#374151',      // gray-700 (浅色背景用深色文字)
-    4: '#374151',      // gray-700
-    8: '#374151',      // gray-700
-    16: '#374151',     // gray-700
-  }
-
-  // 字体大小映射
-  const fontSize = getFontSize(props.value)
 
   return {
     ...baseStyle,
-    backgroundColor: backgroundColors[props.value] || '#a855f7',
-    borderRadius: '0.5rem',
-    boxShadow: props.value >= 2048
-      ? '0 0 30px rgba(251, 191, 36, 0.4)'
-      : '0 2px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor: backgroundColors[props.value] || '#3c3a32',
+    borderRadius: '3px',
   }
 }
 
@@ -102,29 +88,26 @@ function getTextStyle() {
     return {}
   }
 
-  const textColors: Record<number, string> = {
-    2: '#374151',
-    4: '#374151',
-    8: '#374151',
-    16: '#374151',
-  }
+  // 经典 2048 文本颜色映射（2 和 4 用深色文字，其他用白色）
+  const darkTextNumbers = [2, 4]
+  const useDarkText = darkTextNumbers.includes(props.value)
 
   const fontSize = getFontSize(props.value)
 
   return {
-    color: textColors[props.value] || 'white',
+    color: useDarkText ? '#776e65' : '#f9f6f2',
     fontSize,
     fontWeight: '700',
   }
 }
 
-// 字体大小函数（保留用于内联样式）
+// 字体大小函数
 function getFontSize(value: number): string {
   if (value === 0) return ''
   const digits = value.toString().length
   if (digits <= 2) return '3rem'
   if (digits === 3) return '2.25rem'
-  if (digits === 4) return '1.875rem'
+  if (digits === 4) return '1.75rem'
   return '1.5rem'
 }
 </script setup>
@@ -134,11 +117,10 @@ function getFontSize(value: number): string {
   width: 100%;
   height: 100%;
   user-select: none;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 .tile-number {
-  /* 确保文字完全居中 */
   display: inline-block;
   text-align: center;
   line-height: 1;

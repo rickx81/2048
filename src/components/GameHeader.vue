@@ -72,46 +72,46 @@ function handleUndo() {
 }
 
 .header-title {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #22d3ee 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #776e65;
   margin: 0;
+  line-height: 1;
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
+  color: #776e65;
+  font-size: 1rem;
   margin: 0.5rem 0 0 0;
+  display: none; /* 经典版本不显示副标题 */
 }
 
 .scores-container {
   display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+  gap: 0.375rem;
+  justify-content: flex-end;
   margin-bottom: 1rem;
 }
 
 .score-box {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  min-width: 100px;
+  background-color: #bbada0;
+  border-radius: 3px;
+  padding: 0.25rem 0.75rem;
+  min-width: 70px;
   text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .score-label {
   display: block;
-  color: rgba(255, 255, 255, 0.7);
+  color: #eee4da;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -122,39 +122,58 @@ function handleUndo() {
   color: white;
   font-size: 1.5rem;
   font-weight: 700;
-  margin-top: 0.25rem;
+}
+
+/* 分数增加动画 */
+.score-add {
+  position: absolute;
+  right: 0;
+  top: 0.25rem;
+  color: rgba(119, 110, 101, 0.9);
+  font-size: 1.5rem;
+  font-weight: 700;
+  animation: score-float 0.6s ease-in-out forwards;
+  pointer-events: none;
+}
+
+@keyframes score-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 }
 
 .controls-container {
   display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .control-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  background-color: #8f7a66;
+  border: none;
+  border-radius: 3px;
+  padding: 0.625rem 1rem;
   color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.15s ease;
 }
 
 .control-btn:hover:not(.disabled) {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  background-color: #9f8b77;
 }
 
 .control-btn:active:not(.disabled) {
-  transform: translateY(0);
+  background-color: #7f6a56;
 }
 
 .control-btn.disabled {
@@ -164,17 +183,22 @@ function handleUndo() {
 
 /* 移动端适配 */
 @media (max-width: 640px) {
+  .header-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .title {
     font-size: 2.5rem;
   }
 
   .scores-container {
-    gap: 0.5rem;
+    justify-content: space-between;
   }
 
   .score-box {
-    min-width: 80px;
-    padding: 0.5rem 0.75rem;
+    min-width: 60px;
+    padding: 0.25rem 0.5rem;
   }
 
   .score-value {
@@ -183,6 +207,10 @@ function handleUndo() {
 
   .control-btn span {
     display: none; /* 移动端隐藏文字，只显示图标 */
+  }
+
+  .control-btn {
+    padding: 0.625rem;
   }
 }
 </style>

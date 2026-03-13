@@ -54,14 +54,13 @@ const tiles = computed(() => {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 0.75rem; /* 方格之间固定间距 */
+  gap: 0.9375rem; /* 15px 方格之间固定间距 */
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1); /* 半透明玻璃态 */
-  backdrop-filter: blur(10px);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  background-color: #bbada0; /* 经典 2048 网格背景色 */
+  border-radius: 6px;
+  padding: 0.9375rem;
+  box-sizing: border-box;
 }
 
 .grid-item {
@@ -72,8 +71,8 @@ const tiles = computed(() => {
 /* 移动端适配 */
 @media (max-width: 640px) {
   .grid-container {
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: 0.625rem; /* 10px 移动端间距 */
+    padding: 0.625rem;
   }
 }
 </style>
