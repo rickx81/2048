@@ -292,6 +292,16 @@ if (absX > absY) {
 
 ---
 
+## 自检：PASSED
+
+- ✅ src/composables/useGameControls.ts 存在
+- ✅ 03-04-SUMMARY.md 存在
+- ✅ 68d6edd (feat: 创建游戏控制 composable) 提交存在
+- ✅ a14e729 (feat: 集成游戏控制到 GameBoard) 提交存在
+- ✅ 7bbae6e (docs: 完成 03-04 计划文档) 提交存在
+
+---
+
 *Summary created: 2026-03-13*
 *Plan duration: 36 seconds*
 *Tasks completed: 2/2*
