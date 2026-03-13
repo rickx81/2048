@@ -48,7 +48,33 @@ export const useGameStore = defineStore('game', () => {
    * @param direction 移动方向
    */
   function moveGrid(direction: Direction) {
-    // 实现在下一个任务
+    // 如果游戏已结束，不允许移动
+    if (status.value === GameStatus.LOST) {
+      return
+    }
+
+    // 保存当前状态到历史记录（为 Phase 2 撤销功能预留）
+    history.value.push([...grid.value])
+
+    // 调用核心移动函数
+    const result = move(grid.value, direction)
+
+    // 如果没有发生移动，移除历史记录并返回
+    if (!result.moved) {
+      history.value.pop()
+      return
+    }
+
+    // 更新网格和分数
+    grid.value = result.grid
+    score.value += result.score
+
+    // 更新游戏状态
+    if (checkGameWon(grid.value) && status.value !== GameStatus.WON) {
+      status.value = GameStatus.WON
+    } else if (checkGameOver(grid.value)) {
+      status.value = GameStatus.LOST
+    }
   }
 
   /**
