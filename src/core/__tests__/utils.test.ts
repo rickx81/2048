@@ -74,8 +74,8 @@ describe('游戏工具函数', () => {
       expect(pos1[0]).not.toBe(pos2[0]) || expect(pos1[1]).not.toBe(pos2[1]);
 
       // 验证值是 2 或 4
-      expect(grid[pos1[0]][pos1[1]]).toMatch(/^[24]$/);
-      expect(grid[pos2[0]][pos2[1]]).toMatch(/^[24]$/);
+      expect([2, 4]).toContain(grid[pos1[0]][pos1[1]]);
+      expect([2, 4]).toContain(grid[pos2[0]][pos2[1]]);
     });
   });
 
@@ -92,8 +92,8 @@ describe('游戏工具函数', () => {
 
       const emptyCells = getEmptyCells(grid);
 
-      // 验证返回的空位数量
-      expect(emptyCells).toHaveLength(10);
+      // 验证返回的空位数量（11 个空位：16 - 5 个非零）
+      expect(emptyCells).toHaveLength(11);
 
       // 验证一些已知空位
       expect(emptyCells).toContainEqual([0, 0]);
@@ -184,7 +184,7 @@ describe('游戏工具函数', () => {
       // 多次调用以覆盖两种情况
       for (let i = 0; i < 100; i++) {
         const tile = generateRandomTile();
-        expect(tile).toMatch(/^[24]$/);
+        expect([2, 4]).toContain(tile);
         results.add(tile);
       }
 
@@ -233,7 +233,7 @@ describe('游戏工具函数', () => {
       expect(newGrid).not.toBe(grid);
 
       // 验证指定位置被修改
-      expect(newGrid[1][2]).toMatch(/^[24]$/);
+      expect([2, 4]).toContain(newGrid[1][2]);
 
       // 验证原网格未被修改
       expect(grid[1][2]).toBe(0);
