@@ -101,7 +101,7 @@ describe('useGameStore', () => {
       store.moveGrid('LEFT');
 
       // 期望：[4, 0, 0, 0] + 新生成的数字
-      expect(store.grid[0][0]).toBe(4);
+      expect(store.grid[0]?.[0]).toBe(4);
     });
 
     it('移动后 score 应该累加得分', () => {
@@ -248,8 +248,8 @@ describe('useGameStore', () => {
       store.moveGrid('LEFT');
 
       // 网格不应该改变
-      expect(store.grid[0][0]).toBe(2);
-      expect(store.grid[0][1]).toBe(2);
+      expect(store.grid[0]?.[0]).toBe(2);
+      expect(store.grid[0]?.[1]).toBe(2);
     });
   });
 });
