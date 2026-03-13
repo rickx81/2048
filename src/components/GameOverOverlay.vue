@@ -90,6 +90,10 @@ function handleRetry() {
   width: 100%;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .overlay-icon {
@@ -125,6 +129,11 @@ function handleRetry() {
   border-radius: 0.5rem;
   padding: 1rem;
   min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .score-label {

@@ -9,16 +9,11 @@
       'font-bold',
       'transition-all',
       'duration-150',
-      value === 0 ? 'bg-transparent' : getTileColor(value),
-      value === 0 ? '' : getTextColor(value),
-      value === 0 ? '' : getFontSize(value),
       isNew ? 'tile-new' : '',
       isMerged ? 'tile-merged' : '',
       value !== 0 ? 'will-change-transform' : ''
     ]"
-    :style="{
-      transform: value !== 0 ? 'translateZ(0)' : 'none'
-    }"
+    :style="getTileStyle()"
   >
     {{ value || '' }}
   </div>
@@ -56,37 +51,59 @@ watch(() => props.value, (newValue, oldValue) => {
   previousValue.value = newValue
 })
 
-// 颜色映射函数
-function getTileColor(value: number): string {
-  const colors: Record<number, string> = {
-    2: 'bg-cyan-400',
-    4: 'bg-green-400',
-    8: 'bg-yellow-400',
-    16: 'bg-orange-400',
-    32: 'bg-red-400',
-    64: 'bg-purple-400',
-    128: 'bg-pink-400',
-    256: 'bg-rose-400',
-    512: 'bg-red-500',
-    1024: 'bg-purple-500',
-    2048: 'bg-gradient-to-br from-yellow-400 to-orange-500',
+// 获取方块的样式（内联样式）
+function getTileStyle() {
+  if (props.value === 0) {
+    return {
+      backgroundColor: 'transparent',
+      color: 'transparent',
+      transform: 'none'
+    }
   }
-  return colors[value] || 'bg-purple-600'
+
+  // 背景颜色映射
+  const backgroundColors: Record<number, string> = {
+    2: '#22d3ee',      // cyan-400
+    4: '#4ade80',      // green-400
+    8: '#facc15',      // yellow-400
+    16: '#fb923c',     // orange-400
+    32: '#f87171',     // red-400
+    64: '#c084fc',     // purple-400
+    128: '#f472b6',    // pink-400
+    256: '#fb7185',    // rose-400
+    512: '#ef4444',    // red-500
+    1024: '#a855f7',   // purple-500
+    2048: '#fbbf24',   // amber-400
+  }
+
+  // 文本颜色映射
+  const textColors: Record<number, string> = {
+    2: '#1f2937',      // gray-800
+    4: '#1f2937',      // gray-800
+  }
+
+  // 字体大小映射
+  const fontSize = getFontSize(props.value)
+
+  return {
+    backgroundColor: backgroundColors[props.value] || '#9333ea',
+    color: textColors[props.value] || 'white',
+    fontSize,
+    transform: 'translateZ(0)',
+    boxShadow: props.value >= 2048
+      ? '0 0 20px rgba(251, 191, 36, 0.5)'
+      : undefined
+  }
 }
 
-// 文本颜色函数
-function getTextColor(value: number): string {
-  return value <= 4 ? 'text-gray-800' : 'text-white'
-}
-
-// 字体大小函数
+// 字体大小函数（保留用于内联样式）
 function getFontSize(value: number): string {
   if (value === 0) return ''
   const digits = value.toString().length
-  if (digits <= 2) return 'text-5xl'
-  if (digits === 3) return 'text-4xl'
-  if (digits === 4) return 'text-3xl'
-  return 'text-2xl'
+  if (digits <= 2) return '3rem'
+  if (digits === 3) return '2.25rem'
+  if (digits === 4) return '1.875rem'
+  return '1.5rem'
 }
 </script setup>
 
