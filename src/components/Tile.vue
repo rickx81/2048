@@ -2,19 +2,13 @@
   <div
     :class="[
       'tile',
-      'flex',
-      'items-center',
-      'justify-center',
-      'font-bold',
-      'transition-all',
-      'duration-150',
       isNew ? 'tile-new' : '',
       isMerged ? 'tile-merged' : '',
       value !== 0 ? 'will-change-transform' : ''
     ]"
     :style="getTileStyle()"
   >
-    {{ value || '' }}
+    <span class="tile-number" :style="getTextStyle()">{{ value || '' }}</span>
   </div>
 </template>
 
@@ -52,11 +46,17 @@ watch(() => props.value, (newValue, oldValue) => {
 
 // 获取方块的样式（内联样式）
 function getTileStyle() {
+  const baseStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+
   if (props.value === 0) {
     return {
+      ...baseStyle,
       backgroundColor: 'transparent',
       color: 'transparent',
-      transform: 'none'
     }
   }
 
@@ -87,14 +87,34 @@ function getTileStyle() {
   const fontSize = getFontSize(props.value)
 
   return {
+    ...baseStyle,
     backgroundColor: backgroundColors[props.value] || '#a855f7',
-    color: textColors[props.value] || 'white',
-    fontSize,
-    transform: 'translateZ(0)',
     borderRadius: '0.5rem',
     boxShadow: props.value >= 2048
       ? '0 0 30px rgba(251, 191, 36, 0.4)'
-      : undefined
+      : '0 2px 8px rgba(0, 0, 0, 0.1)',
+  }
+}
+
+// 获取文字样式
+function getTextStyle() {
+  if (props.value === 0) {
+    return {}
+  }
+
+  const textColors: Record<number, string> = {
+    2: '#374151',
+    4: '#374151',
+    8: '#374151',
+    16: '#374151',
+  }
+
+  const fontSize = getFontSize(props.value)
+
+  return {
+    color: textColors[props.value] || 'white',
+    fontSize,
+    fontWeight: '700',
   }
 }
 
@@ -113,8 +133,15 @@ function getFontSize(value: number): string {
 .tile {
   width: 100%;
   height: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   user-select: none;
+  transition: all 0.15s ease;
+}
+
+.tile-number {
+  /* 确保文字完全居中 */
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
 }
 
 /* 动画类在 App.vue 中全局定义 */

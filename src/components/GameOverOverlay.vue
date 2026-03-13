@@ -175,6 +175,10 @@ function handleRetry() {
   transition: all 0.2s ease;
   border: none;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .primary-btn {
