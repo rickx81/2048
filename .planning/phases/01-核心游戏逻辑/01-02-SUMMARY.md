@@ -154,5 +154,17 @@
 
 ---
 
+## Self-Check: PASSED
+
+- ✓ `src/core/game.ts` exists
+- ✓ `.planning/phases/01-核心游戏逻辑/01-02-SUMMARY.md` exists
+- ✓ Commit `9a8cb23` exists (RED phase)
+- ✓ Commit `9de39c2` exists (GREEN phase)
+- ✓ Commit `76b0cb5` exists (Documentation)
+- ✓ All 24 tests passing
+- ✓ Test coverage 100% (all functions tested)
+
+---
+
 *Summary created: 2026-03-13*
 *Plan completed in 127 seconds*
