@@ -9,6 +9,16 @@ import type { Grid, Direction } from '@/core/types'
 import { GameStatus } from '@/core/types'
 import { createEmptyGrid, createInitialGrid } from '@/core/utils'
 import { move, isGameOver as checkGameOver, isGameWon as checkGameWon } from '@/core/game'
+import {
+  saveHighScore,
+  loadHighScore,
+  saveLeaderboard,
+  loadLeaderboard,
+  addLeaderboardEntry,
+  saveGameState,
+  loadGameState
+} from '@/core/storage'
+import type { LeaderboardEntry } from '@/core/storage'
 
 export const useGameStore = defineStore('game', () => {
   // ===== 状态 =====
@@ -33,6 +43,12 @@ export const useGameStore = defineStore('game', () => {
   /** 移动得分历史（与 history 数组对应，记录每次移动的得分） */
   const scoreHistory = ref<number[]>([])
 
+  /** 最高分 */
+  const highScore = ref<number>(0)
+
+  /** 排行榜（前 10 名） */
+  const leaderboard = ref<LeaderboardEntry[]>([])
+
   // ===== 计算属性 =====
   /** 游戏是否结束 */
   const isGameOver = computed<boolean>(() => checkGameOver(grid.value))
@@ -49,16 +65,22 @@ export const useGameStore = defineStore('game', () => {
 
   // ===== 操作方法 =====
   /**
+   * 保存分数到排行榜
+   */
+  function saveScoreToLeaderboard() {
+    addLeaderboardEntry(score.value)
+    leaderboard.value = loadLeaderboard() // 重新加载以获取更新后的数据
+  }
+  /**
    * 初始化游戏
    * 创建初始网格（包含两个随机数字）并重置状态
    */
   function initialize() {
+    reset()
     grid.value = createInitialGrid()
     score.value = 0
     status.value = GameStatus.PLAYING
-    history.value = []
-    undoCount.value = 0
-    scoreHistory.value = []
+    saveGameState({ grid: grid.value, score: score.value, status: status.value })
   }
 
   /**
@@ -89,17 +111,28 @@ export const useGameStore = defineStore('game', () => {
     grid.value = result.grid
     score.value += result.score
 
+    // 更新最高分
+    if (score.value > highScore.value) {
+      highScore.value = score.value
+      saveHighScore(highScore.value)
+    }
+
     // 更新游戏状态
     if (checkGameWon(grid.value) && status.value !== GameStatus.WON) {
       status.value = GameStatus.WON
+      saveScoreToLeaderboard()
     } else if (checkGameOver(grid.value)) {
       status.value = GameStatus.LOST
+      saveScoreToLeaderboard()
     }
+
+    // 保存游戏状态
+    saveGameState({ grid: grid.value, score: score.value, status: status.value })
   }
 
   /**
    * 重置游戏
-   * 清空所有状态
+   * 清空游戏状态，但保留最高分和排行榜
    */
   function reset() {
     grid.value = createEmptyGrid()
@@ -108,6 +141,8 @@ export const useGameStore = defineStore('game', () => {
     history.value = []
     undoCount.value = 0
     scoreHistory.value = []
+    // 保存清空后的状态（或删除游戏状态）
+    saveGameState({ grid: grid.value, score: score.value, status: status.value })
   }
 
   /**
@@ -142,6 +177,22 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  // ===== 初始化持久化数据 =====
+  // 加载最高分
+  highScore.value = loadHighScore()
+
+  // 加载排行榜
+  leaderboard.value = loadLeaderboard()
+
+  // 尝试恢复游戏状态
+  const savedState = loadGameState()
+  if (savedState) {
+    grid.value = savedState.grid
+    score.value = savedState.score
+    status.value = savedState.status
+    // 不恢复 history 和 undoCount，避免撤销混乱
+  }
+
   return {
     // 状态
     grid,
@@ -150,6 +201,8 @@ export const useGameStore = defineStore('game', () => {
     history,
     undoCount,
     undoLimit,
+    highScore,
+    leaderboard,
 
     // 计算属性
     isGameOver,
