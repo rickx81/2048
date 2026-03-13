@@ -31,7 +31,7 @@
 ### 用户界面
 
 - [x] **UI-01**: 4x4 网格布局，每个格子显示数字或为空
-- [ ] **UI-02**: 不同数字对应不同的背景颜色
+- [x] **UI-02**: 不同数字对应不同的背景颜色
 - [ ] **UI-03**: 方块移动时有平滑动画
 - [ ] **UI-04**: 方块合并时有强调动画
 - [ ] **UI-05**: 新方块出现时有淡入动画
@@ -88,7 +88,7 @@
 | ENHANCE-04 | Phase 2 | Completed ✓ |
 | ENHANCE-05 | Phase 2 | Complete |
 | UI-01 | Phase 3 | Complete |
-| UI-02 | Phase 3 | Pending |
+| UI-02 | Phase 3 | Complete |
 | UI-03 | Phase 3 | Pending |
 | UI-04 | Phase 3 | Pending |
 | UI-05 | Phase 3 | Pending |
