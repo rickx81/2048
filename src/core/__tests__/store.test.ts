@@ -405,4 +405,219 @@ describe('useGameStore', () => {
       expect(store.history).toEqual([]);
     });
   });
+
+  describe('持久化功能', () => {
+    beforeEach(() => {
+      // 每个测试前清除 localStorage
+      localStorage.clear();
+    });
+
+    it('store 创建时应该自动加载最高分', () => {
+      // 先保存一个最高分
+      localStorage.setItem('__GAME_2048_HIGHSCORE__', '1000');
+
+      // 创建 store
+      const store = useGameStore();
+
+      // 应该加载最高分
+      expect(store.highScore).toBe(1000);
+    });
+
+    it('store 创建时应该自动加载排行榜', () => {
+      // 先保存一个排行榜
+      const leaderboard = [
+        { score: 1000, timestamp: 1000 },
+        { score: 500, timestamp: 2000 }
+      ];
+      localStorage.setItem('__GAME_2048_LEADERBOARD__', JSON.stringify(leaderboard));
+
+      // 创建 store
+      const store = useGameStore();
+
+      // 应该加载排行榜
+      expect(store.leaderboard).toEqual(leaderboard);
+    });
+
+    it('store 创建时应该尝试恢复游戏状态（如果有）', () => {
+      // 先保存游戏状态
+      const savedState = {
+        grid: [
+          [2, 4, 8, 16],
+          [32, 64, 128, 256],
+          [512, 1024, 2048, 4096],
+          [8192, 16384, 32768, 65536]
+        ],
+        score: 12345,
+        status: GameStatus.PLAYING
+      };
+      localStorage.setItem('__GAME_2048_GAME_STATE__', JSON.stringify(savedState));
+
+      // 创建 store
+      const store = useGameStore();
+
+      // 应该恢复游戏状态
+      expect(store.grid).toEqual(savedState.grid);
+      expect(store.score).toBe(savedState.score);
+      expect(store.status).toBe(savedState.status);
+    });
+
+    it('游戏结束时应该自动保存分数到排行榜', () => {
+      const store = useGameStore();
+      store.initialize();
+      store.score = 1000;
+
+      // 创建一个游戏结束的网格
+      store.grid = [
+        [2, 4, 8, 16],
+        [32, 64, 128, 256],
+        [512, 1024, 2048, 4096],
+        [8192, 16384, 32768, 65536]
+      ];
+      store.status = GameStatus.PLAYING;
+
+      // 进行移动（会导致游戏结束）
+      store.moveGrid('LEFT');
+
+      // 应该保存到排行榜
+      expect(store.status).toBe(GameStatus.LOST);
+      const leaderboardData = localStorage.getItem('__GAME_2048_LEADERBOARD__');
+      expect(leaderboardData).not.toBeNull();
+      const leaderboard = JSON.parse(leaderboardData!);
+      expect(leaderboard).toHaveLength(1);
+      expect(leaderboard[0].score).toBe(1000);
+    });
+
+    it('游戏胜利时应该自动保存分数到排行榜', () => {
+      const store = useGameStore();
+      store.score = 500;
+
+      // 创建一个即将胜利的网格
+      store.grid = [
+        [1024, 1024, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.status = GameStatus.PLAYING;
+
+      // 进行移动（会导致胜利）
+      store.moveGrid('LEFT');
+
+      // 应该保存到排行榜
+      expect(store.status).toBe(GameStatus.WON);
+      const leaderboardData = localStorage.getItem('__GAME_2048_LEADERBOARD__');
+      expect(leaderboardData).not.toBeNull();
+      const leaderboard = JSON.parse(leaderboardData!);
+      expect(leaderboard).toHaveLength(1);
+      expect(leaderboard[0].score).toBe(500);
+    });
+
+    it('每次移动后应该自动保存游戏状态', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      const initialGrid = store.grid;
+      const initialScore = store.score;
+
+      // 进行移动
+      store.moveGrid('LEFT');
+
+      // 应该保存游戏状态
+      const gameStateData = localStorage.getItem('__GAME_2048_GAME_STATE__');
+      expect(gameStateData).not.toBeNull();
+      const gameState = JSON.parse(gameStateData!);
+      expect(gameState.grid).toBeDefined();
+      expect(gameState.score).toBeDefined();
+      expect(gameState.status).toBeDefined();
+    });
+
+    it('分数超过最高分时应该自动更新最高分', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 设置一个初始最高分
+      localStorage.setItem('__GAME_2048_HIGHSCORE__', '1000');
+      // 重新加载以触发最高分加载
+      const store2 = useGameStore();
+      expect(store2.highScore).toBe(1000);
+
+      // 设置一个更高的分数
+      store2.score = 1500;
+      store2.grid = [
+        [1024, 1024, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store2.status = GameStatus.PLAYING;
+
+      // 进行移动（会合并并得分）
+      store2.moveGrid('LEFT');
+
+      // 最高分应该更新
+      expect(store2.highScore).toBe(1504); // 初始分数 + 合并得分
+      const highScoreData = localStorage.getItem('__GAME_2048_HIGHSCORE__');
+      expect(highScoreData).toBe('1504');
+    });
+
+    it('新游戏按钮应该重置游戏状态但保留最高分和排行榜', () => {
+      // 先设置最高分和排行榜
+      localStorage.setItem('__GAME_2048_HIGHSCORE__', '2000');
+      const leaderboard = [
+        { score: 1000, timestamp: 1000 },
+        { score: 500, timestamp: 2000 }
+      ];
+      localStorage.setItem('__GAME_2048_LEADERBOARD__', JSON.stringify(leaderboard));
+
+      const store = useGameStore();
+      store.initialize();
+
+      // 验证加载了最高分和排行榜
+      expect(store.highScore).toBe(2000);
+      expect(store.leaderboard).toEqual(leaderboard);
+
+      // 进行一些移动
+      store.moveGrid('LEFT');
+      expect(store.score).toBeGreaterThan(0);
+      expect(store.status).toBe(GameStatus.PLAYING);
+
+      // 调用 reset
+      store.reset();
+
+      // 游戏状态应该重置
+      expect(store.score).toBe(0);
+      expect(store.status).toBe(GameStatus.IDLE);
+      expect(store.grid).toEqual(createEmptyGrid());
+      expect(store.history).toEqual([]);
+      expect(store.undoCount).toBe(0);
+
+      // 但最高分和排行榜应该保留
+      expect(store.highScore).toBe(2000);
+      expect(store.leaderboard).toEqual(leaderboard);
+    });
+
+    it('排行榜应该自动保持前 10 名', () => {
+      const store = useGameStore();
+      store.initialize();
+
+      // 添加 15 个分数
+      for (let i = 0; i < 15; i++) {
+        store.score = i * 100;
+        // 手动触发保存到排行榜
+        store.grid = [
+          [1024, 1024, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ];
+        store.status = GameStatus.PLAYING;
+        store.moveGrid('LEFT');
+        store.reset(); // 重置以便下次添加
+        store.initialize();
+      }
+
+      // 排行榜应该只有前 10 名
+      expect(store.leaderboard.length).toBeLessThanOrEqual(10);
+    });
+  });
 });
