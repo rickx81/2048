@@ -296,6 +296,7 @@ export function move(grid: Grid, direction: Direction): MoveResult {
  * @returns 是否有空位
  */
 function hasEmptyCell(grid: Grid): boolean {
+  // 短路求值：一旦发现空位立即返回
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
       if (grid[row][col] === 0) {
@@ -313,18 +314,20 @@ function hasEmptyCell(grid: Grid): boolean {
  */
 function canMerge(grid: Grid): boolean {
   // 水平检查：遍历每一行，检查相邻元素是否相同
+  // 短路求值：一旦发现可合并立即返回
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 3; col++) {
-      if (grid[row][col] === grid[row][col + 1] && grid[row][col] !== 0) {
+      if (grid[row][col] !== 0 && grid[row][col] === grid[row][col + 1]) {
         return true;
       }
     }
   }
 
   // 垂直检查：遍历每一列，检查相邻元素是否相同
+  // 短路求值：一旦发现可合并立即返回
   for (let col = 0; col < 4; col++) {
     for (let row = 0; row < 3; row++) {
-      if (grid[row][col] === grid[row + 1][col] && grid[row][col] !== 0) {
+      if (grid[row][col] !== 0 && grid[row][col] === grid[row + 1][col]) {
         return true;
       }
     }
@@ -339,7 +342,7 @@ function canMerge(grid: Grid): boolean {
  * @returns 是否还有有效移动
  */
 export function hasValidMoves(grid: Grid): boolean {
-  // 有空位或有可合并的方块，则还有有效移动
+  // 短路求值：有空位则无需检查合并
   return hasEmptyCell(grid) || canMerge(grid);
 }
 
@@ -359,13 +362,6 @@ export function isGameOver(grid: Grid): boolean {
  * @returns 游戏是否胜利
  */
 export function isGameWon(grid: Grid): boolean {
-  // 遍历网格，查找是否存在 2048
-  for (let row = 0; row < 4; row++) {
-    for (let col = 0; col < 4; col++) {
-      if (grid[row][col] === 2048) {
-        return true;
-      }
-    }
-  }
-  return false;
+  // 使用 flat() 简化遍历，短路求值：一旦发现 2048 立即返回
+  return grid.flat().some(cell => cell === 2048);
 }
