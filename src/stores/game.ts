@@ -24,12 +24,28 @@ export const useGameStore = defineStore('game', () => {
   /** 历史记录（用于 Phase 2 撤销功能） */
   const history = ref<Grid[]>([])
 
+  /** 撤销次数计数 */
+  const undoCount = ref<number>(0)
+
+  /** 撤销次数限制 */
+  const undoLimit = ref<number>(3)
+
+  /** 移动得分历史（与 history 数组对应，记录每次移动的得分） */
+  const scoreHistory = ref<number[]>([])
+
   // ===== 计算属性 =====
   /** 游戏是否结束 */
   const isGameOver = computed<boolean>(() => checkGameOver(grid.value))
 
   /** 游戏是否胜利 */
   const isGameWon = computed<boolean>(() => checkGameWon(grid.value))
+
+  /** 是否可以撤销 */
+  const canUndo = computed<boolean>(() =>
+    status.value === GameStatus.PLAYING &&
+    history.value.length > 0 &&
+    undoCount.value < undoLimit.value
+  )
 
   // ===== 操作方法 =====
   /**
@@ -41,6 +57,8 @@ export const useGameStore = defineStore('game', () => {
     score.value = 0
     status.value = GameStatus.PLAYING
     history.value = []
+    undoCount.value = 0
+    scoreHistory.value = []
   }
 
   /**
@@ -53,17 +71,19 @@ export const useGameStore = defineStore('game', () => {
       return
     }
 
-    // 保存当前状态到历史记录（为 Phase 2 撤销功能预留）
-    history.value.push([...grid.value])
-
-    // 调用核心移动函数
+    // 调用核心移动函数先计算得分
     const result = move(grid.value, direction)
 
-    // 如果没有发生移动，移除历史记录并返回
+    // 如果没有发生移动，直接返回
     if (!result.moved) {
-      history.value.pop()
       return
     }
+
+    // 保存当前状态到历史记录
+    history.value.push([...grid.value])
+
+    // 保存本次移动的得分
+    scoreHistory.value.push(result.score)
 
     // 更新网格和分数
     grid.value = result.grid
@@ -86,6 +106,40 @@ export const useGameStore = defineStore('game', () => {
     score.value = 0
     status.value = GameStatus.IDLE
     history.value = []
+    undoCount.value = 0
+    scoreHistory.value = []
+  }
+
+  /**
+   * 撤销上一步移动
+   * 恢复到移动前的状态，并扣除相应的分数
+   */
+  function undo() {
+    // 1. 检查是否可以撤销
+    if (!canUndo.value) {
+      return
+    }
+
+    // 2. 从历史记录中恢复网格
+    const previousGrid = history.value.pop()
+    if (!previousGrid) {
+      return
+    }
+
+    // 3. 恢复网格状态
+    grid.value = previousGrid
+
+    // 4. 扣除该次移动的得分
+    const scoreDeduction = scoreHistory.value.pop() ?? 0
+    score.value = Math.max(0, score.value - scoreDeduction)
+
+    // 5. 增加撤销计数
+    undoCount.value += 1
+
+    // 6. 更新游戏状态（可能从 LOST 变回 PLAYING）
+    if (status.value === GameStatus.LOST) {
+      status.value = GameStatus.PLAYING
+    }
   }
 
   return {
@@ -94,14 +148,18 @@ export const useGameStore = defineStore('game', () => {
     score,
     status,
     history,
+    undoCount,
+    undoLimit,
 
     // 计算属性
     isGameOver,
     isGameWon,
+    canUndo,
 
     // 方法
     initialize,
     moveGrid,
-    reset
+    reset,
+    undo
   }
 })
