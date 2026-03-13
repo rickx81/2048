@@ -84,7 +84,6 @@ describe('useGameStore', () => {
 
     it('moveGrid 应该调用核心 move 函数', () => {
       const store = useGameStore();
-      store.reset(); // 重置以确保干净的状态
       store.initialize();
 
       const initialGrid = store.grid;
@@ -306,7 +305,6 @@ describe('useGameStore', () => {
 
     it('撤销后 undoCount 应该增加', () => {
       const store = useGameStore();
-      store.reset(); // 重置以确保干净的状态
       store.initialize();
 
       const initialUndoCount = store.undoCount;
