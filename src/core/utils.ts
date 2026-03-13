@@ -110,6 +110,6 @@ function addRandomTileInPlace(grid: Grid, position: [number, number]): void {
  * @param grid 原始网格
  * @returns 网格的深拷贝
  */
-function cloneGrid(grid: Grid): Grid {
+export function cloneGrid(grid: Grid): Grid {
   return grid.map(row => [...row]);
 }
