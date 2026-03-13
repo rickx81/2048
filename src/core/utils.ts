@@ -48,7 +48,7 @@ export function getEmptyCells(grid: Grid): [number, number][] {
 
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      if (grid[row][col] === 0) {
+      if (grid[row]![col] === 0) {
         emptyCells.push([row, col]);
       }
     }
@@ -68,7 +68,7 @@ export function getRandomEmptyCell(emptyCells: [number, number][]): [number, num
   }
 
   const randomIndex = Math.floor(Math.random() * emptyCells.length);
-  return emptyCells[randomIndex];
+  return emptyCells[randomIndex] ?? null;
 }
 
 /**
@@ -90,7 +90,7 @@ export function generateRandomTile(): number {
 export function addRandomTile(grid: Grid, position: [number, number]): Grid {
   const [row, col] = position;
   const newGrid = cloneGrid(grid);
-  newGrid[row][col] = generateRandomTile();
+  newGrid[row]![col] = generateRandomTile();
   return newGrid;
 }
 
@@ -102,7 +102,7 @@ export function addRandomTile(grid: Grid, position: [number, number]): Grid {
  */
 function addRandomTileInPlace(grid: Grid, position: [number, number]): void {
   const [row, col] = position;
-  grid[row][col] = generateRandomTile();
+  grid[row]![col] = generateRandomTile();
 }
 
 /**

@@ -42,13 +42,13 @@ function slideRowLeft(row: number[]): RowResult {
   // 2. 合并相邻相同数字（单次合并规则）
   const merged: number[] = [];
   for (let i = 0; i < filtered.length; i++) {
-    if (i < filtered.length - 1 && filtered[i] === filtered[i + 1]) {
-      const mergedValue = filtered[i] * 2;
+    if (i < filtered.length - 1 && filtered[i] === filtered[i + 1]!) {
+      const mergedValue = filtered[i]! * 2;
       merged.push(mergedValue);
       score += mergedValue;
       i++; // 跳过下一个元素（已合并）
     } else {
-      merged.push(filtered[i]);
+      merged.push(filtered[i]!);
     }
   }
 
@@ -99,7 +99,7 @@ function slideColumnDown(col: number[]): RowResult {
  * @returns 列数组
  */
 function extractColumn(grid: Grid, colIndex: number): number[] {
-  return grid.map(row => row[colIndex]);
+  return grid.map(row => row[colIndex]!);
 }
 
 /**
@@ -112,7 +112,7 @@ function extractColumn(grid: Grid, colIndex: number): number[] {
 function insertColumn(grid: Grid, colIndex: number, column: number[]): Grid {
   const newGrid = cloneGrid(grid);
   for (let row = 0; row < 4; row++) {
-    newGrid[row][colIndex] = column[row];
+    newGrid[row]![colIndex] = column[row]!;
   }
   return newGrid;
 }
@@ -126,7 +126,7 @@ function insertColumn(grid: Grid, colIndex: number, column: number[]): Grid {
 function gridsEqual(grid1: Grid, grid2: Grid): boolean {
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      if (grid1[row][col] !== grid2[row][col]) {
+      if (grid1[row]![col] !== grid2[row]![col]) {
         return false;
       }
     }
@@ -145,7 +145,7 @@ export function moveLeft(grid: Grid): MoveResultInternal {
 
   // 对每一行应用 slideRowLeft
   for (let row = 0; row < 4; row++) {
-    const { newRow, score } = slideRowLeft(grid[row]);
+    const { newRow, score } = slideRowLeft(grid[row]!);
     newGrid[row] = newRow;
     totalScore += score;
   }
@@ -166,7 +166,7 @@ export function moveRight(grid: Grid): MoveResultInternal {
 
   // 对每一行应用 slideRowRight
   for (let row = 0; row < 4; row++) {
-    const { newRow, score } = slideRowRight(grid[row]);
+    const { newRow, score } = slideRowRight(grid[row]!);
     newGrid[row] = newRow;
     totalScore += score;
   }
@@ -195,7 +195,7 @@ export function moveUp(grid: Grid): MoveResultInternal {
 
   const moved = !gridsEqual(grid, newGrid);
 
-  return { newGrid, score: totalScore, moved };
+  return { newGrid: newGrid, score: totalScore, moved };
 }
 
 /**
@@ -217,7 +217,7 @@ export function moveDown(grid: Grid): MoveResultInternal {
 
   const moved = !gridsEqual(grid, newGrid);
 
-  return { newGrid, score: totalScore, moved };
+  return { newGrid: newGrid, score: totalScore, moved };
 }
 
 /**
@@ -299,7 +299,7 @@ function hasEmptyCell(grid: Grid): boolean {
   // 短路求值：一旦发现空位立即返回
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      if (grid[row][col] === 0) {
+      if (grid[row]![col] === 0) {
         return true;
       }
     }
@@ -317,7 +317,7 @@ function canMerge(grid: Grid): boolean {
   // 短路求值：一旦发现可合并立即返回
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 3; col++) {
-      if (grid[row][col] !== 0 && grid[row][col] === grid[row][col + 1]) {
+      if (grid[row]![col] !== 0 && grid[row]![col] === grid[row]![col + 1]) {
         return true;
       }
     }
@@ -327,7 +327,7 @@ function canMerge(grid: Grid): boolean {
   // 短路求值：一旦发现可合并立即返回
   for (let col = 0; col < 4; col++) {
     for (let row = 0; row < 3; row++) {
-      if (grid[row][col] !== 0 && grid[row][col] === grid[row + 1][col]) {
+      if (grid[row]![col] !== 0 && grid[row]![col] === grid[row + 1]![col]) {
         return true;
       }
     }

@@ -14,13 +14,13 @@ describe('游戏工具函数', () => {
 
       // 验证网格大小
       expect(grid).toHaveLength(4);
-      grid.forEach(row => {
+      grid.forEach((row) => {
         expect(row).toHaveLength(4);
       });
 
       // 验证所有元素都是 0
-      grid.forEach(row => {
-        row.forEach(cell => {
+      grid.forEach((row) => {
+        row.forEach((cell) => {
           expect(cell).toBe(0);
         });
       });
@@ -36,8 +36,8 @@ describe('游戏工具函数', () => {
       expect(grid1).not.toBe(grid2);
 
       // 修改一个网格不应该影响另一个
-      grid1[0][0] = 2;
-      expect(grid2[0][0]).toBe(0);
+      grid1[0]![0] = 2;
+      expect(grid2[0]![0]).toBe(0);
     });
   });
 
@@ -49,7 +49,7 @@ describe('游戏工具函数', () => {
 
       // 验证网格大小
       expect(grid).toHaveLength(4);
-      grid.forEach(row => {
+      grid.forEach((row) => {
         expect(row).toHaveLength(4);
       });
 
@@ -59,7 +59,7 @@ describe('游戏工具函数', () => {
 
       for (let row = 0; row < 4; row++) {
         for (let col = 0; col < 4; col++) {
-          if (grid[row][col] !== 0) {
+          if (grid[row]![col] !== 0) {
             nonZeroCount++;
             nonZeroPositions.push([row, col]);
           }
@@ -71,12 +71,12 @@ describe('游戏工具函数', () => {
 
       // 验证位置不同
       const [pos1, pos2] = nonZeroPositions;
-      const positionsDifferent = pos1[0] !== pos2[0] || pos1[1] !== pos2[1];
+      const positionsDifferent = pos1![0] !== pos2![0] || pos1![1] !== pos2![1];
       expect(positionsDifferent).toBe(true);
 
       // 验证值是 2 或 4
-      expect([2, 4]).toContain(grid[pos1[0]][pos1[1]]);
-      expect([2, 4]).toContain(grid[pos2[0]][pos2[1]]);
+      expect([2, 4]).toContain(grid[pos1![0]]![pos1![1]]);
+      expect([2, 4]).toContain(grid[pos2![0]]![pos2![1]]);
     });
   });
 
@@ -234,10 +234,10 @@ describe('游戏工具函数', () => {
       expect(newGrid).not.toBe(grid);
 
       // 验证指定位置被修改
-      expect([2, 4]).toContain(newGrid[1][2]);
+      expect([2, 4]).toContain(newGrid[1]![2]);
 
       // 验证原网格未被修改
-      expect(grid[1][2]).toBe(0);
+      expect(grid[1]![2]).toBe(0);
     });
 
     it('应该只修改指定位置', async () => {
@@ -253,12 +253,12 @@ describe('游戏工具函数', () => {
       const newGrid = addRandomTile(grid, [0, 2]);
 
       // 验证其他位置未被修改
-      expect(newGrid[0][0]).toBe(2);
-      expect(newGrid[0][1]).toBe(4);
-      expect(newGrid[0][3]).toBe(8);
-      expect(newGrid[1][0]).toBe(16);
-      expect(newGrid[1][2]).toBe(32);
-      expect(newGrid[1][3]).toBe(64);
+      expect(newGrid[0]![0]).toBe(2);
+      expect(newGrid[0]![1]).toBe(4);
+      expect(newGrid[0]![3]).toBe(8);
+      expect(newGrid[1]![0]).toBe(16);
+      expect(newGrid[1]![2]).toBe(32);
+      expect(newGrid[1]![3]).toBe(64);
     });
 
     it('应该保持原网格不变', async () => {
