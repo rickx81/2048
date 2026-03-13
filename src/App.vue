@@ -1,11 +1,19 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app" class="app">
+    <GameContainer />
+  </div>
 </template>
 
-<style scoped></style>
+<script setup lang="ts">
+import GameContainer from '@/components/GameContainer.vue'
+</script>
+
+<style>
+/* 全局样式 */
+.app {
+  width: 100%;
+  min-height: 100vh;
+  /* 暗色/霓虹风格背景 */
+  background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+}
+</style>
