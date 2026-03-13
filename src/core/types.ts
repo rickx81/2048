@@ -6,8 +6,14 @@
 /**
  * 游戏网格类型
  * 4x4 二维数组，0 表示空位，非零值表示方块数字
+ * 使用元组类型提供编译时大小保证
  */
-export type Grid = number[][];
+export type Grid = [
+  [number, number, number, number],
+  [number, number, number, number],
+  [number, number, number, number],
+  [number, number, number, number]
+];
 
 /**
  * 移动方向类型

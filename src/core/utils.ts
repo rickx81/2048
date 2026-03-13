@@ -10,7 +10,7 @@ import type { Grid } from './types';
  * @returns 4x4 全 0 数组，0 表示空位
  */
 export function createEmptyGrid(): Grid {
-  return Array.from({ length: 4 }, () => Array(4).fill(0));
+  return Array.from({ length: 4 }, () => [0, 0, 0, 0]) as Grid;
 }
 
 /**
@@ -111,5 +111,5 @@ function addRandomTileInPlace(grid: Grid, position: [number, number]): void {
  * @returns 网格的深拷贝
  */
 export function cloneGrid(grid: Grid): Grid {
-  return grid.map(row => [...row]);
+  return grid.map(row => [...row]) as Grid;
 }

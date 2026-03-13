@@ -4,6 +4,12 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import type { Grid } from '../types';
+
+// 辅助函数：创建带类型断言的网格
+function toGrid(g: number[][]): Grid {
+  return g as Grid;
+}
 
 describe('游戏工具函数', () => {
   describe('createEmptyGrid', () => {
@@ -36,8 +42,8 @@ describe('游戏工具函数', () => {
       expect(grid1).not.toBe(grid2);
 
       // 修改一个网格不应该影响另一个
-      grid1[0]![0] = 2;
-      expect(grid2[0]![0]).toBe(0);
+      grid1[0][0] = 2;
+      expect(grid2[0][0]).toBe(0);
     });
   });
 
@@ -84,12 +90,12 @@ describe('游戏工具函数', () => {
     it('应该返回所有值为 0 的坐标', async () => {
       const { getEmptyCells } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [0, 2, 0, 4],
         [2, 0, 0, 0],
         [0, 0, 2, 0],
         [4, 0, 0, 2]
-      ];
+      ]);
 
       const emptyCells = getEmptyCells(grid);
 
@@ -105,12 +111,12 @@ describe('游戏工具函数', () => {
     it('空网格应该返回所有位置', async () => {
       const { getEmptyCells } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]
-      ];
+      ]);
 
       const emptyCells = getEmptyCells(grid);
 
@@ -121,12 +127,12 @@ describe('游戏工具函数', () => {
     it('满网格应该返回空数组', async () => {
       const { getEmptyCells } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [2, 4, 8, 16],
         [32, 64, 128, 256],
         [512, 1024, 2048, 4096],
         [8192, 16384, 32768, 65536]
-      ];
+      ]);
 
       const emptyCells = getEmptyCells(grid);
 
@@ -221,12 +227,12 @@ describe('游戏工具函数', () => {
     it('应该在指定位置设置随机值，返回新网格', async () => {
       const { addRandomTile } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]
-      ];
+      ]);
 
       const newGrid = addRandomTile(grid, [1, 2]);
 
@@ -234,42 +240,42 @@ describe('游戏工具函数', () => {
       expect(newGrid).not.toBe(grid);
 
       // 验证指定位置被修改
-      expect([2, 4]).toContain(newGrid[1]![2]);
+      expect([2, 4]).toContain(newGrid[1][2]);
 
       // 验证原网格未被修改
-      expect(grid[1]![2]).toBe(0);
+      expect(grid[1][2]).toBe(0);
     });
 
     it('应该只修改指定位置', async () => {
       const { addRandomTile } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [2, 4, 0, 8],
         [16, 0, 32, 64],
         [0, 128, 0, 256],
         [512, 0, 1024, 0]
-      ];
+      ]);
 
       const newGrid = addRandomTile(grid, [0, 2]);
 
       // 验证其他位置未被修改
-      expect(newGrid[0]![0]).toBe(2);
-      expect(newGrid[0]![1]).toBe(4);
-      expect(newGrid[0]![3]).toBe(8);
-      expect(newGrid[1]![0]).toBe(16);
-      expect(newGrid[1]![2]).toBe(32);
-      expect(newGrid[1]![3]).toBe(64);
+      expect(newGrid[0][0]).toBe(2);
+      expect(newGrid[0][1]).toBe(4);
+      expect(newGrid[0][3]).toBe(8);
+      expect(newGrid[1][0]).toBe(16);
+      expect(newGrid[1][2]).toBe(32);
+      expect(newGrid[1][3]).toBe(64);
     });
 
     it('应该保持原网格不变', async () => {
       const { addRandomTile } = await import('../utils');
 
-      const grid = [
+      const grid = toGrid([
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]
-      ];
+      ]);
 
       const originalGrid = JSON.stringify(grid);
       addRandomTile(grid, [1, 2]);
