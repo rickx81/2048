@@ -1,5 +1,5 @@
 <template>
-  <div class="game-board">
+  <div class="game-board" ref="boardRef">
     <div class="grid-container">
       <Tile
         v-for="tile in tiles"
@@ -14,11 +14,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
 import Tile from './Tile.vue'
+import { useGameControls } from '@/composables/useGameControls'
 
 const store = useGameStore()
+
+// 游戏板容器的 ref（用于触摸滑动检测）
+const boardRef = ref<HTMLElement>()
+
+// 启用游戏控制（键盘 + 触摸）
+useGameControls(boardRef)
 
 // 将 4x4 网格展平为一维数组，便于 v-for 渲染
 const tiles = computed(() => {
