@@ -2,7 +2,6 @@
   <div
     :class="[
       'tile',
-      'rounded-lg',
       'flex',
       'items-center',
       'justify-center',
@@ -61,37 +60,40 @@ function getTileStyle() {
     }
   }
 
-  // 背景颜色映射
+  // 背景颜色映射 - 更柔和的配色
   const backgroundColors: Record<number, string> = {
-    2: '#22d3ee',      // cyan-400
-    4: '#4ade80',      // green-400
-    8: '#facc15',      // yellow-400
-    16: '#fb923c',     // orange-400
-    32: '#f87171',     // red-400
-    64: '#c084fc',     // purple-400
-    128: '#f472b6',    // pink-400
-    256: '#fb7185',    // rose-400
-    512: '#ef4444',    // red-500
-    1024: '#a855f7',   // purple-500
+    2: '#67e8f9',      // cyan-300 (更柔和)
+    4: '#86efac',      // green-300
+    8: '#fde047',      // yellow-300
+    16: '#fdba74',     // orange-300
+    32: '#fca5a5',     // red-300
+    64: '#d8b4fe',     // purple-300
+    128: '#f9a8d4',    // pink-300
+    256: '#fda4af',    // rose-300
+    512: '#f87171',    // red-400
+    1024: '#c084fc',   // purple-400
     2048: '#fbbf24',   // amber-400
   }
 
   // 文本颜色映射
   const textColors: Record<number, string> = {
-    2: '#1f2937',      // gray-800
-    4: '#1f2937',      // gray-800
+    2: '#374151',      // gray-700 (浅色背景用深色文字)
+    4: '#374151',      // gray-700
+    8: '#374151',      // gray-700
+    16: '#374151',     // gray-700
   }
 
   // 字体大小映射
   const fontSize = getFontSize(props.value)
 
   return {
-    backgroundColor: backgroundColors[props.value] || '#9333ea',
+    backgroundColor: backgroundColors[props.value] || '#a855f7',
     color: textColors[props.value] || 'white',
     fontSize,
     transform: 'translateZ(0)',
+    borderRadius: '0.5rem',
     boxShadow: props.value >= 2048
-      ? '0 0 20px rgba(251, 191, 36, 0.5)'
+      ? '0 0 30px rgba(251, 191, 36, 0.4)'
       : undefined
   }
 }
@@ -111,7 +113,8 @@ function getFontSize(value: number): string {
 .tile {
   width: 100%;
   height: 100%;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  user-select: none;
 }
 
 /* 动画类在 App.vue 中全局定义 */

@@ -72,48 +72,53 @@ function handleRetry() {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  user-select: none;
 }
 
 .overlay-content {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(88, 28, 135, 0.9));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
-  padding: 2rem;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .overlay-icon {
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
-  color: #ef4444;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  color: #f87171;
 }
 
 .overlay-title {
   font-size: 2rem;
-  font-weight: 800;
-  color: white;
+  font-weight: 700;
+  color: rgb(248, 250, 252);
   margin: 0 0 0.5rem 0;
+  text-align: center;
 }
 
 .overlay-message {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(203, 213, 225);
   font-size: 1rem;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.75rem 0;
+  text-align: center;
 }
 
 .score-display {
@@ -124,11 +129,11 @@ function handleRetry() {
 }
 
 .score-item {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  min-width: 100px;
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 0.75rem;
+  padding: 1.125rem 1rem;
+  min-width: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,18 +143,20 @@ function handleRetry() {
 
 .score-label {
   display: block;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(148, 163, 184);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  text-align: center;
 }
 
 .score-value {
   display: block;
-  color: white;
-  font-size: 1.5rem;
+  color: rgb(248, 250, 252);
+  font-size: 1.625rem;
   font-weight: 700;
-  margin-top: 0.25rem;
+  margin-top: 0.375rem;
+  text-align: center;
 }
 
 .overlay-actions {
@@ -160,34 +167,35 @@ function handleRetry() {
 
 .action-btn {
   flex: 1;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  user-select: none;
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #22d3ee, #a855f7);
-  color: white;
+  background: linear-gradient(135deg, rgb(34, 211, 238), rgb(139, 92, 246));
+  color: rgb(248, 250, 252);
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.3);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.25);
 }
 
 .secondary-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgb(248, 250, 252);
 }
 
 .secondary-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Vue Transition 动画 */
