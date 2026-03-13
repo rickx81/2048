@@ -5,9 +5,9 @@
       <!-- 占位符 -->
     </header>
 
-    <!-- 游戏网格区域 - 后续计划填充 -->
-    <main class="game-board">
-      <!-- 占位符 -->
+    <!-- 游戏网格区域 -->
+    <main class="game-board-wrapper">
+      <GameBoard />
     </main>
 
     <!-- 控制按钮区域 - 后续计划填充 -->
@@ -18,10 +18,18 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useGameStore } from '@/stores/game'
+import GameBoard from './GameBoard.vue'
 
 const store = useGameStore()
-// 可以在后续计划中添加更多逻辑
+
+// 组件挂载时初始化游戏
+onMounted(() => {
+  if (store.status === 'idle') {
+    store.initialize()
+  }
+})
 </script>
 
 <style scoped>
@@ -54,31 +62,19 @@ const store = useGameStore()
 
 /* 玻璃态效果 */
 .game-header,
-.game-board,
+.game-board-wrapper,
 .game-controls {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-/* 垂直间距 */
-.game-header {
+.game-board-wrapper {
   margin-bottom: 1rem;
-  padding: 1rem;
-}
-
-.game-board {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .game-controls {
   padding: 1rem;
+  min-height: 2rem; /* 占位，保持布局稳定 */
 }
 </style>

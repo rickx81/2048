@@ -8,13 +8,15 @@
       'justify-center',
       'font-bold',
       'transition-all',
-      'duration-200',
+      'duration-150',
       value === 0 ? 'bg-transparent' : getTileColor(value),
       value === 0 ? '' : getTextColor(value),
       value === 0 ? '' : getFontSize(value),
-      isNew ? 'tile-new' : '',
-      isMerged ? 'tile-merged' : ''
+      value !== 0 ? 'will-change-transform' : ''
     ]"
+    :style="{
+      transform: value !== 0 ? 'translateZ(0)' : 'none'
+    }"
   >
     {{ value || '' }}
   </div>
@@ -22,17 +24,14 @@
 
 <script setup lang="ts">
 interface Props {
-  value: number      // 方块数字（0 表示空）
-  isNew?: boolean    // 是否新生成（用于后续动画）
-  isMerged?: boolean // 是否刚合并（用于后续动画）
+  value: number
+  row: number
+  col: number
 }
 
-withDefaults(defineProps<Props>(), {
-  isNew: false,
-  isMerged: false
-})
+const props = defineProps<Props>()
 
-// 根据数字值返回对应的颜色类名
+// 颜色映射函数
 function getTileColor(value: number): string {
   const colors: Record<number, string> = {
     2: 'bg-cyan-400',
@@ -50,12 +49,12 @@ function getTileColor(value: number): string {
   return colors[value] || 'bg-purple-600'
 }
 
-// 根据背景色调整文本颜色（确保可读性）
+// 文本颜色函数
 function getTextColor(value: number): string {
   return value <= 4 ? 'text-gray-800' : 'text-white'
 }
 
-// 根据数字位数调整字体大小
+// 字体大小函数
 function getFontSize(value: number): string {
   if (value === 0) return ''
   const digits = value.toString().length
@@ -64,7 +63,7 @@ function getFontSize(value: number): string {
   if (digits === 4) return 'text-3xl'
   return 'text-2xl'
 }
-</script>
+</script setup>
 
 <style scoped>
 .tile {
@@ -73,11 +72,5 @@ function getFontSize(value: number): string {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.tile-new {
-  /* 新方块动画占位符 - 后续计划实现 */
-}
-
-.tile-merged {
-  /* 合并动画占位符 - 后续计划实现 */
-}
+/* 动画类在 App.vue 中全局定义 */
 </style>
