@@ -23,10 +23,10 @@
 ### 游戏增强
 
 - [ ] **ENHANCE-01**: 用户可撤销上一步操作，恢复到移动前的状态
-- [ ] **ENHANCE-02**: 游戏结束或胜利时，显示最终分数
+- [x] **ENHANCE-02**: 游戏结束或胜利时，显示最终分数
 - [x] **ENHANCE-03**: 本地存储最高分，跨会话持久化 ✓
 - [x] **ENHANCE-04**: 排行榜显示前 10 名最高分（存储在本地）✓
-- [ ] **ENHANCE-05**: 新游戏按钮，重置游戏状态
+- [x] **ENHANCE-05**: 新游戏按钮，重置游戏状态
 
 ### 用户界面
 
@@ -83,10 +83,10 @@
 | GAME-07 | Phase 1 | Completed ✓ |
 | GAME-08 | Phase 1 | Completed ✓ |
 | ENHANCE-01 | Phase 2 | Pending |
-| ENHANCE-02 | Phase 2 | Pending |
+| ENHANCE-02 | Phase 2 | Complete |
 | ENHANCE-03 | Phase 2 | Completed ✓ |
 | ENHANCE-04 | Phase 2 | Completed ✓ |
-| ENHANCE-05 | Phase 2 | Pending |
+| ENHANCE-05 | Phase 2 | Complete |
 | UI-01 | Phase 3 | Pending |
 | UI-02 | Phase 3 | Pending |
 | UI-03 | Phase 3 | Pending |
