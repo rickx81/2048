@@ -18,6 +18,8 @@
 - [x] **GAME-07**: 当网格填满且无法进行任何合并时，游戏结束 ✓
 - [x] **GAME-08**: 当有方块达到 2048 时，游戏胜利（可选择继续）✓
 
+**Phase 1 状态：** ✅ 完成（8/8 需求）
+
 ### 游戏增强
 
 - [ ] **ENHANCE-01**: 用户可撤销上一步操作，恢复到移动前的状态
@@ -80,6 +82,11 @@
 | GAME-06 | Phase 1 | Completed ✓ |
 | GAME-07 | Phase 1 | Completed ✓ |
 | GAME-08 | Phase 1 | Completed ✓ |
+| ENHANCE-01 | Phase 2 | Pending |
+| ENHANCE-02 | Phase 2 | Pending |
+| ENHANCE-03 | Phase 2 | Pending |
+| ENHANCE-04 | Phase 2 | Pending |
+| ENHANCE-05 | Phase 2 | Pending |
 | ENHANCE-01 | Phase 2 | Pending |
 | ENHANCE-02 | Phase 2 | Pending |
 | ENHANCE-03 | Phase 2 | Pending |
