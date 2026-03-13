@@ -11,7 +11,7 @@
 | 阶段 | 计划完成 | 状态 | 完成时间 |
 |------|----------|------|----------|
 | 1. 核心游戏逻辑 | 4/4 | Complete    | 2026-03-13 |
-| 2. 游戏增强功能 | 0/3 | Not started | - |
+| 2. 游戏增强功能 | 1/3 | In progress | - |
 | 3. 用户界面 | 0/5 | Not started | - |
 
 ## 阶段
@@ -70,7 +70,17 @@
 4. 排行榜显示前 10 名最高分（存储在本地）
 5. 用户可以点击"新游戏"按钮重置游戏状态
 
-**计划：** TBD
+**计划：** 3 个计划
+
+**计划列表：**
+- [x] 02-01-PLAN.md — 创建本地存储工具模块（Wave 1）✓
+- [ ] 02-02-PLAN.md — 实现撤销功能（Wave 2）
+- [ ] 02-03-PLAN.md — 集成本地存储到 store（Wave 3）
+
+**Wave 结构：**
+- Wave 1: 本地存储基础设施（02-01）- 可独立执行
+- Wave 2: 撤销功能（02-02）- 依赖 02-01
+- Wave 3: 存储集成和新游戏（02-03）- 依赖 02-01, 02-02
 
 ---
 
@@ -116,18 +126,18 @@
 
 | 需求 | 阶段 | 状态 |
 |------|------|------|
-| GAME-01 | Phase 1 | Pending |
-| GAME-02 | Phase 1 | Pending |
-| GAME-03 | Phase 1 | Pending |
-| GAME-04 | Phase 1 | Pending |
-| GAME-05 | Phase 1 | Pending |
-| GAME-06 | Phase 1 | Pending |
-| GAME-07 | Phase 1 | Pending |
-| GAME-08 | Phase 1 | Pending |
+| GAME-01 | Phase 1 | Completed ✓ |
+| GAME-02 | Phase 1 | Completed ✓ |
+| GAME-03 | Phase 1 | Completed ✓ |
+| GAME-04 | Phase 1 | Completed ✓ |
+| GAME-05 | Phase 1 | Completed ✓ |
+| GAME-06 | Phase 1 | Completed ✓ |
+| GAME-07 | Phase 1 | Completed ✓ |
+| GAME-08 | Phase 1 | Completed ✓ |
 | ENHANCE-01 | Phase 2 | Pending |
 | ENHANCE-02 | Phase 2 | Pending |
-| ENHANCE-03 | Phase 2 | Pending |
-| ENHANCE-04 | Phase 2 | Pending |
+| ENHANCE-03 | Phase 2 | Completed ✓ |
+| ENHANCE-04 | Phase 2 | Completed ✓ |
 | ENHANCE-05 | Phase 2 | Pending |
 | UI-01 | Phase 3 | Pending |
 | UI-02 | Phase 3 | Pending |
@@ -145,4 +155,4 @@
 ---
 
 *路线图创建时间：2026-03-13*
-*最后更新：2026-03-13 Plan 01-04 完成，Phase 1 完成*
+*最后更新：2026-03-13 Plan 02-01 完成*
