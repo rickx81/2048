@@ -354,25 +354,25 @@ describe('move 函数 - 通用移动接口', () => {
     const down = move(JSON.parse(JSON.stringify(grid)), 'DOWN');
 
     // 向左: [2,2,0,0] → [4,0,0,0] + 新数字
-    expect(left.grid[0][0]).toBe(4);
+    expect(left.grid[0]![0]).toBe(4);
     expect(left.score).toBe(4);
     expect(left.moved).toBe(true);
 
     // 向右: [2,2,0,0] → [0,0,0,4] + 新数字
-    expect(right.grid[0][3]).toBe(4);
+    expect(right.grid[0]![3]).toBe(4);
     expect(right.score).toBe(4);
     expect(right.moved).toBe(true);
 
     // 向上: 列 [2,0,0,0] → [2,0,0,0] (没有变化)
     // 因为只有第一行有数字，向上移动不会改变位置
-    expect(up.grid[0][0]).toBe(2);
-    expect(up.grid[0][1]).toBe(2);
+    expect(up.grid[0]![0]).toBe(2);
+    expect(up.grid[0]![1]).toBe(2);
     expect(up.score).toBe(0); // 没有合并发生
     expect(up.moved).toBe(false); // 没有位置变化
 
     // 向下: 列 [2,0,0,0] → [0,0,0,2] + 新数字
-    expect(down.grid[3][0]).toBe(2);
-    expect(down.grid[3][1]).toBe(2);
+    expect(down.grid[3]![0]).toBe(2);
+    expect(down.grid[3]![1]).toBe(2);
     expect(down.score).toBe(0); // 没有合并发生
     expect(down.moved).toBe(true);
   });

@@ -146,7 +146,7 @@ export function moveLeft(grid: Grid): MoveResultInternal {
   // 对每一行应用 slideRowLeft
   for (let row = 0; row < 4; row++) {
     const { newRow, score } = slideRowLeft(grid[row]!);
-    newGrid[row] = newRow as [number, number, number, number];
+    newGrid[row] = newRow;
     totalScore += score;
   }
 
@@ -167,7 +167,7 @@ export function moveRight(grid: Grid): MoveResultInternal {
   // 对每一行应用 slideRowRight
   for (let row = 0; row < 4; row++) {
     const { newRow, score } = slideRowRight(grid[row]!);
-    newGrid[row] = newRow as [number, number, number, number];
+    newGrid[row] = newRow;
     totalScore += score;
   }
 
