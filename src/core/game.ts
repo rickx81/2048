@@ -287,3 +287,85 @@ export function move(grid: Grid, direction: Direction): MoveResult {
     moved: result.moved
   };
 }
+
+// ===== 游戏状态检测函数 =====
+
+/**
+ * 判断是否有空位
+ * @param grid 游戏网格
+ * @returns 是否有空位
+ */
+function hasEmptyCell(grid: Grid): boolean {
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (grid[row][col] === 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * 判断是否可以合并（水平或垂直）
+ * @param grid 游戏网格
+ * @returns 是否可以合并
+ */
+function canMerge(grid: Grid): boolean {
+  // 水平检查：遍历每一行，检查相邻元素是否相同
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (grid[row][col] === grid[row][col + 1] && grid[row][col] !== 0) {
+        return true;
+      }
+    }
+  }
+
+  // 垂直检查：遍历每一列，检查相邻元素是否相同
+  for (let col = 0; col < 4; col++) {
+    for (let row = 0; row < 3; row++) {
+      if (grid[row][col] === grid[row + 1][col] && grid[row][col] !== 0) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * 判断是否还有有效移动
+ * @param grid 游戏网格
+ * @returns 是否还有有效移动
+ */
+export function hasValidMoves(grid: Grid): boolean {
+  // 有空位或有可合并的方块，则还有有效移动
+  return hasEmptyCell(grid) || canMerge(grid);
+}
+
+/**
+ * 判断游戏是否结束
+ * @param grid 游戏网格
+ * @returns 游戏是否结束
+ */
+export function isGameOver(grid: Grid): boolean {
+  // 没有有效移动 = 游戏结束
+  return !hasValidMoves(grid);
+}
+
+/**
+ * 判断游戏是否胜利
+ * @param grid 游戏网格
+ * @returns 游戏是否胜利
+ */
+export function isGameWon(grid: Grid): boolean {
+  // 遍历网格，查找是否存在 2048
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (grid[row][col] === 2048) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
