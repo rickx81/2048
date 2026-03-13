@@ -14,17 +14,79 @@
     <footer class="game-controls">
       <!-- 未来可能添加：排行榜按钮、设置按钮等 -->
     </footer>
+
+    <!-- 游戏结束覆盖层 -->
+    <GameOverOverlay
+      :visible="showGameOver"
+      @close="handleOverlayClose"
+      @retry="handleOverlayRetry"
+    />
+
+    <!-- 游戏胜利覆盖层 -->
+    <GameWonOverlay
+      :visible="showGameWon"
+      @close="handleOverlayClose"
+      @retry="handleOverlayRetry"
+      @continue="handleOverlayClose"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useGameStore } from '@/stores/game'
 import GameHeader from './GameHeader.vue'
 import GameBoard from './GameBoard.vue'
+import GameOverOverlay from './GameOverOverlay.vue'
+import GameWonOverlay from './GameWonOverlay.vue'
 
 const store = useGameStore()
 
+// 覆盖层显示状态
+const showGameOver = ref(false)
+const showGameWon = ref(false)
+
+// 监听游戏状态变化
+const isGameOver = computed(() => store.isGameOver)
+const isGameWon = computed(() => store.isGameWon)
+
+// 监听游戏结束状态
+function checkGameOver() {
+  if (isGameOver.value && store.status === 'lost') {
+    showGameOver.value = true
+  }
+}
+
+// 监听游戏胜利状态
+function checkGameWon() {
+  if (isGameWon.value && store.status === 'won' && !showGameWon.value) {
+    // 只在第一次胜利时显示，避免重复显示
+    showGameWon.value = true
+  }
+}
+
+// 使用 watch 监听状态变化
+watch(isGameOver, () => {
+  checkGameOver()
+})
+
+watch(isGameWon, () => {
+  checkGameWon()
+})
+
+// 覆盖层事件处理
+function handleOverlayClose() {
+  showGameOver.value = false
+  showGameWon.value = false
+}
+
+function handleOverlayRetry() {
+  showGameOver.value = false
+  showGameWon.value = false
+  // initialize() 已在覆盖层组件中调用
+}
+
+// 初始化游戏
 onMounted(() => {
   if (store.status === 'idle') {
     store.initialize()
