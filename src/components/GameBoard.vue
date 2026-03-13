@@ -1,0 +1,72 @@
+<template>
+  <div class="game-board">
+    <div class="grid-container">
+      <Tile
+        v-for="tile in tiles"
+        :key="tile.id"
+        :value="tile.value"
+        :row="tile.row"
+        :col="tile.col"
+        class="grid-item"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useGameStore } from '@/stores/game'
+import Tile from './Tile.vue'
+
+const store = useGameStore()
+
+// 将 4x4 网格展平为一维数组，便于 v-for 渲染
+const tiles = computed(() => {
+  const result: Array<{ value: number; row: number; col: number; id: string }> = []
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      result.push({
+        value: store.grid[row][col],
+        row,
+        col,
+        id: `tile-${row}-${col}` // 唯一标识，用于 Vue key
+      })
+    }
+  }
+  return result
+})
+</script setup>
+
+<style scoped>
+.game-board {
+  width: 100%;
+  aspect-ratio: 1; /* 保持正方形比例 */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0.75rem; /* 方格之间固定间距 */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1); /* 半透明玻璃态 */
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.grid-item {
+  width: 100%;
+  height: 100%;
+}
+
+/* 移动端适配 */
+@media (max-width: 640px) {
+  .grid-container {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+</style>
