@@ -53,21 +53,21 @@ v1.1 里程碑的需求，每个需求映射到路线图中的一个阶段。
 
 | 需求 | 阶段 | 状态 |
 |------|------|------|
-| THEME-01 | Phase ? | Pending |
-| THEME-02 | Phase ? | Pending |
-| THEME-03 | Phase ? | Pending |
-| THEME-04 | Phase ? | Pending |
-| THEME-05 | Phase ? | Pending |
-| PERF-01 | Phase ? | Pending |
-| PERF-02 | Phase ? | Pending |
-| PERF-03 | Phase ? | Pending |
+| THEME-01 | Phase 4 | Pending |
+| THEME-02 | Phase 4 | Pending |
+| THEME-04 | Phase 4 | Pending |
+| THEME-03 | Phase 5 | Pending |
+| THEME-05 | Phase 5 | Pending |
+| PERF-01 | Phase 6 | Pending |
+| PERF-02 | Phase 6 | Pending |
+| PERF-03 | Phase 7 | Pending |
 
 **覆盖率：**
 - v1.1 需求：8 个
-- 映射到阶段：0
-- 未映射：8 ⚠️
+- 映射到阶段：8 个 ✓
+- 未映射：0 个
 
 ---
 
 **需求定义：** 2026-03-13
-**最后更新：** 2026-03-13 初始定义
+**最后更新：** 2026-03-14 路线图创建，更新阶段映射
