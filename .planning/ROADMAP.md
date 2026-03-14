@@ -11,12 +11,12 @@
 
 | 阶段 | 计划完成 | 状态 | 完成日期 |
 |------|---------|------|----------|
-| 4. 主题基础设施 | 2/3 | In Progress|  |
+| 4. 主题基础设施 | 3/3 | Complete | 2026-03-14 |
 | 5. 主题集成 | 0/2 | 未开始 | - |
 | 6. 性能优化 | 0/2 | 未开始 | - |
 | 7. 性能验证 | 0/1 | 未开始 | - |
 
-**总体进度：** 2/8 计划 (25%)
+**总体进度：** 3/8 计划 (38%)
 
 ---
 
@@ -45,9 +45,9 @@
 3. 主题状态在 Pinia Store 中正确管理
 
 **计划：**
-- [ ] 04-01-PLAN.md — 定义主题类型系统和 CSS 变量基础（THEME-02, THEME-04）
-- [ ] 04-02-PLAN.md — 创建 Pinia Theme Store（THEME-01）
-- [ ] 04-03-PLAN.md — 创建 useTheme Composable（THEME-01, THEME-04）
+- [x] 04-01-PLAN.md — 定义主题类型系统和 CSS 变量基础（THEME-02, THEME-04）✓
+- [x] 04-02-PLAN.md — 创建 Pinia Theme Store（THEME-01）✓
+- [x] 04-03-PLAN.md — 创建 useTheme Composable（THEME-01, THEME-04）✓
 
 ### Phase 5: 主题集成
 
@@ -121,9 +121,9 @@ Phase 7 (性能验证)
 
 | 需求 | 阶段 | 状态 |
 |------|------|------|
-| THEME-01 | Phase 4 | Pending |
-| THEME-02 | Phase 4 | Pending |
-| THEME-04 | Phase 4 | Pending |
+| THEME-01 | Phase 4 | ✓ 完成 |
+| THEME-02 | Phase 4 | ✓ 完成 |
+| THEME-04 | Phase 4 | ✓ 完成 |
 | THEME-03 | Phase 5 | Pending |
 | THEME-05 | Phase 5 | Pending |
 | PERF-01 | Phase 6 | Pending |
@@ -150,4 +150,4 @@ Phase 7 (性能验证)
 ---
 
 **路线图创建：** 2026-03-14
-**最后更新：** 2026-03-14 Phase 4 计划 04-02 完成
+**最后更新：** 2026-03-14 Phase 4 完成（3/3 计划）

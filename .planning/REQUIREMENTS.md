@@ -9,7 +9,7 @@ v1.1 里程碑的需求，每个需求映射到路线图中的一个阶段。
 
 ### 主题系统
 
-- [ ] **THEME-01**: 用户可通过主题切换器组件选择主题
+- [x] **THEME-01**: 用户可通过主题切换器组件选择主题
 - [x] **THEME-02**: 系统提供 5 个预设主题（霓虹暗色、天空蓝、森林绿、日落橙、樱花粉）
 - [ ] **THEME-03**: 主题选择持久化到 localStorage，刷新页面后保持
 - [x] **THEME-04**: 主题切换时有平滑过渡效果（0.15-0.3s CSS transition）
@@ -53,7 +53,7 @@ v1.1 里程碑的需求，每个需求映射到路线图中的一个阶段。
 
 | 需求 | 阶段 | 状态 |
 |------|------|------|
-| THEME-01 | Phase 4 | Pending |
+| THEME-01 | Phase 4 | Complete |
 | THEME-02 | Phase 4 | Complete |
 | THEME-04 | Phase 4 | Complete |
 | THEME-03 | Phase 5 | Pending |
