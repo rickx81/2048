@@ -1,6 +1,181 @@
 @import "tailwindcss";
 
-/* 全局样式 */
+/* ===== 主题系统 CSS 变量 ===== */
+
+/* 基础变量（默认值 - 霓虹暗色主题） */
+:root {
+  /* 基础颜色 */
+  --theme-bg-primary: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-text-primary: #f1f5f9;
+  --theme-text-secondary: #94a3b8;
+  --theme-border: #334155;
+  --theme-tile-empty: #1e293b;
+
+  /* 方块颜色（2-2048） */
+  --theme-tile-2: #eee4da;
+  --theme-tile-4: #ede0c8;
+  --theme-tile-8: #f2b179;
+  --theme-tile-16: #f59563;
+  --theme-tile-32: #f67c5f;
+  --theme-tile-64: #f65e3b;
+  --theme-tile-128: #edcf72;
+  --theme-tile-256: #edcc61;
+  --theme-tile-512: #edc850;
+  --theme-tile-1024: #edc53f;
+  --theme-tile-2048: #edc22e;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #0f172a;
+  --theme-gradient-end: #581c87;
+}
+
+/* ===== 霓虹暗色主题 ===== */
+[data-theme='neon'] {
+  /* 基础颜色 */
+  --theme-bg-primary: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-text-primary: #f1f5f9;
+  --theme-text-secondary: #94a3b8;
+  --theme-border: #334155;
+  --theme-tile-empty: #1e293b;
+
+  /* 方块颜色（经典 2048 配色） */
+  --theme-tile-2: #eee4da;
+  --theme-tile-4: #ede0c8;
+  --theme-tile-8: #f2b179;
+  --theme-tile-16: #f59563;
+  --theme-tile-32: #f67c5f;
+  --theme-tile-64: #f65e3b;
+  --theme-tile-128: #edcf72;
+  --theme-tile-256: #edcc61;
+  --theme-tile-512: #edc850;
+  --theme-tile-1024: #edc53f;
+  --theme-tile-2048: #edc22e;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #0f172a;
+  --theme-gradient-end: #581c87;
+}
+
+/* ===== 天空蓝主题 ===== */
+[data-theme='sky'] {
+  /* 基础颜色 */
+  --theme-bg-primary: #e0f2fe;
+  --theme-bg-secondary: #bae6fd;
+  --theme-text-primary: #0c4a6e;
+  --theme-text-secondary: #075985;
+  --theme-border: #7dd3fc;
+  --theme-tile-empty: #bae6fd;
+
+  /* 方块颜色（蓝色系渐变） */
+  --theme-tile-2: #bae6fd;
+  --theme-tile-4: #7dd3fc;
+  --theme-tile-8: #38bdf8;
+  --theme-tile-16: #0ea5e9;
+  --theme-tile-32: #0284c7;
+  --theme-tile-64: #0369a1;
+  --theme-tile-128: #075985;
+  --theme-tile-256: #0c4a6e;
+  --theme-tile-512: #082f49;
+  --theme-tile-1024: #0c4a6e;
+  --theme-tile-2048: #0e7490;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #0284c7;
+  --theme-gradient-end: #0c4a6e;
+}
+
+/* ===== 森林绿主题 ===== */
+[data-theme='forest'] {
+  /* 基础颜色 */
+  --theme-bg-primary: #dcfce7;
+  --theme-bg-secondary: #bbf7d0;
+  --theme-text-primary: #14532d;
+  --theme-text-secondary: #166534;
+  --theme-border: #86efac;
+  --theme-tile-empty: #bbf7d0;
+
+  /* 方块颜色（绿色系渐变） */
+  --theme-tile-2: #dcfce7;
+  --theme-tile-4: #bbf7d0;
+  --theme-tile-8: #86efac;
+  --theme-tile-16: #4ade80;
+  --theme-tile-32: #22c55e;
+  --theme-tile-64: #16a34a;
+  --theme-tile-128: #15803d;
+  --theme-tile-256: #166534;
+  --theme-tile-512: #14532d;
+  --theme-tile-1024: #166534;
+  --theme-tile-2048: #15803d;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #16a34a;
+  --theme-gradient-end: #14532d;
+}
+
+/* ===== 日落橙主题 ===== */
+[data-theme='sunset'] {
+  /* 基础颜色 */
+  --theme-bg-primary: #ffedd5;
+  --theme-bg-secondary: #fed7aa;
+  --theme-text-primary: #7c2d12;
+  --theme-text-secondary: #9a3412;
+  --theme-border: #fdba74;
+  --theme-tile-empty: #fed7aa;
+
+  /* 方块颜色（橙色系渐变） */
+  --theme-tile-2: #ffedd5;
+  --theme-tile-4: #fed7aa;
+  --theme-tile-8: #fdba74;
+  --theme-tile-16: #fb923c;
+  --theme-tile-32: #f97316;
+  --theme-tile-64: #ea580c;
+  --theme-tile-128: #c2410c;
+  --theme-tile-256: #9a3412;
+  --theme-tile-512: #7c2d12;
+  --theme-tile-1024: #9a3412;
+  --theme-tile-2048: #c2410c;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #ea580c;
+  --theme-gradient-end: #7c2d12;
+}
+
+/* ===== 樱花粉主题 ===== */
+[data-theme='sakura'] {
+  /* 基础颜色 */
+  --theme-bg-primary: #fce7f3;
+  --theme-bg-secondary: #fbcfe8;
+  --theme-text-primary: #831843;
+  --theme-text-secondary: #9d174d;
+  --theme-border: #f9a8d4;
+  --theme-tile-empty: #fbcfe8;
+
+  /* 方块颜色（粉色系渐变） */
+  --theme-tile-2: #fce7f3;
+  --theme-tile-4: #fbcfe8;
+  --theme-tile-8: #f9a8d4;
+  --theme-tile-16: #f472b6;
+  --theme-tile-32: #ec4899;
+  --theme-tile-64: #db2777;
+  --theme-tile-128: #be185d;
+  --theme-tile-256: #9d174d;
+  --theme-tile-512: #831843;
+  --theme-tile-1024: #9d174d;
+  --theme-tile-2048: #be185d;
+
+  /* 特殊效果 */
+  --theme-gradient-start: #db2777;
+  --theme-gradient-end: #831843;
+}
+
+/* ===== 平滑过渡效果 ===== */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ===== 全局样式 ===== */
 body {
   margin: 0;
   padding: 0;
