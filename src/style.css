@@ -25,6 +25,10 @@
   --theme-tile-1024: #edc53f;
   --theme-tile-2048: #edc22e;
 
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #f9f6f2;
+  --theme-tile-text-dark: #776e65;
+
   /* 特殊效果 */
   --theme-gradient-start: #faf8ef;
   --theme-gradient-end: #eee4da;
@@ -52,6 +56,10 @@
   --theme-tile-512: #edc850;
   --theme-tile-1024: #edc53f;
   --theme-tile-2048: #edc22e;
+
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #f9f6f2;
+  --theme-tile-text-dark: #776e65;
 
   /* 特殊效果 */
   --theme-gradient-start: #faf8ef;
@@ -81,6 +89,10 @@
   --theme-tile-1024: #0c4a6e;
   --theme-tile-2048: #0e7490;
 
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #f0f9ff;
+  --theme-tile-text-dark: #0c4a6e;
+
   /* 特殊效果 */
   --theme-gradient-start: #0284c7;
   --theme-gradient-end: #0c4a6e;
@@ -108,6 +120,10 @@
   --theme-tile-512: #14532d;
   --theme-tile-1024: #166534;
   --theme-tile-2048: #15803d;
+
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #f0fdf4;
+  --theme-tile-text-dark: #14532d;
 
   /* 特殊效果 */
   --theme-gradient-start: #16a34a;
@@ -137,6 +153,10 @@
   --theme-tile-1024: #9a3412;
   --theme-tile-2048: #c2410c;
 
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #fff7ed;
+  --theme-tile-text-dark: #7c2d12;
+
   /* 特殊效果 */
   --theme-gradient-start: #ea580c;
   --theme-gradient-end: #7c2d12;
@@ -164,6 +184,10 @@
   --theme-tile-512: #831843;
   --theme-tile-1024: #9d174d;
   --theme-tile-2048: #be185d;
+
+  /* 方块文字颜色 */
+  --theme-tile-text-light: #fdf2f8;
+  --theme-tile-text-dark: #831843;
 
   /* 特殊效果 */
   --theme-gradient-start: #db2777;

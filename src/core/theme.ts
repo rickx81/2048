@@ -31,6 +31,10 @@ export interface ThemeColors {
   // 方块颜色（2-2048 的所有可能值）
   /** 方块颜色映射表 */
   tileColors: Record<number, string>
+  /** 方块浅色文字（用于深色背景方块，如 8+） */
+  tileTextLight: string
+  /** 方块深色文字（用于浅色背景方块，如 2, 4） */
+  tileTextDark: string
 
   // 特殊效果
   /** 渐变起始色（用于背景装饰） */
@@ -166,6 +170,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
       border: '#bbada0',
       tileEmpty: '#cdc1b4',
       tileColors: CLASSIC_TILE_COLORS,
+      tileTextLight: '#f9f6f2',
+      tileTextDark: '#776e65',
       gradientStart: '#faf8ef',
       gradientEnd: '#eee4da'
     }
@@ -186,6 +192,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
       border: '#7dd3fc',
       tileEmpty: '#bae6fd',
       tileColors: createBlueTileColors(),
+      tileTextLight: '#f0f9ff',
+      tileTextDark: '#0c4a6e',
       gradientStart: '#0284c7',
       gradientEnd: '#0c4a6e'
     }
@@ -206,6 +214,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
       border: '#86efac',
       tileEmpty: '#bbf7d0',
       tileColors: createGreenTileColors(),
+      tileTextLight: '#f0fdf4',
+      tileTextDark: '#14532d',
       gradientStart: '#16a34a',
       gradientEnd: '#14532d'
     }
@@ -226,6 +236,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
       border: '#fdba74',
       tileEmpty: '#fed7aa',
       tileColors: createOrangeTileColors(),
+      tileTextLight: '#fff7ed',
+      tileTextDark: '#7c2d12',
       gradientStart: '#ea580c',
       gradientEnd: '#7c2d12'
     }
@@ -246,6 +258,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
       border: '#f9a8d4',
       tileEmpty: '#fbcfe8',
       tileColors: createPinkTileColors(),
+      tileTextLight: '#fdf2f8',
+      tileTextDark: '#831843',
       gradientStart: '#db2777',
       gradientEnd: '#831843'
     }

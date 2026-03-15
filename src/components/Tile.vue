@@ -78,7 +78,7 @@ function getTextStyle() {
   const fontSize = getFontSize(props.value)
 
   return {
-    color: useDarkText ? 'var(--theme-text-secondary)' : 'var(--theme-text-primary)',
+    color: useDarkText ? 'var(--theme-tile-text-dark)' : 'var(--theme-tile-text-light)',
     fontSize,
     fontWeight: '700',
   }
