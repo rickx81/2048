@@ -5,7 +5,17 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import GameContainer from '@/components/GameContainer.vue'
+import { useTheme } from '@/composables/useTheme'
+
+// 初始化主题系统（设置 DOM 监听和 localStorage 同步）
+useTheme()
+
+onMounted(() => {
+  // 确保 DOM 已准备好
+  document.documentElement.classList.add('theme-ready')
+})
 </script>
 
 <style>
