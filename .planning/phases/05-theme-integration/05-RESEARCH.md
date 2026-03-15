@@ -585,3 +585,94 @@ onClickOutside(dropdownRef, () => {
 
 **Research date:** 2026-03-15
 **Valid until:** 2026-04-15 (30 days - Vue 3 和 VueUse 生态稳定)
+
+## Implementation Notes
+
+### 发现的硬编码颜色（需要迁移到 CSS 变量）
+
+**App.vue:**
+```vue
+<style>
+.app {
+  background-color: #faf8ef; /* ❌ 硬编码 - 应该使用 var(--theme-bg-primary) */
+}
+</style>
+```
+
+**GameContainer.vue:**
+```vue
+<style scoped>
+.game-container {
+  background-color: #faf8ef; /* ❌ 硬编码 - 应该使用 var(--theme-bg-primary) */
+}
+</style>
+```
+
+**GameHeader.vue:**
+```vue
+<style scoped>
+.title {
+  color: #776e65; /* ❌ 硬编码 - 应该使用 var(--theme-text-primary) */
+}
+
+.subtitle {
+  color: #776e65; /* ❌ 硬编码 - 应该使用 var(--theme-text-secondary) */
+}
+
+.score-box {
+  background-color: #bbada0; /* ❌ 硬编码 - 应该使用 var(--theme-bg-secondary) */
+}
+
+.score-label {
+  color: #eee4da; /* ❌ 硬编码 - 应该使用 var(--theme-text-secondary) */
+}
+
+.control-btn {
+  background-color: #8f7a66; /* ❌ 硬编码 - 应该使用 var(--theme-bg-secondary) */
+}
+</style>
+```
+
+**Tile.vue:**
+```vue
+<script setup>
+function getTileStyle() {
+  if (props.value === 0) {
+    return {
+      backgroundColor: '#cdc1b4', // ❌ 硬编码 - 应该使用 var(--theme-tile-empty)
+    }
+  }
+
+  const backgroundColors: Record<number, string> = {
+    2: '#eee4da',     // ❌ 硬编码 - 应该使用 var(--theme-tile-2)
+    4: '#ede0c8',     // ❌ 硬编码 - 应该使用 var(--theme-tile-4)
+    8: '#f2b179',     // ❌ 硬编码 - 应该使用 var(--theme-tile-8)
+    // ... 其他方块颜色
+  }
+}
+</script>
+```
+
+**迁移优先级：**
+1. **高优先级（必须在 Phase 5 完成）：**
+   - Tile.vue - 方块颜色（用户直接可见）
+   - GameHeader.vue - 控制按钮和分数框（核心交互区域）
+
+2. **中优先级（建议在 Phase 5 完成）：**
+   - App.vue - 全局背景色（影响整体视觉效果）
+   - GameContainer.vue - 容器背景色（同上）
+
+3. **低优先级（可延迟到 Phase 6）：**
+   - GameBoard.vue - 网格背景色（目前可能是透明或继承）
+   - GameOverOverlay.vue / GameWonOverlay.vue - 覆盖层颜色（独立主题）
+
+**迁移策略：**
+- 每个组件独立迁移，避免一次性改动过大
+- 先迁移 Tile.vue（最复杂），验证 CSS 变量机制正常
+- 再迁移 GameHeader.vue（集成 ThemeSwitcher）
+- 最后迁移 App.vue 和 GameContainer.vue（全局背景）
+
+**验证方法：**
+- 切换主题后，检查所有组件颜色是否同步更新
+- 刷新页面，检查主题是否持久化
+- 检查控制台是否有 CSS 变量未定义的警告
