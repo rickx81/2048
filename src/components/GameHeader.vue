@@ -2,6 +2,7 @@
   <header class="game-header">
     <div class="header-title">
       <h1 class="title">2048</h1>
+      <ThemeSwitcher />
       <p class="subtitle">合并方块，达到 2048！</p>
     </div>
 
@@ -15,8 +16,6 @@
         <span class="score-label">最高分</span>
         <span class="score-value">{{ store.highScore }}</span>
       </div>
-
-      <ThemeSwitcher />
     </div>
 
     <div class="controls-container">
@@ -76,8 +75,8 @@ function handleUndo() {
 
 .header-title {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -100,7 +99,6 @@ function handleUndo() {
   display: flex;
   gap: 0.375rem;
   justify-content: flex-end;
-  align-items: center;
   margin-bottom: 1rem;
 }
 
