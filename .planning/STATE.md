@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: milestone
 status: unknown
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-15T14:42:50.774Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-15T16:06:31.962Z"
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
 ---
 
 # 2048 游戏项目状态
@@ -26,21 +26,21 @@ progress:
 
 ## 当前位置
 
-**当前阶段：** Phase 4 - 主题基础设施
-**当前计划：** 04-03 - 已完成
-**状态：** Phase 4 基础设施已完成，准备 Phase 5 集成
+**当前阶段：** Phase 5 - 主题集成
+**当前计划：** 05-01 - 已完成
+**状态：** 主题切换器和持久化已完成，准备重构 Tile.vue
 
 **阶段进度：**
 ```
 Phase 4: [████████░░] 3/3 计划 - 主题基础设施 ✓
-Phase 5: [░░░░░░░░░░] 0/2 计划 - 主题集成
+Phase 5: [█░░░░░░░░░] 1/2 计划 - 主题集成
 Phase 6: [░░░░░░░░░░] 0/2 计划 - 性能优化
 Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 
-总体进度: [███░░░░░░░] 3/8 计划 (38%)
+总体进度: [████░░░░░░] 4/8 计划 (50%)
 ```
 
-**下一个动作：** 开始 Phase 5 主题集成（创建 05-01-PLAN.md）
+**下一个动作：** 开始 05-02 重构 Tile.vue 使用 CSS 变量（替换内联样式）
 
 ---
 
@@ -65,11 +65,13 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | 04 | 01 | 8min | 1 | 1 | 2026-03-14 |
 | 04 | 02 | 5min | 1 | 1 | 2026-03-14 |
 | 04 | 03 | 1min | 1 | 1 | 2026-03-14 |
+| 05 | 01 | 1min | 4 | 4 | 2026-03-15 |
+| Phase 05 P01 | 1min | 4 tasks | 4 files |
 
 ### Session Info
 
-**Last Session:** 2026-03-15T14:42:50.771Z
-**Stopped At:** Phase 5 context gathered
+**Last Session:** 2026-03-15T16:06:31.959Z
+**Stopped At:** Completed 05-01-PLAN.md
 
 ---
 
@@ -79,19 +81,19 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 
 1. **主题切换闪烁（FOUC）**
    - 缓解：在 index.html 添加同步主题初始化脚本
-   - 状态：待实现
+   - 状态：✓ 已实现 (05-01)
 
 2. **内联样式与主题系统冲突**
    - 缓解：将 Tile.vue 硬编码颜色迁移到 CSS 变量
-   - 状态：待实现
+   - 状态：待实现 (05-02)
 
 3. **localStorage 边界情况**
    - 缓解：使用 try-catch 包装，处理 QuotaExceededError
-   - 状态：待实现
+   - 状态：✓ 已实现 (05-01)
 
 4. **Tailwind v4 主题配置错误**
    - 缓解：使用 @theme 指令和 CSS 变量
-   - 状态：待实现
+   - 状态：待实现 (05-02)
 
 5. **动画性能伪优化**
    - 缓解：只对 transform/opacity 使用 will-change，动画后移除
@@ -105,6 +107,9 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | 独立 Theme Store | 关注点分离，便于测试 | ✓ 采用 |
 | useTheme Composable | 统一访问接口，代码复用 | ✓ 采用 |
 | GPU 加速动画（transform/opacity） | 不触发布局重排，60fps 保证 | ✓ 采用 |
+| VueUse useStorage 持久化 | 自动同步、类型安全、错误处理 | ✓ 采用 |
+| 内联脚本防止 FOUC | 应用加载前读取 localStorage，避免闪烁 | ✓ 采用 |
+| 自定义下拉菜单 | 更好的样式控制和响应式设计 | ✓ 采用 |
 
 ### 待办事项
 
@@ -115,10 +120,11 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - [x] 创建 `src/composables/useTheme.ts` Composable ✓ (04-03)
 
 **Phase 5 准备（主题集成）：**
-- [ ] 创建 ThemeSwitcher.vue 组件
-- [ ] 修改 GameHeader.vue 集成切换器
-- [ ] 重构 Tile.vue 使用 CSS 变量（替换内联样式）
-- [ ] 实现主题持久化（localStorage）
+- [x] 创建 ThemeSwitcher.vue 组件 ✓ (05-01)
+- [x] 修改 GameHeader.vue 集成切换器 ✓ (05-01)
+- [x] 实现主题持久化（localStorage） ✓ (05-01)
+- [x] 添加 FOUC 防止机制 ✓ (05-01)
+- [ ] 重构 Tile.vue 使用 CSS 变量（替换内联样式） (05-02)
 
 **Phase 6 准备（性能优化）：**
 - [ ] Chrome DevTools Performance 录制基线
@@ -199,9 +205,10 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - **04-01 完成：主题类型定义和 CSS 变量基础（2026-03-14）**
 - **04-02 完成：创建 Pinia Theme Store（2026-03-14）**
 - **04-03 完成：创建 useTheme Composable（2026-03-14）**
+- **05-01 完成：主题切换器与持久化（2026-03-15）**
 
 ### 下一步
-Phase 4 基础设施已完成，开始 Phase 5 主题集成（创建 05-01-PLAN.md）
+开始 05-02：重构 Tile.vue 使用 CSS 变量（替换内联样式）
 
 ### 上下文转移
 **v1.0 成果：** 3 个阶段，12 个计划，111 个测试全部通过。游戏功能完整：核心逻辑、撤销、持久化、网格、头部、控制、覆盖层。
@@ -215,4 +222,4 @@ Phase 4 基础设施已完成，开始 Phase 5 主题集成（创建 05-01-PLAN.
 ---
 
 **状态文档创建：** 2026-03-13
-**最后更新：** 2026-03-14 Phase 4 计划 04-03 完成（Phase 4 基础设施全部完成）
+**最后更新：** 2026-03-15 Phase 5 计划 05-01 完成（主题切换器和持久化）
