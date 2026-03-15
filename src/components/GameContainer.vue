@@ -103,7 +103,7 @@ onMounted(() => {
   justify-content: center;
   padding: 1rem;
   gap: 1.5rem;
-  background-color: #faf8ef;
+  background-color: var(--theme-bg-primary);
 }
 
 .game-header,
