@@ -196,12 +196,16 @@ function handleUndo() {
 /* 移动端适配 */
 @media (max-width: 640px) {
   .header-title {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap; /* 允许换行，但标题和主题切换器尽量保持在一行 */
+    gap: 0.5rem;
   }
 
   .title {
     font-size: 2.5rem;
+  }
+
+  .subtitle {
+    display: none; /* 移动端隐藏副标题 */
   }
 
   .scores-container {
