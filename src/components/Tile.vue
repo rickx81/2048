@@ -4,7 +4,7 @@
       'tile',
       isNew ? 'tile-new' : '',
       isMerged ? 'tile-merged' : '',
-      value !== 0 ? 'will-change-transform' : ''
+      isAnimating ? 'tile-animating' : ''
     ]"
     :style="getTileStyle()"
   >
@@ -26,6 +26,7 @@ const props = defineProps<Props>()
 // 动画状态
 const isNew = ref(false)
 const isMerged = ref(false)
+const isAnimating = ref(false) // 动态 will-change 管理
 
 // 监听值变化，判断是否是新方块或合并
 const previousValue = ref(props.value)
@@ -34,11 +35,19 @@ watch(() => props.value, (newValue, oldValue) => {
   if (oldValue === 0 && newValue !== 0) {
     // 从空位变为有数字 = 新生成的方块
     isNew.value = true
-    setTimeout(() => { isNew.value = false }, 200) // 动画时长后重置
+    isAnimating.value = true // 动画开始前添加 will-change
+    setTimeout(() => {
+      isNew.value = false
+      isAnimating.value = false // 动画结束后移除 will-change
+    }, 200) // 与动画时长一致
   } else if (oldValue !== 0 && newValue !== oldValue && newValue !== 0) {
     // 数字变化且不为0 = 合并的方块
     isMerged.value = true
-    setTimeout(() => { isMerged.value = false }, 200) // 动画时长后重置
+    isAnimating.value = true // 动画开始前添加 will-change
+    setTimeout(() => {
+      isMerged.value = false
+      isAnimating.value = false // 动画结束后移除 will-change
+    }, 200) // 与动画时长一致
   }
 
   previousValue.value = newValue
