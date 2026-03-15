@@ -26,73 +26,68 @@ onMounted(() => {
   background-color: var(--theme-bg-primary);
 }
 
-/* ===== 全局动画定义 ===== */
+/* ===== 全局动画定义 - GPU 加速优化 ===== */
 
-/* 新方块弹跳动画 */
+/* 新方块弹跳动画 - 使用 translate3d 强制 GPU 层 */
 @keyframes pop-in {
   0% {
-    transform: scale(0);
+    transform: translate3d(0, 0, 0) scale(0);
     opacity: 0;
   }
   50% {
-    transform: scale(1.1);
+    transform: translate3d(0, 0, 0) scale(1.1);
   }
   100% {
-    transform: scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
     opacity: 1;
   }
 }
 
-/* 合并脉冲动画 */
+/* 合并脉冲动画 - 使用 translate3d 强制 GPU 层 */
 @keyframes pulse-merge {
   0% {
-    transform: scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: translate3d(0, 0, 0) scale(1.2);
   }
   100% {
-    transform: scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
-/* 移动动画（使用 transform，GPU 加速） */
-@keyframes slide-move {
-  from {
-    /* 位置由 Vue Transition 动态计算 */
-  }
-  to {
-    /* 位置由 Vue Transition 动态计算 */
-  }
-}
-
-/* 应用动画的类 */
+/* 应用动画的类 - will-change 动态管理（在 Tile.vue 中） */
 .tile-new {
-  animation: pop-in 0.2s ease-out;
+  animation: pop-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .tile-merged {
-  animation: pulse-merge 0.2s ease-out;
+  animation: pulse-merge 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Vue Transition 组动画 */
+/* Vue Transition 组动画 - 仅对 transform 过渡 */
 .tile-move {
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 确保移动动画流畅（60fps） */
+/* 优化的进入/离开动画 - 仅 transform 和 opacity */
 .tile-enter-active,
 .tile-leave-active {
-  transition: all 0.15s ease-in-out;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .tile-enter-from {
   opacity: 0;
-  transform: scale(0.5);
+  transform: translate3d(0, 0, 0) scale(0.9);
 }
 
 .tile-leave-to {
   opacity: 0;
-  transform: scale(0.5);
+  transform: translate3d(0, 0, 0) scale(0.9);
+}
+
+/* 动画状态类 - 用于动态 will-change 管理 */
+.tile-animating {
+  will-change: transform, opacity;
 }
 </style>
