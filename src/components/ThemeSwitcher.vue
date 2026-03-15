@@ -5,13 +5,17 @@
       class="control-btn theme-btn"
       title="切换主题"
     >
-      <!-- 调色板 SVG 图标 -->
+      <!-- 太阳 SVG 图标 -->
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="13.5" cy="6.5" r="2.5"/>
-        <circle cx="17.5" cy="10.5" r="2.5"/>
-        <circle cx="8.5" cy="7.5" r="2.5"/>
-        <circle cx="6.5" cy="12.5" r="2.5"/>
-        <path d="M12 12c-2 0-3 3-3 6 0 2 3 3 3 3s3-1 3-3c0-3-1-6-3-6Z"/>
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/>
+        <path d="M12 20v2"/>
+        <path d="m4.93 4.93 1.41 1.41"/>
+        <path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M2 12h2"/>
+        <path d="M20 12h2"/>
+        <path d="m6.34 17.66-1.41 1.41"/>
+        <path d="m19.07 4.93-1.41 1.41"/>
       </svg>
     </button>
 
