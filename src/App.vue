@@ -13,8 +13,7 @@ import GameContainer from '@/components/GameContainer.vue'
 .app {
   width: 100%;
   min-height: 100vh;
-  /* 经典 2048 米色背景 */
-  background-color: #faf8ef;
+  background-color: var(--theme-bg-primary);
 }
 
 /* ===== 全局动画定义 ===== */
