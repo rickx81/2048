@@ -1,7 +1,9 @@
 <template>
   <header class="game-header">
     <div class="header-title">
-      <h1 class="title">2048</h1>
+      <div class="title-wrapper">
+        <h1 class="title">2048</h1>
+      </div>
       <ThemeSwitcher />
       <p class="subtitle">合并方块，达到 2048！</p>
     </div>
@@ -75,9 +77,15 @@ function handleUndo() {
 
 .header-title {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .title {

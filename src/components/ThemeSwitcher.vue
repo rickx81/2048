@@ -75,21 +75,29 @@ onClickOutside(dropdownRef, () => {
   justify-content: center;
   background-color: var(--theme-bg-secondary);
   border: none;
-  border-radius: 3px;
-  padding: 0.5rem;
+  border-radius: 6px;
+  padding: 0.625rem 0.875rem;
   color: var(--theme-text-primary);
-  font-size: 1rem;
-  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
+  transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
 }
 
 .theme-btn:hover {
   opacity: 0.9;
+  transform: scale(1.05);
 }
 
 .theme-btn:active {
   opacity: 0.8;
+  transform: scale(0.95);
+}
+
+.theme-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.theme-btn:hover svg {
+  transform: rotate(15deg);
 }
 
 .theme-dropdown {
