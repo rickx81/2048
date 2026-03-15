@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: milestone
-status: unknown
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-15T16:10:03.062Z"
+status: planning
+stopped_at: Created 06-01-PLAN.md, 06-02-PLAN.md
+last_updated: "2026-03-16T00:00:00.000Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
+  total_plans: 7
   completed_plans: 5
 ---
 
@@ -26,21 +26,21 @@ progress:
 
 ## 当前位置
 
-**当前阶段：** Phase 5 - 主题集成
-**当前计划：** 05-02 - 已完成
-**状态：** UI 组件已完成主题集成，准备进入性能优化
+**当前阶段：** Phase 6 - 性能优化
+**当前计划：** 06-01, 06-02 - 已创建
+**状态：** 性能优化计划已创建，准备开始执行
 
 **阶段进度：**
 ```
-Phase 4: [████████░░] 3/3 计划 - 主题基础设施 ✓
+Phase 4: [██████████] 3/3 计划 - 主题基础设施 ✓
 Phase 5: [██████████] 2/2 计划 - 主题集成 ✓
-Phase 6: [░░░░░░░░░░] 0/2 计划 - 性能优化
+Phase 6: [████░░░░░░] 2/2 计划 - 性能优化（规划完成）
 Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 
-总体进度: [██████░░░░] 5/8 计划 (62%)
+总体进度: [███████░░░] 5/7 计划 (71%)
 ```
 
-**下一个动作：** 开始 Phase 6：性能优化（GPU 加速动画）
+**下一个动作：** 执行 `/gsd:execute-phase 06-性能优化`
 
 ---
 
@@ -67,13 +67,13 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | 04 | 03 | 1min | 1 | 1 | 2026-03-14 |
 | 05 | 01 | 1min | 4 | 4 | 2026-03-15 |
 | 05 | 02 | 2min | 4 | 4 | 2026-03-15 |
-| Phase 05 P01-02 | 3min | 8 tasks | 8 files |
-| Phase 05 P02 | 120 | 4 tasks | 4 files |
+| 06 | 01 | - | 2 | 1 | 2026-03-16（规划） |
+| 06 | 02 | - | 3 | 2 | 2026-03-16（规划） |
 
 ### Session Info
 
-**Last Session:** 2026-03-15T16:09:13.000Z
-**Stopped At:** Completed 05-02-PLAN.md
+**Last Session:** 2026-03-16T00:00:00.000Z
+**Stopped At:** Created 06-01-PLAN.md, 06-02-PLAN.md
 
 ---
 
@@ -99,7 +99,15 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 
 5. **动画性能伪优化**
    - 缓解：只对 transform/opacity 使用 will-change，动画后移除
-   - 状态：待实现
+   - 状态：待实现 (06-02)
+
+6. **永久 will-change 导致内存问题**
+   - 缓解：动态管理 will-change（动画前添加，结束后移除）
+   - 状态：待实现 (06-02)
+
+7. **Layout Thrashing（布局抖动）**
+   - 缓解：批量读取 → 批量写入，避免循环中交替读写
+   - 状态：待审查 (06-01)
 
 ### v1.1 技术决策记录
 
@@ -109,33 +117,19 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | 独立 Theme Store | 关注点分离，便于测试 | ✓ 采用 |
 | useTheme Composable | 统一访问接口，代码复用 | ✓ 采用 |
 | GPU 加速动画（transform/opacity） | 不触发布局重排，60fps 保证 | ✓ 采用 |
+| 动态 will-change 管理 | 避免内存泄漏，仅动画期间启用 | ✓ 采用 |
 | VueUse useStorage 持久化 | 自动同步、类型安全、错误处理 | ✓ 采用 |
 | 内联脚本防止 FOUC | 应用加载前读取 localStorage，避免闪烁 | ✓ 采用 |
 | 自定义下拉菜单 | 更好的样式控制和响应式设计 | ✓ 采用 |
 
 ### 待办事项
 
-**Phase 4 准备（主题基础设施）：**
-- [x] 创建 `src/core/theme.ts` 类型定义 ✓ (04-01)
-- [x] 定义 5 个主题配置对象（霓虹、天空、森林、日落、樱花） ✓ (04-01)
-- [x] 创建 `src/stores/theme.ts` Pinia Store ✓ (04-02)
-- [x] 创建 `src/composables/useTheme.ts` Composable ✓ (04-03)
-
-**Phase 5 准备（主题集成）：**
-- [x] 创建 ThemeSwitcher.vue 组件 ✓ (05-01)
-- [x] 修改 GameHeader.vue 集成切换器 ✓ (05-01)
-- [x] 实现主题持久化（localStorage） ✓ (05-01)
-- [x] 添加 FOUC 防止机制 ✓ (05-01)
-- [x] 重构 Tile.vue 使用 CSS 变量（替换内联样式） ✓ (05-02)
-- [x] 重构 GameHeader.vue 使用 CSS 变量 ✓ (05-02)
-- [x] 重构 App.vue 使用 CSS 变量 ✓ (05-02)
-- [x] 重构 GameContainer.vue 使用 CSS 变量 ✓ (05-02)
-
 **Phase 6 准备（性能优化）：**
-- [ ] Chrome DevTools Performance 录制基线
-- [ ] 审查现有动画实现（Tile.vue, GameBoard.vue）
-- [ ] 确保所有动画使用 transform/opacity
-- [ ] 添加 will-change 提示（仅动画期间）
+- [ ] Chrome DevTools Performance 录制基线 (06-01)
+- [ ] 审查现有动画实现（Tile.vue, GameBoard.vue, App.vue）(06-01)
+- [ ] 确保所有动画使用 transform/opacity (06-02)
+- [ ] 添加动态 will-change 管理（仅动画期间）(06-02)
+- [ ] 验证 60fps 稳定性 (06-02)
 
 **Phase 7 准备（性能验证）：**
 - [ ] 性能对比测试（优化前 vs 优化后）
@@ -212,6 +206,7 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - **04-03 完成：创建 useTheme Composable（2026-03-14）**
 - **05-01 完成：主题切换器与持久化（2026-03-15）**
 - **05-02 完成：UI 组件使用 CSS 变量（2026-03-15）**
+- **06-01, 06-02 计划创建：性能优化（2026-03-16）**
 
 ### 最近优化（2026-03-16）
 - **主题命名重构**：将经典主题 ID 从 `neon` 重命名为 `classic`，更符合实际语义
@@ -219,7 +214,7 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - **鼠标拖拽控制**：新增鼠标拖拽支持，完善桌面端用户体验（与键盘、触摸并存）
 
 ### 下一步
-开始 Phase 6：性能优化（GPU 加速动画）
+执行 Phase 6：性能优化（GPU 加速动画）
 
 ### 上下文转移
 **v1.0 成果：** 3 个阶段，12 个计划，111 个测试全部通过。游戏功能完整：核心逻辑、撤销、持久化、网格、头部、控制、覆盖层。
@@ -228,9 +223,9 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - 主题系统架构：CSS 变量 + Pinia Store + useTheme Composable
 - 性能优化重点：GPU 加速（transform/opacity），避免布局重排
 - 5 个主题：经典主题、天空蓝、森林绿、日落橙、樱花粉
-- 粗粒度规划：4 个阶段（Phase 4-7），8 个计划
+- 粗粒度规划：4 个阶段（Phase 4-7），7 个计划
 
 ---
 
 **状态文档创建：** 2026-03-13
-**最后更新：** 2026-03-16 最近优化：主题命名重构、组件语法修复、鼠标拖拽控制
+**最后更新：** 2026-03-16 Phase 6 计划创建完成
