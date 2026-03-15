@@ -2,15 +2,15 @@
 
 /* ===== 主题系统 CSS 变量 ===== */
 
-/* 基础变量（默认值 - 霓虹暗色主题） */
+/* 基础变量（默认值 - 经典主题） */
 :root {
   /* 基础颜色 */
-  --theme-bg-primary: #0f172a;
-  --theme-bg-secondary: #1e293b;
-  --theme-text-primary: #f1f5f9;
-  --theme-text-secondary: #94a3b8;
-  --theme-border: #334155;
-  --theme-tile-empty: #1e293b;
+  --theme-bg-primary: #faf8ef;
+  --theme-bg-secondary: #bbada0;
+  --theme-text-primary: #776e65;
+  --theme-text-secondary: #776e65;
+  --theme-border: #bbada0;
+  --theme-tile-empty: #cdc1b4;
 
   /* 方块颜色（2-2048） */
   --theme-tile-2: #eee4da;
@@ -26,19 +26,19 @@
   --theme-tile-2048: #edc22e;
 
   /* 特殊效果 */
-  --theme-gradient-start: #0f172a;
-  --theme-gradient-end: #581c87;
+  --theme-gradient-start: #faf8ef;
+  --theme-gradient-end: #eee4da;
 }
 
-/* ===== 霓虹暗色主题 ===== */
+/* ===== 经典主题 ===== */
 [data-theme='neon'] {
   /* 基础颜色 */
-  --theme-bg-primary: #0f172a;
-  --theme-bg-secondary: #1e293b;
-  --theme-text-primary: #f1f5f9;
-  --theme-text-secondary: #94a3b8;
-  --theme-border: #334155;
-  --theme-tile-empty: #1e293b;
+  --theme-bg-primary: #faf8ef;
+  --theme-bg-secondary: #bbada0;
+  --theme-text-primary: #776e65;
+  --theme-text-secondary: #776e65;
+  --theme-border: #bbada0;
+  --theme-tile-empty: #cdc1b4;
 
   /* 方块颜色（经典 2048 配色） */
   --theme-tile-2: #eee4da;
@@ -54,8 +54,8 @@
   --theme-tile-2048: #edc22e;
 
   /* 特殊效果 */
-  --theme-gradient-start: #0f172a;
-  --theme-gradient-end: #581c87;
+  --theme-gradient-start: #faf8ef;
+  --theme-gradient-end: #eee4da;
 }
 
 /* ===== 天空蓝主题 ===== */

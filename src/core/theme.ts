@@ -152,22 +152,22 @@ function createPinkTileColors(): Record<number, string> {
  */
 export const THEMES: Record<ThemeId, ThemeConfig> = {
   /**
-   * 霓虹暗色主题
-   * 基于 Tile.vue 的经典配色，暗色背景 + 霓虹渐变
+   * 经典主题
+   * 经典 2048 配色：米黄色背景 + 深色文字 + 经典方块颜色
    */
   neon: {
     id: 'neon',
     displayName: '经典主题',
     colors: {
-      bgPrimary: '#0f172a',
-      bgSecondary: '#1e293b',
-      textPrimary: '#f1f5f9',
-      textSecondary: '#94a3b8',
-      border: '#334155',
-      tileEmpty: '#1e293b',
+      bgPrimary: '#faf8ef',
+      bgSecondary: '#bbada0',
+      textPrimary: '#776e65',
+      textSecondary: '#776e65',
+      border: '#bbada0',
+      tileEmpty: '#cdc1b4',
       tileColors: CLASSIC_TILE_COLORS,
-      gradientStart: '#0f172a',
-      gradientEnd: '#581c87'
+      gradientStart: '#faf8ef',
+      gradientEnd: '#eee4da'
     }
   },
 
