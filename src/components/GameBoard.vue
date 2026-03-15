@@ -57,7 +57,7 @@ const tiles = computed(() => {
   gap: 0.9375rem; /* 15px 方格之间固定间距 */
   width: 100%;
   height: 100%;
-  background-color: #bbada0; /* 经典 2048 网格背景色 */
+  background-color: var(--theme-bg-secondary);
   border-radius: 6px;
   padding: 0.9375rem;
   box-sizing: border-box;
