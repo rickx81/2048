@@ -23,7 +23,6 @@
         class="theme-option"
         :class="{ 'active': theme.id === currentThemeId }"
       >
-        <span class="theme-check" v-if="theme.id === currentThemeId">✓</span>
         {{ theme.displayName }}
       </button>
     </div>
@@ -31,17 +30,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useTheme } from '@/composables/useTheme'
+import { useThemeStore } from '@/stores/theme'
 import { THEMES } from '@/core/theme'
 import type { ThemeId } from '@/core/theme'
 
-// 使用 useTheme 获取主题状态和方法
-const { currentThemeId, setTheme } = useTheme()
+// 使用 theme store 直接访问响应式状态
+const themeStore = useThemeStore()
 
 // 主题列表
 const themes = Object.values(THEMES)
+
+// 当前主题 ID（使用 computed 确保响应性）
+const currentThemeId = computed(() => themeStore.currentThemeId)
 
 // 下拉菜单状态
 const isOpen = ref(false)
@@ -54,7 +56,7 @@ function toggleDropdown() {
 
 // 选择主题
 function handleSelectTheme(themeId: ThemeId) {
-  setTheme(themeId)
+  themeStore.setTheme(themeId)
   isOpen.value = false
 }
 
@@ -116,10 +118,7 @@ onClickOutside(dropdownRef, () => {
 }
 
 .theme-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  display: block;
   width: 100%;
   padding: 0.75rem 1rem;
   background: none;
@@ -139,11 +138,6 @@ onClickOutside(dropdownRef, () => {
   font-weight: 700;
   background-color: var(--theme-bg-primary);
   color: var(--theme-text-primary);
-}
-
-.theme-check {
-  font-weight: bold;
-  color: var(--theme-text-secondary);
 }
 
 /* 移动端适配 */
