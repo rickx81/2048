@@ -93,7 +93,7 @@ function getFontSize(value: number): string {
   if (digits === 4) return '1.75rem'
   return '1.5rem'
 }
-</script setup>
+</script>
 
 <style scoped>
 .tile {

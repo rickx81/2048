@@ -7,7 +7,7 @@
  * 主题 ID 字面量类型
  * 所有可用主题的联合类型
  */
-export type ThemeId = 'neon' | 'sky' | 'forest' | 'sunset' | 'sakura'
+export type ThemeId = 'classic' | 'sky' | 'forest' | 'sunset' | 'sakura'
 
 /**
  * 主题颜色配置接口
@@ -159,8 +159,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
    * 经典主题
    * 经典 2048 配色：米黄色背景 + 深色文字 + 经典方块颜色
    */
-  neon: {
-    id: 'neon',
+  classic: {
+    id: 'classic',
     displayName: '经典主题',
     colors: {
       bgPrimary: '#faf8ef',

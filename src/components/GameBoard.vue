@@ -42,7 +42,7 @@ const tiles = computed(() => {
   }
   return result
 })
-</script setup>
+</script>
 
 <style scoped>
 .game-board {

@@ -67,7 +67,7 @@ function handleNewGame() {
 function handleUndo() {
   store.undo()
 }
-</script setup>
+</script>
 
 <style scoped>
 .game-header {

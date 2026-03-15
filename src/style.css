@@ -35,7 +35,7 @@
 }
 
 /* ===== 经典主题 ===== */
-[data-theme='neon'] {
+[data-theme='classic'] {
   /* 基础颜色 */
   --theme-bg-primary: #faf8ef;
   --theme-bg-secondary: #bbada0;

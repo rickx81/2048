@@ -10,8 +10,8 @@ import { THEMES } from '@/core/theme'
 
 export const useThemeStore = defineStore('theme', () => {
   // ===== 状态 =====
-  /** 当前激活的主题 ID（默认为 'neon'） */
-  const currentThemeId = ref<ThemeId>('neon')
+  /** 当前激活的主题 ID（默认为 'classic'） */
+  const currentThemeId = ref<ThemeId>('classic')
 
   // ===== 计算属性 =====
   /** 当前主题配置对象 */

@@ -33,7 +33,7 @@ export function useTheme() {
   // 使用 useStorage 自动同步主题 ID 到 localStorage
   const storedThemeId = useStorage<ThemeId>(
     '2048-game-theme',
-    'neon',
+    'classic',
     localStorage,
     {
       onError: (error) => {
