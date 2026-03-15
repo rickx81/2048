@@ -22,7 +22,7 @@
 
 ## 阶段
 
-- [ ] **Phase 4: 主题基础设施** - 建立主题系统核心（CSS 变量、Theme Store、useTheme）
+- [x] **Phase 4: 主题基础设施** - 建立主题系统核心（CSS 变量、Theme Store、useTheme）
 - [ ] **Phase 5: 主题集成** - 将主题应用到 UI 层，添加持久化和响应式
 - [ ] **Phase 6: 性能优化** - 优化动画性能，使用 GPU 加速
 - [ ] **Phase 7: 性能验证** - 验证优化效果，确保 60fps
@@ -63,7 +63,8 @@
 3. 主题切换在所有浏览器中一致工作
 
 **计划：**
-- TBD
+- [ ] 05-01-PLAN.md — 创建主题切换器组件并实现 localStorage 持久化（THEME-03, THEME-05）
+- [ ] 05-02-PLAN.md — 迁移 UI 组件使用 CSS 变量（Tile.vue, GameHeader.vue, App.vue）（THEME-03, THEME-05）
 
 ### Phase 6: 性能优化
 
@@ -150,4 +151,4 @@ Phase 7 (性能验证)
 ---
 
 **路线图创建：** 2026-03-14
-**最后更新：** 2026-03-14 Phase 4 完成（3/3 计划）
+**最后更新：** 2026-03-15 Phase 5 计划创建（2/2 计划）
