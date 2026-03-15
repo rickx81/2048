@@ -77,17 +77,17 @@
   --theme-tile-empty: #e0f2fe;
 
   /* 方块颜色（蓝色系渐变） */
-  --theme-tile-2: #bae6fd;
-  --theme-tile-4: #7dd3fc;
-  --theme-tile-8: #38bdf8;
-  --theme-tile-16: #0ea5e9;
-  --theme-tile-32: #0284c7;
-  --theme-tile-64: #0369a1;
-  --theme-tile-128: #075985;
-  --theme-tile-256: #0c4a6e;
-  --theme-tile-512: #082f49;
-  --theme-tile-1024: #0c4a6e;
-  --theme-tile-2048: #0e7490;
+  --theme-tile-2: #7dd3fc;
+  --theme-tile-4: #38bdf8;
+  --theme-tile-8: #0ea5e9;
+  --theme-tile-16: #0284c7;
+  --theme-tile-32: #0369a1;
+  --theme-tile-64: #075985;
+  --theme-tile-128: #0c4a6e;
+  --theme-tile-256: #082f49;
+  --theme-tile-512: #0c4a6e;
+  --theme-tile-1024: #0e7490;
+  --theme-tile-2048: #0284c7;
 
   /* 方块文字颜色 */
   --theme-tile-text-light: #f0f9ff;
@@ -109,17 +109,17 @@
   --theme-tile-empty: #dcfce7;
 
   /* 方块颜色（绿色系渐变） */
-  --theme-tile-2: #dcfce7;
-  --theme-tile-4: #bbf7d0;
-  --theme-tile-8: #86efac;
-  --theme-tile-16: #4ade80;
-  --theme-tile-32: #22c55e;
-  --theme-tile-64: #16a34a;
-  --theme-tile-128: #15803d;
-  --theme-tile-256: #166534;
-  --theme-tile-512: #14532d;
-  --theme-tile-1024: #166534;
-  --theme-tile-2048: #15803d;
+  --theme-tile-2: #86efac;
+  --theme-tile-4: #4ade80;
+  --theme-tile-8: #22c55e;
+  --theme-tile-16: #16a34a;
+  --theme-tile-32: #15803d;
+  --theme-tile-64: #166534;
+  --theme-tile-128: #14532d;
+  --theme-tile-256: #14532d;
+  --theme-tile-512: #166534;
+  --theme-tile-1024: #15803d;
+  --theme-tile-2048: #166534;
 
   /* 方块文字颜色 */
   --theme-tile-text-light: #f0fdf4;
@@ -141,13 +141,13 @@
   --theme-tile-empty: #ffedd5;
 
   /* 方块颜色（橙色系渐变） */
-  --theme-tile-2: #ffedd5;
-  --theme-tile-4: #fed7aa;
-  --theme-tile-8: #fdba74;
-  --theme-tile-16: #fb923c;
-  --theme-tile-32: #f97316;
-  --theme-tile-64: #ea580c;
-  --theme-tile-128: #c2410c;
+  --theme-tile-2: #fdba74;
+  --theme-tile-4: #fb923c;
+  --theme-tile-8: #f97316;
+  --theme-tile-16: #ea580c;
+  --theme-tile-32: #c2410c;
+  --theme-tile-64: #9a3412;
+  --theme-tile-128: #7c2d12;
   --theme-tile-256: #9a3412;
   --theme-tile-512: #7c2d12;
   --theme-tile-1024: #9a3412;
@@ -173,13 +173,13 @@
   --theme-tile-empty: #fce7f3;
 
   /* 方块颜色（粉色系渐变） */
-  --theme-tile-2: #fce7f3;
-  --theme-tile-4: #fbcfe8;
-  --theme-tile-8: #f9a8d4;
-  --theme-tile-16: #f472b6;
-  --theme-tile-32: #ec4899;
-  --theme-tile-64: #db2777;
-  --theme-tile-128: #be185d;
+  --theme-tile-2: #f9a8d4;
+  --theme-tile-4: #f472b6;
+  --theme-tile-8: #ec4899;
+  --theme-tile-16: #db2777;
+  --theme-tile-32: #be185d;
+  --theme-tile-64: #9d174d;
+  --theme-tile-128: #831843;
   --theme-tile-256: #9d174d;
   --theme-tile-512: #831843;
   --theme-tile-1024: #9d174d;

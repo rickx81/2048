@@ -79,17 +79,17 @@ const CLASSIC_TILE_COLORS: Record<number, string> = {
  */
 function createBlueTileColors(): Record<number, string> {
   return {
-    2: '#bae6fd',
-    4: '#7dd3fc',
-    8: '#38bdf8',
-    16: '#0ea5e9',
-    32: '#0284c7',
-    64: '#0369a1',
-    128: '#075985',
-    256: '#0c4a6e',
-    512: '#082f49',
-    1024: '#0c4a6e',
-    2048: '#0e7490'
+    2: '#7dd3fc',
+    4: '#38bdf8',
+    8: '#0ea5e9',
+    16: '#0284c7',
+    32: '#0369a1',
+    64: '#075985',
+    128: '#0c4a6e',
+    256: '#082f49',
+    512: '#0c4a6e',
+    1024: '#0e7490',
+    2048: '#0284c7'
   }
 }
 
@@ -98,17 +98,17 @@ function createBlueTileColors(): Record<number, string> {
  */
 function createGreenTileColors(): Record<number, string> {
   return {
-    2: '#dcfce7',
-    4: '#bbf7d0',
-    8: '#86efac',
-    16: '#4ade80',
-    32: '#22c55e',
-    64: '#16a34a',
-    128: '#15803d',
-    256: '#166534',
-    512: '#14532d',
-    1024: '#166534',
-    2048: '#15803d'
+    2: '#86efac',
+    4: '#4ade80',
+    8: '#22c55e',
+    16: '#16a34a',
+    32: '#15803d',
+    64: '#166534',
+    128: '#14532d',
+    256: '#14532d',
+    512: '#166534',
+    1024: '#15803d',
+    2048: '#166534'
   }
 }
 
@@ -117,13 +117,13 @@ function createGreenTileColors(): Record<number, string> {
  */
 function createOrangeTileColors(): Record<number, string> {
   return {
-    2: '#ffedd5',
-    4: '#fed7aa',
-    8: '#fdba74',
-    16: '#fb923c',
-    32: '#f97316',
-    64: '#ea580c',
-    128: '#c2410c',
+    2: '#fdba74',
+    4: '#fb923c',
+    8: '#f97316',
+    16: '#ea580c',
+    32: '#c2410c',
+    64: '#9a3412',
+    128: '#7c2d12',
     256: '#9a3412',
     512: '#7c2d12',
     1024: '#9a3412',
@@ -136,13 +136,13 @@ function createOrangeTileColors(): Record<number, string> {
  */
 function createPinkTileColors(): Record<number, string> {
   return {
-    2: '#fce7f3',
-    4: '#fbcfe8',
-    8: '#f9a8d4',
-    16: '#f472b6',
-    32: '#ec4899',
-    64: '#db2777',
-    128: '#be185d',
+    2: '#f9a8d4',
+    4: '#f472b6',
+    8: '#ec4899',
+    16: '#db2777',
+    32: '#be185d',
+    64: '#9d174d',
+    128: '#831843',
     256: '#9d174d',
     512: '#831843',
     1024: '#9d174d',
