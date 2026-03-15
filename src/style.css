@@ -74,7 +74,7 @@
   --theme-text-primary: #0c4a6e;
   --theme-text-secondary: #075985;
   --theme-border: #7dd3fc;
-  --theme-tile-empty: #bae6fd;
+  --theme-tile-empty: #7dd3fc;
 
   /* 方块颜色（蓝色系渐变） */
   --theme-tile-2: #bae6fd;
@@ -106,7 +106,7 @@
   --theme-text-primary: #14532d;
   --theme-text-secondary: #166534;
   --theme-border: #86efac;
-  --theme-tile-empty: #bbf7d0;
+  --theme-tile-empty: #86efac;
 
   /* 方块颜色（绿色系渐变） */
   --theme-tile-2: #dcfce7;
@@ -138,7 +138,7 @@
   --theme-text-primary: #7c2d12;
   --theme-text-secondary: #9a3412;
   --theme-border: #fdba74;
-  --theme-tile-empty: #fed7aa;
+  --theme-tile-empty: #fdba74;
 
   /* 方块颜色（橙色系渐变） */
   --theme-tile-2: #ffedd5;
@@ -170,7 +170,7 @@
   --theme-text-primary: #831843;
   --theme-text-secondary: #9d174d;
   --theme-border: #f9a8d4;
-  --theme-tile-empty: #fbcfe8;
+  --theme-tile-empty: #f9a8d4;
 
   /* 方块颜色（粉色系渐变） */
   --theme-tile-2: #fce7f3;
