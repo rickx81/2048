@@ -72,7 +72,24 @@ onClickOutside(dropdownRef, () => {
 .theme-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--theme-bg-secondary);
+  border: none;
+  border-radius: 3px;
+  padding: 0.625rem 1rem;
+  color: var(--theme-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.theme-btn:hover {
+  opacity: 0.9;
+}
+
+.theme-btn:active {
+  opacity: 0.8;
 }
 
 .theme-dropdown {
@@ -80,8 +97,8 @@ onClickOutside(dropdownRef, () => {
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background-color: var(--theme-bg-secondary, #1e293b);
-  border: 1px solid var(--theme-border, #334155);
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 100;
@@ -98,21 +115,25 @@ onClickOutside(dropdownRef, () => {
   text-align: left;
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--theme-text-primary, #f1f5f9);
+  color: var(--theme-text-primary);
   transition: background-color 0.15s ease;
 }
 
 .theme-option:hover {
-  background-color: var(--theme-bg-primary, #0f172a);
+  background-color: var(--theme-bg-primary);
 }
 
 .theme-option.active {
   font-weight: 700;
-  color: var(--theme-text-secondary, #94a3b8);
+  color: var(--theme-text-secondary);
 }
 
 /* 移动端适配 */
 @media (max-width: 640px) {
+  .theme-btn {
+    padding: 0.625rem;
+  }
+
   .theme-option {
     padding: 1rem;
     min-height: 44px;
