@@ -7,6 +7,19 @@
     <title>Vite App</title>
   </head>
   <body>
+    <script>
+      (function() {
+        try {
+          const storedTheme = localStorage.getItem('2048-game-theme')
+          if (storedTheme && ['neon', 'sky', 'forest', 'sunset', 'sakura'].includes(storedTheme)) {
+            document.documentElement.dataset.theme = storedTheme
+          }
+        } catch (e) {
+          console.warn('Failed to read theme from localStorage:', e)
+          // 静默回退，使用默认主题
+        }
+      })()
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
