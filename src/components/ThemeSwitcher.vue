@@ -72,11 +72,12 @@ onClickOutside(dropdownRef, () => {
 .theme-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   background-color: var(--theme-bg-secondary);
   border: none;
   border-radius: 3px;
-  padding: 0.625rem 1rem;
+  padding: 0.25rem 0.75rem;
+  min-height: 53px;
   color: var(--theme-text-primary);
   font-size: 1rem;
   font-weight: 700;

@@ -15,6 +15,8 @@
         <span class="score-label">最高分</span>
         <span class="score-value">{{ store.highScore }}</span>
       </div>
+
+      <ThemeSwitcher />
     </div>
 
     <div class="controls-container">
@@ -31,8 +33,6 @@
         </svg>
         <span>撤销</span>
       </button>
-
-      <ThemeSwitcher />
 
       <button
         @click="handleNewGame"
@@ -100,6 +100,7 @@ function handleUndo() {
   display: flex;
   gap: 0.375rem;
   justify-content: flex-end;
+  align-items: center;
   margin-bottom: 1rem;
 }
 
