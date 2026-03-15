@@ -84,13 +84,13 @@ function handleUndo() {
 .title {
   font-size: 4rem;
   font-weight: 700;
-  color: #776e65;
+  color: var(--theme-text-primary);
   margin: 0;
   line-height: 1;
 }
 
 .subtitle {
-  color: #776e65;
+  color: var(--theme-text-secondary);
   font-size: 1rem;
   margin: 0.5rem 0 0 0;
   display: none; /* 经典版本不显示副标题 */
@@ -104,7 +104,7 @@ function handleUndo() {
 }
 
 .score-box {
-  background-color: #bbada0;
+  background-color: var(--theme-bg-secondary);
   border-radius: 3px;
   padding: 0.25rem 0.75rem;
   min-width: 70px;
@@ -114,7 +114,7 @@ function handleUndo() {
 
 .score-label {
   display: block;
-  color: #eee4da;
+  color: var(--theme-text-secondary);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -122,7 +122,7 @@ function handleUndo() {
 
 .score-value {
   display: block;
-  color: white;
+  color: var(--theme-text-primary);
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -160,11 +160,11 @@ function handleUndo() {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #8f7a66;
+  background-color: var(--theme-bg-secondary);
   border: none;
   border-radius: 3px;
   padding: 0.625rem 1rem;
-  color: white;
+  color: var(--theme-text-primary);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -172,11 +172,13 @@ function handleUndo() {
 }
 
 .control-btn:hover:not(.disabled) {
-  background-color: #9f8b77;
+  background-color: var(--theme-bg-secondary);
+  opacity: 0.9;
 }
 
 .control-btn:active:not(.disabled) {
-  background-color: #7f6a56;
+  background-color: var(--theme-bg-secondary);
+  opacity: 0.8;
 }
 
 .control-btn.disabled {
