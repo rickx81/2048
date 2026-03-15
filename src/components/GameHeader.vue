@@ -32,6 +32,8 @@
         <span>撤销</span>
       </button>
 
+      <ThemeSwitcher />
+
       <button
         @click="handleNewGame"
         class="control-btn new-game-btn"
@@ -51,6 +53,7 @@
 
 <script setup lang="ts">
 import { useGameStore } from '@/stores/game'
+import ThemeSwitcher from './ThemeSwitcher.vue'
 
 const store = useGameStore()
 
