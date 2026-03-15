@@ -23,6 +23,7 @@
         class="theme-option"
         :class="{ 'active': theme.id === currentThemeId }"
       >
+        <span class="theme-check" v-if="theme.id === currentThemeId">✓</span>
         {{ theme.displayName }}
       </button>
     </div>
@@ -115,7 +116,10 @@ onClickOutside(dropdownRef, () => {
 }
 
 .theme-option {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
   background: none;
@@ -133,6 +137,12 @@ onClickOutside(dropdownRef, () => {
 
 .theme-option.active {
   font-weight: 700;
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+}
+
+.theme-check {
+  font-weight: bold;
   color: var(--theme-text-secondary);
 }
 
