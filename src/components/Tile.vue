@@ -44,7 +44,7 @@ watch(() => props.value, (newValue, oldValue) => {
   previousValue.value = newValue
 })
 
-// 获取方块的样式（内联样式）
+// 获取方块的样式（使用 CSS 变量）
 function getTileStyle() {
   const baseStyle = {
     display: 'flex',
@@ -55,29 +55,14 @@ function getTileStyle() {
   if (props.value === 0) {
     return {
       ...baseStyle,
-      backgroundColor: '#cdc1b4', // 经典空格子颜色
+      backgroundColor: 'var(--theme-tile-empty)',
       borderRadius: '3px',
     }
   }
 
-  // 经典 2048 背景颜色映射
-  const backgroundColors: Record<number, string> = {
-    2: '#eee4da',
-    4: '#ede0c8',
-    8: '#f2b179',
-    16: '#f59563',
-    32: '#f67c5f',
-    64: '#f65e3b',
-    128: '#edcf72',
-    256: '#edcc61',
-    512: '#edc850',
-    1024: '#edc53f',
-    2048: '#edc22e',
-  }
-
   return {
     ...baseStyle,
-    backgroundColor: backgroundColors[props.value] || '#3c3a32',
+    backgroundColor: `var(--theme-tile-${props.value})`,
     borderRadius: '3px',
   }
 }
@@ -88,14 +73,12 @@ function getTextStyle() {
     return {}
   }
 
-  // 经典 2048 文本颜色映射（2 和 4 用深色文字，其他用白色）
   const darkTextNumbers = [2, 4]
   const useDarkText = darkTextNumbers.includes(props.value)
-
   const fontSize = getFontSize(props.value)
 
   return {
-    color: useDarkText ? '#776e65' : '#f9f6f2',
+    color: useDarkText ? 'var(--theme-text-secondary)' : 'var(--theme-text-primary)',
     fontSize,
     fontWeight: '700',
   }
