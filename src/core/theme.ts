@@ -157,7 +157,7 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
    */
   neon: {
     id: 'neon',
-    displayName: '霓虹暗色',
+    displayName: '经典主题',
     colors: {
       bgPrimary: '#0f172a',
       bgSecondary: '#1e293b',
