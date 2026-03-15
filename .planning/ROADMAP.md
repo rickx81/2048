@@ -12,11 +12,11 @@
 | 阶段 | 计划完成 | 状态 | 完成日期 |
 |------|---------|------|----------|
 | 4. 主题基础设施 | 3/3 | Complete | 2026-03-14 |
-| 5. 主题集成 | 1/2 | Complete    | 2026-03-15 |
-| 6. 性能优化 | 0/2 | 未开始 | - |
+| 5. 主题集成 | 2/2 | Complete | 2026-03-15 |
+| 6. 性能优化 | 2/2 | 规划完成 | 2026-03-16 |
 | 7. 性能验证 | 0/1 | 未开始 | - |
 
-**总体进度：** 3/8 计划 (38%)
+**总体进度：** 5/8 计划 (62%)
 
 ---
 
@@ -63,8 +63,8 @@
 3. 主题切换在所有浏览器中一致工作
 
 **计划：**
-- [ ] 05-01-PLAN.md — 创建主题切换器组件并实现 localStorage 持久化（THEME-03, THEME-05）
-- [ ] 05-02-PLAN.md — 迁移 UI 组件使用 CSS 变量（Tile.vue, GameHeader.vue, App.vue）（THEME-03, THEME-05）
+- [x] 05-01-PLAN.md — 创建主题切换器组件并实现 localStorage 持久化（THEME-03, THEME-05）✓
+- [x] 05-02-PLAN.md — 迁移 UI 组件使用 CSS 变量（Tile.vue, GameHeader.vue, App.vue）（THEME-03, THEME-05）✓
 
 ### Phase 6: 性能优化
 
@@ -80,7 +80,8 @@
 3. 动画元素使用 will-change 提示（仅动画期间）
 
 **计划：**
-- TBD
+- [ ] 06-01-PLAN.md — 录制性能基线并审查现有动画实现（PERF-01, PERF-02）
+- [ ] 06-02-PLAN.md — 优化动画实现，使用 GPU 加速和动态 will-change 管理（PERF-01, PERF-02）
 
 ### Phase 7: 性能验证
 
@@ -125,8 +126,8 @@ Phase 7 (性能验证)
 | THEME-01 | Phase 4 | ✓ 完成 |
 | THEME-02 | Phase 4 | ✓ 完成 |
 | THEME-04 | Phase 4 | ✓ 完成 |
-| THEME-03 | Phase 5 | Pending |
-| THEME-05 | Phase 5 | Pending |
+| THEME-03 | Phase 5 | ✓ 完成 |
+| THEME-05 | Phase 5 | ✓ 完成 |
 | PERF-01 | Phase 6 | Pending |
 | PERF-02 | Phase 6 | Pending |
 | PERF-03 | Phase 7 | Pending |
@@ -141,7 +142,10 @@ Phase 7 (性能验证)
 ## 里程碑目标
 
 **v1.1 发布标准：**
-- [ ] 所有 4 个阶段完成
+- [x] Phase 4 完成（主题基础设施）
+- [x] Phase 5 完成（主题集成）
+- [ ] Phase 6 完成（性能优化）
+- [ ] Phase 7 完成（性能验证）
 - [ ] 5 个主题全部实现且视觉一致
 - [ ] 性能优化验证通过（60fps）
 - [ ] 跨浏览器测试通过
@@ -151,4 +155,4 @@ Phase 7 (性能验证)
 ---
 
 **路线图创建：** 2026-03-14
-**最后更新：** 2026-03-15 Phase 5 计划创建（2/2 计划）
+**最后更新：** 2026-03-16 Phase 6 计划创建（2/2 计划）
