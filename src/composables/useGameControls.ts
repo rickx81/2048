@@ -1,11 +1,11 @@
-import { onMounted, onUnmounted, type Ref } from 'vue'
+import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 import { useSwipe } from '@vueuse/core'
 import { useGameStore } from '@/stores/game'
 import type { Direction } from '@/core/types'
 
 /**
  * 游戏控制 composable
- * 提供键盘方向键和触摸滑动控制
+ * 提供键盘方向键、触摸滑动和鼠标拖拽控制
  */
 export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
   const store = useGameStore()
@@ -39,14 +39,64 @@ export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
     }
   }
 
-  // ===== 触摸控制 =====
-  // 滑动阈值（Claude's Discretion）
-  // 50px 是一个合理的阈值：
-  // - 太小（<30px）：容易误触，普通点击也会触发
-  // - 太大（>80px）：需要滑动很长距离，体验差
-  // 50px 在两者之间平衡，既避免误触又保持灵敏度
+  // ===== 鼠标拖拽控制 =====
+  const isDragging = ref(false)
+  const startX = ref(0)
+  const startY = ref(0)
+
+  // 滑动阈值（像素）
   const SWIPE_THRESHOLD = 50
 
+  function handleMouseDown(event: MouseEvent) {
+    if (store.status !== 'playing') return
+    isDragging.value = true
+    startX.value = event.clientX
+    startY.value = event.clientY
+  }
+
+  function handleMouseMove(event: MouseEvent) {
+    if (!isDragging.value) return
+    // 防止拖拽时选中文本
+    event.preventDefault()
+  }
+
+  function handleMouseUp(event: MouseEvent) {
+    if (!isDragging.value) return
+
+    const endX = event.clientX
+    const endY = event.clientY
+    const deltaX = endX - startX.value
+    const deltaY = endY - startY.value
+
+    const absX = Math.abs(deltaX)
+    const absY = Math.abs(deltaY)
+
+    // 只有滑动距离超过阈值才触发移动
+    if (absX > SWIPE_THRESHOLD || absY > SWIPE_THRESHOLD) {
+      let direction: Direction | null = null
+
+      // 判断主体方向（水平或垂直）
+      if (absX > absY) {
+        // 水平方向占主导
+        direction = deltaX > 0 ? 'RIGHT' : 'LEFT'
+      } else {
+        // 垂直方向占主导
+        direction = deltaY > 0 ? 'DOWN' : 'UP'
+      }
+
+      if (direction && store.status === 'playing') {
+        store.moveGrid(direction)
+      }
+    }
+
+    isDragging.value = false
+  }
+
+  function handleMouseLeave() {
+    isDragging.value = false
+  }
+
+  // ===== 触摸控制 =====
   const { lengthX, lengthY } = useSwipe(targetRef, {
     threshold: SWIPE_THRESHOLD,
     passive: false,
@@ -85,11 +135,29 @@ export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
   onMounted(() => {
     // 添加键盘事件监听
     window.addEventListener('keydown', handleKeydown)
+
+    // 添加鼠标拖拽事件监听
+    const target = targetRef.value
+    if (target) {
+      target.addEventListener('mousedown', handleMouseDown)
+      window.addEventListener('mousemove', handleMouseMove)
+      window.addEventListener('mouseup', handleMouseUp)
+      target.addEventListener('mouseleave', handleMouseLeave)
+    }
   })
 
   onUnmounted(() => {
     // 移除键盘事件监听
     window.removeEventListener('keydown', handleKeydown)
+
+    // 移除鼠标拖拽事件监听
+    const target = targetRef.value
+    if (target) {
+      target.removeEventListener('mousedown', handleMouseDown)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+      target.removeEventListener('mouseleave', handleMouseLeave)
+    }
   })
 
   return {
