@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-03-15T17:19:54.310Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-03-15T17:22:26.322Z"
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # 2048 游戏项目状态
@@ -27,20 +27,20 @@ progress:
 ## 当前位置
 
 **当前阶段：** Phase 6 - 性能优化
-**当前计划：** 06-01, 06-02 - 已创建
-**状态：** 性能优化计划已创建，准备开始执行
+**当前计划：** 06-02 - 已完成
+**状态：** GPU 加速动画优化完成，等待用户验证
 
 **阶段进度：**
 ```
 Phase 4: [██████████] 3/3 计划 - 主题基础设施 ✓
 Phase 5: [██████████] 2/2 计划 - 主题集成 ✓
-Phase 6: [████░░░░░░] 2/2 计划 - 性能优化（规划完成）
+Phase 6: [████████░░] 2/2 计划 - 性能优化（代码完成）
 Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 
-总体进度: [███████░░░] 5/7 计划 (71%)
+总体进度: [███████░░░] 6/7 计划 (86%)
 ```
 
-**下一个动作：** 执行 `/gsd:execute-phase 06-性能优化`
+**下一个动作：** 用户在本地验证性能优化效果（Chrome DevTools），然后执行 Phase 7
 
 ---
 
@@ -67,14 +67,14 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | 04 | 03 | 1min | 1 | 1 | 2026-03-14 |
 | 05 | 01 | 1min | 4 | 4 | 2026-03-15 |
 | 05 | 02 | 2min | 4 | 4 | 2026-03-15 |
-| 06 | 01 | - | 2 | 1 | 2026-03-16（规划） |
-| 06 | 02 | - | 3 | 2 | 2026-03-16（规划） |
-| Phase 06 P01 | 10min | 2 tasks | 1 files |
+| 06 | 01 | 10min | 2 | 1 | 2026-03-16 |
+| 06 | 02 | 1min | 3 | 2 | 2026-03-16 |
+| Phase 06 P02 | 59 | 3 tasks | 3 files |
 
 ### Session Info
 
-**Last Session:** 2026-03-15T17:19:54.306Z
-**Stopped At:** Completed 06-01-PLAN.md
+**Last Session:** 2026-03-15T17:22:26.318Z
+**Stopped At:** Completed 06-02-PLAN.md
 
 ---
 
@@ -119,18 +119,20 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 | useTheme Composable | 统一访问接口，代码复用 | ✓ 采用 |
 | GPU 加速动画（transform/opacity） | 不触发布局重排，60fps 保证 | ✓ 采用 |
 | 动态 will-change 管理 | 避免内存泄漏，仅动画期间启用 | ✓ 采用 |
+| translate3d 强制 GPU 层 | 启用硬件加速，确保 60fps | ✓ 采用 |
+| cubic-bezier 缓动函数 | 浏览器原生优化，性能更佳 | ✓ 采用 |
 | VueUse useStorage 持久化 | 自动同步、类型安全、错误处理 | ✓ 采用 |
 | 内联脚本防止 FOUC | 应用加载前读取 localStorage，避免闪烁 | ✓ 采用 |
 | 自定义下拉菜单 | 更好的样式控制和响应式设计 | ✓ 采用 |
 
 ### 待办事项
 
-**Phase 6 准备（性能优化）：**
-- [ ] Chrome DevTools Performance 录制基线 (06-01)
-- [ ] 审查现有动画实现（Tile.vue, GameBoard.vue, App.vue）(06-01)
-- [ ] 确保所有动画使用 transform/opacity (06-02)
-- [ ] 添加动态 will-change 管理（仅动画期间）(06-02)
-- [ ] 验证 60fps 稳定性 (06-02)
+**Phase 6 完成项（性能优化）：**
+- [x] Chrome DevTools Performance 录制基线 (06-01)
+- [x] 审查现有动画实现（Tile.vue, GameBoard.vue, App.vue）(06-01)
+- [x] 确保所有动画使用 transform/opacity (06-02)
+- [x] 添加动态 will-change 管理（仅动画期间）(06-02)
+- [ ] 验证 60fps 稳定性（用户本地验证）(06-02)
 
 **Phase 7 准备（性能验证）：**
 - [ ] 性能对比测试（优化前 vs 优化后）
@@ -213,9 +215,11 @@ Phase 7: [░░░░░░░░░░] 0/1 计划 - 性能验证
 - **主题命名重构**：将经典主题 ID 从 `neon` 重命名为 `classic`，更符合实际语义
 - **Vue 组件语法修复**：修复 GameBoard、GameHeader、Tile 组件的 `</script setup>` 结束标签错误
 - **鼠标拖拽控制**：新增鼠标拖拽支持，完善桌面端用户体验（与键盘、触摸并存）
+- **GPU 加速动画优化**：使用 translate3d 强制 GPU 层，优化缓动函数为 cubic-bezier
+- **动态 will-change 管理**：移除硬编码 will-change，实现动画期间动态添加/移除
 
 ### 下一步
-执行 Phase 6：性能优化（GPU 加速动画）
+用户在本地验证性能优化效果（Chrome DevTools），然后执行 Phase 7：性能验证
 
 ### 上下文转移
 **v1.0 成果：** 3 个阶段，12 个计划，111 个测试全部通过。游戏功能完整：核心逻辑、撤销、持久化、网格、头部、控制、覆盖层。
