@@ -322,7 +322,15 @@ describe('useGameStore', () => {
 
     it('撤销后 undoCount 应该增加', () => {
       const store = useGameStore();
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       const initialUndoCount = store.undoCount;
 
@@ -354,10 +362,17 @@ describe('useGameStore', () => {
     it('游戏结束后不能撤销（status = LOST）', () => {
       const store = useGameStore();
       store.reset(); // 重置以确保干净的状态
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       // 进行一次移动
-      const initialGrid = JSON.parse(JSON.stringify(store.grid));
       store.moveGrid('LEFT');
       const movedGrid = JSON.parse(JSON.stringify(store.grid));
 
@@ -369,7 +384,6 @@ describe('useGameStore', () => {
 
       // 网格不应该恢复（应该保持移动后的状态）
       expect(store.grid).toEqual(movedGrid);
-      expect(store.grid).not.toEqual(initialGrid);
     });
 
     it('没有历史记录时不能撤销', () => {
@@ -571,10 +585,15 @@ describe('useGameStore', () => {
 
     it('每次移动后应该自动保存游戏状态', () => {
       const store = useGameStore();
-      store.initialize();
-
-      const initialGrid = store.grid;
-      const initialScore = store.score;
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       // 进行移动
       store.moveGrid('LEFT');
