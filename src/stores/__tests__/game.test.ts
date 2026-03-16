@@ -234,7 +234,6 @@ describe('useGameStore', () => {
         [0, 0, 0, 0]
       ];
       store.status = GameStatus.PLAYING;
-      const initialGrid = store.grid;
       const initialScore = store.score;
       const initialHistoryLength = store.history.length;
 
