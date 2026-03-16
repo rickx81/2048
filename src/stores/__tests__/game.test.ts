@@ -271,7 +271,15 @@ describe('useGameStore', () => {
     it('撤销后应该恢复到移动前的网格状态', () => {
       const store = useGameStore();
       store.reset(); // 重置以确保干净的状态
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       // 记录初始网格（深拷贝）
       const initialGrid = JSON.parse(JSON.stringify(store.grid));
@@ -509,47 +517,29 @@ describe('useGameStore', () => {
       store.reset(); // 重置以确保干净的状态
       store.score = 1000;
 
-      // 创建一个填满且无法合并的网格
-      // 使用不连续的数字避免合并
+      // 使用我们确定的游戏结束场景
       store.grid = [
-        [2, 4, 8, 16],
-        [32, 64, 128, 256],
-        [512, 1024, 2048, 4096],
-        [8192, 16384, 32768, 65536]
+        [2, 4, 8, 4],
+        [4, 8, 2, 8],
+        [8, 2, 4, 16],
+        [0, 4, 32, 8]
       ];
       store.status = GameStatus.PLAYING;
 
-      // 设置为 LOST 状态来模拟游戏结束
-      // 注意：由于这个网格已经填满且无法合并，isGameOver 会返回 true
-      // 但我们需要通过移动来触发游戏结束检测
-      // 由于移动不会改变这个网格（无法移动），状态不会改变
-      // 所以我们需要手动模拟这个过程
+      // 进行移动，会触发游戏结束并保存分数
+      store.moveGrid('LEFT');
 
-      // 让我们使用一个会触发游戏结束的场景
-      // 创建一个接近游戏结束的网格
-      store.grid = [
-        [2, 4, 8, 16],
-        [32, 64, 128, 256],
-        [512, 1024, 2048, 0],
-        [4096, 8192, 16384, 0]
-      ];
+      // 验证游戏结束状态
+      expect(store.status).toBe(GameStatus.LOST);
 
-      // 进行移动（会生成新数字并可能导致游戏结束）
-      store.moveGrid('RIGHT');
-
-      // 如果游戏结束了，应该保存到排行榜
-      if (store.status === GameStatus.LOST) {
-        const leaderboardData = localStorage.getItem('__GAME_2048_LEADERBOARD__');
-        expect(leaderboardData).not.toBeNull();
-        const leaderboard = JSON.parse(leaderboardData!);
-        expect(leaderboard.length).toBeGreaterThan(0);
-        // 验证最后一个条目是当前的分数
-        expect(leaderboard[leaderboard.length - 1].score).toBe(1000);
-      } else {
-        // 如果游戏没有结束，我们手动调用保存函数来测试
-        store.status = GameStatus.LOST;
-        store.moveGrid('LEFT'); // 这不会真正移动，但会触发保存
-      }
+      // 验证分数已保存到排行榜
+      const leaderboardData = localStorage.getItem('__GAME_2048_LEADERBOARD__');
+      expect(leaderboardData).not.toBeNull();
+      const leaderboard = JSON.parse(leaderboardData!);
+      expect(leaderboard.length).toBeGreaterThan(0);
+      // 验证包含当前的分数
+      const savedScore = leaderboard.some((entry: { score: number }) => entry.score === 1000);
+      expect(savedScore).toBe(true);
     });
 
     it('游戏胜利时应该自动保存分数到排行榜', () => {
