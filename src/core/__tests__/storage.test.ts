@@ -3,7 +3,7 @@
  * 测试 localStorage 封装功能，包括最高分、排行榜和游戏状态管理
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   saveHighScore,
   loadHighScore,
@@ -14,7 +14,7 @@ import {
   loadGameState,
   type LeaderboardEntry
 } from '../storage';
-import type { GameState } from '../types';
+import { GameStatus, type GameState } from '../types';
 
 // 模拟 localStorage
 const localStorageMock = (() => {
@@ -100,8 +100,8 @@ describe('storage - 本地存储工具', () => {
       const leaderboard = loadLeaderboard();
       expect(leaderboard).toHaveLength(10);
       // 应该只保留前 10 名（分数最高的）
-      expect(leaderboard[0].score).toBe(1100);
-      expect(leaderboard[9].score).toBe(200);
+      expect(leaderboard[0]?.score).toBe(1100);
+      expect(leaderboard[9]?.score).toBe(200);
     });
 
     it('应该按分数降序排序', () => {
@@ -110,9 +110,9 @@ describe('storage - 本地存储工具', () => {
       addLeaderboardEntry(200);
 
       const leaderboard = loadLeaderboard();
-      expect(leaderboard[0].score).toBe(300);
-      expect(leaderboard[1].score).toBe(200);
-      expect(leaderboard[2].score).toBe(100);
+      expect(leaderboard[0]?.score).toBe(300);
+      expect(leaderboard[1]?.score).toBe(200);
+      expect(leaderboard[2]?.score).toBe(100);
     });
 
     it('同分时新记录应该排在前面（更大的 timestamp）', () => {
@@ -126,10 +126,28 @@ describe('storage - 本地存储工具', () => {
 
       const leaderboard = loadLeaderboard();
       expect(leaderboard).toHaveLength(2);
-      expect(leaderboard[0].score).toBe(100);
-      expect(leaderboard[1].score).toBe(100);
-      // 新记录的 timestamp 应该更大
-      expect(leaderboard[0].timestamp).toBeGreaterThan(leaderboard[1].timestamp);
+
+      // 获取条目并验证存在性
+      const firstEntry = leaderboard[0];
+      const secondEntry = leaderboard[1];
+
+      expect(firstEntry).toBeDefined();
+      expect(secondEntry).toBeDefined();
+
+      // 验证分数
+      expect(firstEntry?.score).toBe(100);
+      expect(secondEntry?.score).toBe(100);
+
+      // 获取 timestamp 值（前面已验证条目存在）
+      const firstTimestamp = firstEntry?.timestamp ?? 0;
+      const secondTimestamp = secondEntry?.timestamp ?? 0;
+
+      // 验证 timestamp 已定义
+      expect(firstTimestamp).toBeGreaterThan(0);
+      expect(secondTimestamp).toBeGreaterThan(0);
+
+      // 验证新记录的 timestamp 更大
+      expect(firstTimestamp).toBeGreaterThan(secondTimestamp);
     });
   });
 
@@ -142,7 +160,7 @@ describe('storage - 本地存储工具', () => {
         [0, 0, 0, 0]
       ],
       score: 100,
-      status: 'playing' as any
+      status: GameStatus.PLAYING
     };
 
     it('应该能保存和加载完整的游戏状态', () => {
@@ -154,12 +172,12 @@ describe('storage - 本地存储工具', () => {
       const state1: GameState = {
         grid: [[2, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
         score: 100,
-        status: 'playing' as any
+        status: GameStatus.PLAYING
       };
       const state2: GameState = {
         grid: [[4, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
         score: 200,
-        status: 'playing' as any
+        status: GameStatus.PLAYING
       };
 
       saveGameState(state1);

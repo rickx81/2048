@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
-import { useGameStore } from '@/stores/game';
+import { useGameStore } from '../game';
 import { GameStatus } from '@/core/types';
 import { createEmptyGrid } from '@/core/utils';
 
@@ -84,7 +84,14 @@ describe('useGameStore', () => {
 
     it('moveGrid 应该调用核心 move 函数', () => {
       const store = useGameStore();
-      store.initialize();
+      // 使用确定的网格
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.status = GameStatus.PLAYING;
 
       const initialGrid = store.grid;
       store.moveGrid('LEFT');
@@ -165,21 +172,23 @@ describe('useGameStore', () => {
 
     it('游戏结束时 status 应该变为 GameStatus.LOST', () => {
       const store = useGameStore();
-      // 创建一个即将游戏结束的网格
+      // 创建一个有 1 个空位的网格，移动后会填满且无法继续
       store.grid = [
-        [2, 4, 8, 16],
-        [32, 64, 128, 256],
-        [512, 1024, 2048, 4096],
-        [8192, 16384, 32768, 65536]
+        [2, 4, 8, 4],
+        [4, 8, 2, 8],
+        [8, 2, 4, 16],
+        [0, 4, 32, 8]
       ];
       store.status = GameStatus.PLAYING;
 
-      // 这个网格已经游戏结束，移动不应该改变状态
+      // 先验证移动前游戏未结束（因为有空位）
+      expect(store.isGameOver).toBe(false);
+
+      // 向左移动：最后一行 [0,4,32,8] → [4,32,8,0] → 生成新数字填入 → 网格填满且无法合并
       store.moveGrid('LEFT');
 
-      // 如果没有有效移动，状态应该保持 PLAYING
-      // 但如果移动后导致游戏结束，状态应该变为 LOST
-      // 这里我们需要确保游戏结束检测正确
+      // 验证状态变为 LOST
+      expect(store.status).toBe(GameStatus.LOST);
     });
 
     it('游戏胜利时 status 应该变为 GameStatus.WON', () => {
@@ -264,12 +273,12 @@ describe('useGameStore', () => {
       store.reset(); // 重置以确保干净的状态
       store.initialize();
 
-      // 记录初始网格
-      const initialGrid = store.grid;
+      // 记录初始网格（深拷贝）
+      const initialGrid = JSON.parse(JSON.stringify(store.grid));
 
       // 进行一次移动
       store.moveGrid('LEFT');
-      const movedGrid = store.grid;
+      const movedGrid = JSON.parse(JSON.stringify(store.grid));
 
       // 撤销移动
       store.undo();
@@ -340,8 +349,9 @@ describe('useGameStore', () => {
       store.initialize();
 
       // 进行一次移动
-      const initialGrid = store.grid;
+      const initialGrid = JSON.parse(JSON.stringify(store.grid));
       store.moveGrid('LEFT');
+      const movedGrid = JSON.parse(JSON.stringify(store.grid));
 
       // 设置游戏结束状态
       store.status = GameStatus.LOST;
@@ -349,7 +359,8 @@ describe('useGameStore', () => {
       // 尝试撤销
       store.undo();
 
-      // 网格不应该恢复
+      // 网格不应该恢复（应该保持移动后的状态）
+      expect(store.grid).toEqual(movedGrid);
       expect(store.grid).not.toEqual(initialGrid);
     });
 
@@ -369,7 +380,15 @@ describe('useGameStore', () => {
 
     it('canUndo 计算属性应该正确反映是否可撤销', () => {
       const store = useGameStore();
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       // 初始状态有历史但可能还没移动
       // 让我们先移动一次
@@ -389,17 +408,33 @@ describe('useGameStore', () => {
 
       // 重置游戏后应该可以撤销
       store.reset(); // 使用 reset 而不是 initialize 以避免加载持久化数据
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 2, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
       store.moveGrid('LEFT');
       expect(store.canUndo).toBe(true);
     });
 
     it('新游戏时应该重置撤销次数', () => {
       const store = useGameStore();
-      store.initialize();
+      // 使用确定的网格而不是随机初始化
+      store.grid = [
+        [2, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      store.score = 0;
+      store.status = GameStatus.PLAYING;
 
       // 进行一次移动和撤销
-      store.moveGrid('LEFT');
+      store.moveGrid('RIGHT'); // 向右移动会有有效移动
       store.undo();
 
       // undoCount 应该大于 0
