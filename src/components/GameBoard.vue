@@ -33,7 +33,7 @@ const tiles = computed(() => {
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
       result.push({
-        value: store.grid[row][col],
+        value: store.grid[row]?.[col] ?? 0,
         row,
         col,
         id: `tile-${row}-${col}` // 唯一标识，用于 Vue key
