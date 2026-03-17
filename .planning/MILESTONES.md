@@ -1,5 +1,23 @@
 # Milestones
 
+## v1.1 主题与性能 (Shipped: 2026-03-17)
+
+**Phases completed:** 4 phases, 8 plans, 0 tasks
+
+**Key accomplishments:**
+- 实现完整的主题系统（5 个预设主题：经典主题、天空蓝、森林绿、日落橙、樱花粉）
+- 主题基础设施：CSS 变量系统、Pinia Theme Store、useTheme Composable
+- 主题集成：ThemeSwitcher 组件、localStorage 持久化、FOUC 防止机制
+- 性能优化：GPU 加速动画（translate3d）、动态 will-change 管理、cubic-bezier 缓动函数
+- 性能验证通过：Chrome DevTools Performance Trace 显示平均帧时间 0.18ms（理论 FPS 5695）
+- Lighthouse 评分：生产环境 100/100（完美评分）
+
+**Timeline:** 4 天 (2026-03-14 → 2026-03-17)
+**Git commits:** 81
+**Lines of code:** ~5,310 (TypeScript/Vue)
+
+---
+
 ## v1.0 可玩原型 (Shipped: 2026-03-13)
 
 **Phases completed:** 3 phases, 12 plans
