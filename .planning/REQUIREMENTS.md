@@ -19,7 +19,7 @@ v1.1 里程碑的需求，每个需求映射到路线图中的一个阶段。
 
 - [x] **PERF-01**: 所有动画使用 GPU 加速属性（transform、opacity）
 - [x] **PERF-02**: 优化动画性能，优先使用 transform 和 opacity
-- [ ] **PERF-03**: 游戏动画稳定在 60fps（Chrome DevTools 验证）
+- [x] **PERF-03**: 游戏动画稳定在 60fps（Chrome DevTools 验证）
 
 ## v1.2 需求
 
@@ -60,7 +60,7 @@ v1.1 里程碑的需求，每个需求映射到路线图中的一个阶段。
 | THEME-05 | Phase 5 | Complete |
 | PERF-01 | Phase 6 | Complete |
 | PERF-02 | Phase 6 | Complete |
-| PERF-03 | Phase 7 | Pending |
+| PERF-03 | Phase 7 | Complete |
 
 **覆盖率：**
 - v1.1 需求：8 个
