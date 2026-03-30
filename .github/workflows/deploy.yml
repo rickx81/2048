@@ -26,23 +26,28 @@ jobs:
       - name: Checkout 代码
         uses: actions/checkout@v4
 
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 安装依赖
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 类型检查
-        run: npm run type-check
+        run: pnpm run type-check
 
       - name: 运行单元测试
-        run: npm run test:unit -- --run
+        run: pnpm run test:unit -- --run
 
       - name: 构建项目
-        run: npm run build
+        run: pnpm run build
 
       - name: 上传构建产物
         uses: actions/upload-pages-artifact@v3
