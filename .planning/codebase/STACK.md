@@ -5,7 +5,7 @@
 ## Languages
 
 **Primary:**
-- TypeScript 6.0.2 - 全局语言，包括 Vue 组件、工具函数和测试
+- TypeScript 5.9.3 - 全局语言，包括 Vue 组件、工具函数和测试
 - 开启了 `noUncheckedIndexedAccess` 严格类型检查
 
 **Secondary:**
@@ -34,7 +34,7 @@
 
 **Build/Dev:**
 - Vite 8.0.3 - 构建工具和开发服务器 (Rolldown 集成)
-- TypeScript 6.0.2 - 类型检查
+- TypeScript 5.9.3 - 类型检查
 - vue-tsc 3.2.6 - Vue 特定的 TypeScript 编译器
 
 ## Key Dependencies
