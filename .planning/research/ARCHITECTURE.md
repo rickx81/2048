@@ -1,611 +1,667 @@
-# 架构集成方案：主题系统与动画优化
+# 架构集成研究：音效、E2E 测试与构建优化
 
-**项目:** 2048 游戏 v1.1
-**研究日期:** 2026-03-13
-**整体信心度:** HIGH
+**项目：** 2048 游戏 - Vue 3 版
+**研究日期：** 2026-03-30
+**研究模式：** 生态系统研究（集成架构）
+**整体信心：** HIGH
 
 ## 执行摘要
 
-主题系统和动画优化可以无缝集成到现有 Functional Core, Imperative Shell 架构中。主题系统纯粹是 UI 层关注点，与游戏核心逻辑完全解耦。建议采用独立的主题 store + composable 模式，保持与现有架构的一致性。
+**研究背景：**
+为现有 2048 Vue 3 游戏添加音效系统、E2E 测试覆盖和构建优化。项目采用 Functional Core, Imperative Shell 架构模式，核心逻辑已实现 100% 测试覆盖（单元测试）。
 
 **关键发现：**
-- 主题状态管理：新增独立 Pinia store（不扩展现有 game store）
-- 数据流向：Theme Store → Composable → 组件 → 内联样式
-- 组件修改范围：最小化（仅修改 GameHeader 和 Tile）
-- 测试策略：主题系统为 UI 关注点，使用组件测试覆盖
-- 构建顺序：先主题系统，后动画优化（降低复杂度）
+1. **音效系统：** 需新增 `src/composables/useAudio.ts` 和 `src/stores/audio.ts`，与现有架构完美集成
+2. **E2E 测试：** Playwright 已配置，但测试文件为模板，需要编写实际游戏流程测试
+3. **构建优化：** Vite 已使用 Rollup，可添加 bundle 分析工具和代码分割策略
+
+**架构集成建议：**
+- 遵循现有分层架构（Core → Stores → Composables → Components）
+- 音效作为副作用层（Side Effect Layer），不污染核心逻辑
+- E2E 测试覆盖用户交互层，与单元测试形成测试金字塔
+- 构建优化在 Vite 配置层实现，对代码零侵入
 
 ## 现有架构分析
 
-### 当前组件结构
+### 架构模式：Functional Core, Imperative Shell
 
-```
-App.vue (全局动画定义)
-├── GameContainer.vue
-    ├── GameHeader.vue (控制按钮、分数显示)
-    ├── GameBoard.vue (4x4 网格布局)
-    │   └── Tile.vue (单个方块，内联样式)
-    ├── GameWonOverlay.vue
-    └── GameOverOverlay.vue
-```
-
-### 现有状态管理
-
-**单一 Store (`src/stores/game.ts`):**
-- 游戏核心状态：grid, score, status, history
-- 持久化：highScore, leaderboard, gameState
-- 计算属性：isGameOver, isGameWon, canUndo
-- 操作：initialize(), moveGrid(), reset(), undo()
-
-**设计原则：**
-- 核心逻辑纯函数（`src/core/game.ts`, `src/core/utils.ts`）
-- UI 状态响应式（Pinia store）
-- 100% 测试覆盖（核心逻辑）
-
-### 现有样式处理
-
-**Tile.vue 内联样式方案：**
-```typescript
-// 当前实现：硬编码颜色映射
-const backgroundColors: Record<number, string> = {
-  2: '#eee4da', 4: '#ede0c8', 8: '#f2b179', ...
-}
-```
-
-**原因：** Tailwind v4 兼容性问题，改用内联样式（PROJECT.md 决策记录）
-
-**全局动画 (App.vue):**
-- `pop-in`: 新方块弹跳
-- `pulse-merge`: 合并脉冲
-- `tile-move`: 移动过渡（已使用 transform）
-
-## 推荐架构方案
-
-### 1. 主题系统架构
-
-#### 状态管理：独立 Theme Store
-
-**新增文件：`src/stores/theme.ts`**
-
-```typescript
-interface ThemeConfig {
-  id: string
-  name: string
-  colors: {
-    background: string      // App.vue 背景
-    grid: string            // GameBoard 网格背景
-    empty: string           // 空格子颜色
-    tile: Record<number, string>  // 方块颜色映射
-    text: {
-      light: string         // 小数字文字颜色
-      dark: string          // 大数字文字颜色
-    }
-    button: string          // 按钮背景
-    buttonHover: string     // 按钮悬停
-  }
-}
-
-// 5 个预设主题
-const THEMES: Record<string, ThemeConfig> = {
-  classic: { ... },    // 现有经典配色
-  neon: { ... },       // 霓虹暗色
-  sky: { ... },        // 天空蓝
-  forest: { ... },     // 森林绿
-  sunset: { ... },     // 日落橙
-  sakura: { ... }      // 樱花粉
-}
-```
-
-**为什么独立 store？**
-- ✅ 职责分离：主题关注点 ≠ 游戏逻辑
-- ✅ 可测试性：独立测试主题切换逻辑
-- ✅ 可扩展性：未来可添加主题编辑器
-- ✅ 符合现有模式：composable + store 组合
-
-#### 持久化集成
-
-**扩展现有 `src/core/storage.ts`:**
-
-```typescript
-// 新增常量
-const THEME_KEY = `${STORAGE_KEY_PREFIX}THEME__`
-
-// 新增函数
-export function saveTheme(themeId: string): void
-export function loadTheme(): string  // 默认返回 'classic'
-```
-
-**集成点：**
-- Theme Store 初始化时调用 `loadTheme()`
-- 切换主题时调用 `saveTheme()`
-- 与现有持久化模式一致
-
-#### Composable 封装
-
-**新增文件：`src/composables/useTheme.ts`**
-
-```typescript
-export function useTheme() {
-  const themeStore = useThemeStore()
-
-  return {
-    currentTheme: computed(() => themeStore.current),
-    themeConfig: computed(() => themeStore.config),
-    setTheme: (id: string) => themeStore.setTheme(id),
-    availableThemes: computed(() => themeStore.available)
-  }
-}
-```
-
-**好处：**
-- 统一访问接口
-- 便于测试（mock composable）
-- 符合现有 `useGameControls` 模式
-
-### 2. 数据流向设计
-
-```
-Theme Store (Pinia)
-    ↓
-useTheme() Composable
-    ↓
-GameHeader.vue (主题切换器)
-    ↓ (provide/inject 或全局)
-Tile.vue (应用主题颜色)
-```
-
-**实现方式：**
-
-**选项 A：Composable 直接注入（推荐）**
-```typescript
-// Tile.vue
-import { useTheme } from '@/composables/useTheme'
-
-const { themeConfig } = useTheme()
-
-function getTileStyle() {
-  // 使用 themeConfig.value.colors.tile[props.value]
-}
-```
-
-**为什么选 A？**
-- ✅ 简单直接，不需要 props drilling
-- ✅ 符合现有 `useGameStore` 模式
-- ✅ 性能好（computed 自动缓存）
-
-**选项 B：Props 传递**
-- ❌ 需要修改 GameBoard、GameContainer
-- ❌ Props drilling 复杂度高
-
-**选项 C：Provide/Inject**
-- ⚠️ 过度设计，当前不需要
-
-### 3. 组件修改范围
-
-#### 需要修改的组件
-
-| 组件 | 修改内容 | 复杂度 |
-|------|---------|-------|
-| **GameHeader.vue** | 添加主题切换器按钮 | 低 |
-| **Tile.vue** | 从主题 store 读取颜色配置 | 低 |
-
-#### 需要新增的组件
-
-| 组件 | 职责 | 复杂度 |
-|------|------|-------|
-| **ThemeSwitcher.vue** | 主题选择下拉菜单/按钮组 | 中 |
-
-#### 不需要修改的组件
-
-- ✅ GameBoard.vue（只负责布局）
-- ✅ GameContainer.vue（容器组件）
-- ✅ GameWonOverlay.vue（使用主题色）
-- ✅ GameOverOverlay.vue（使用主题色）
-- ✅ App.vue（全局样式，可能需要 CSS 变量）
-
-### 4. 与现有内联样式系统的兼容
-
-**当前方案：**
-```typescript
-// Tile.vue 硬编码
-const backgroundColors: Record<number, string> = {
-  2: '#eee4da', ...
-}
-```
-
-**新方案：**
-```typescript
-// Tile.vue 动态化
-const { themeConfig } = useTheme()
-
-function getTileStyle() {
-  const colors = themeConfig.value.colors
-  return {
-    backgroundColor: colors.tile[props.value] || colors.tile.default,
-    // ... 其他样式
-  }
-}
-```
-
-**兼容性保证：**
-- ✅ 内联样式机制不变
-- ✅ 颜色值从硬编码改为动态
-- ✅ 渐进迁移：先实现主题系统，后动画优化
-
-### 5. 动画优化架构
-
-#### 现有动画分析
-
-**App.vue 全局动画：**
-```css
-@keyframes pop-in { ... }     /* 新方块 */
-@keyframes pulse-merge { ... } /* 合并 */
-.tile-move { transition: transform 0.15s ease-in-out; }
-```
-
-**性能检查：**
-- ✅ `transform`: 已使用 GPU 加速
-- ✅ `opacity`: 已使用 GPU 加速
-- ⚠️ `scale`: 部分 GPU 加速（部分浏览器）
-- ❓ `background-color`: 过渡触发重绘（非重排）
-
-#### 优化策略
-
-**优先级 1：确保 GPU 加速（HIGH 信心度）**
-```css
-/* 添加 will-change 提示浏览器优化 */
-.tile {
-  will-change: transform, opacity;
-}
-
-/* 确保动画使用 transform 和 opacity */
-@keyframes pop-in {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-```
-
-**优先级 2：减少重排（HIGH 信心度）**
-```css
-/* 避免动画期间触发布局计算 */
-.tile-new, .tile-merged {
-  /* 不要动画 width/height/margin 等 */
-  animation: pop-in 0.2s ease-out;
-  /* 添加 containment 隔离（浏览器优化） */
-  contain: layout style paint;
-}
-```
-
-**优先级 3：主题切换动画（MEDIUM 信心度）**
-```css
-/* 背景颜色过渡（不影响游戏逻辑） */
-.app {
-  transition: background-color 0.3s ease;
-}
-
-.game-board {
-  transition: background-color 0.3s ease;
-}
-```
-
-## 实现顺序建议
-
-### Phase 1：主题系统基础（预计 2-3 天）
-
-1. **创建类型定义** (`src/core/theme.ts`)
-   - `ThemeConfig` 接口
-   - 5 个主题配置对象
-
-2. **实现 Theme Store** (`src/stores/theme.ts`)
-   - 状态：currentThemeId
-   - 操作：setTheme(), resetTheme()
-   - 计算属性：config（合并当前主题配置）
-
-3. **持久化集成** (`src/core/storage.ts`)
-   - saveTheme(), loadTheme()
-   - 在 theme store 初始化时调用
-
-4. **创建 ThemeSwitcher 组件**
-   - UI：按钮组或下拉菜单
-   - 交互：点击切换主题
-   - 测试：组件测试 + 快照测试
-
-5. **修改 GameHeader**
-   - 集成 ThemeSwitcher
-   - 布局调整（确保响应式）
-
-### Phase 2：主题应用到组件（预计 1-2 天）
-
-1. **修改 Tile.vue**
-   - 使用 `useTheme()` composable
-   - 替换硬编码颜色为动态主题色
-
-2. **修改 GameBoard.vue**
-   - 应用主题的网格背景色
-
-3. **修改 App.vue**
-   - 应用主题的页面背景色
-   - 添加主题切换过渡动画
-
-4. **更新覆盖层组件**
-   - GameWonOverlay.vue
-   - GameOverOverlay.vue
-
-### Phase 3：动画性能优化（预计 1-2 天）
-
-1. **性能分析**
-   - Chrome DevTools Performance 录制
-   - 识别未使用 GPU 加速的动画
-
-2. **添加 will-change 提示**
-   - Tile.vue 添加 `will-change: transform, opacity`
-
-3. **优化关键动画**
-   - 确保所有动画使用 transform/opacity
-   - 避免 width/height 动画
-
-4. **CSS containment（可选）**
-   - 添加 `contain: layout style paint` 隔离
-
-### Phase 4：测试与验证（预计 1 天）
-
-1. **组件测试**
-   - ThemeSwitcher 交互测试
-   - Tile 颜色渲染测试（快照）
-
-2. **Store 测试**
-   - Theme Store 状态切换测试
-   - 持久化函数测试
-
-3. **性能测试**
-   - Lighthouse Performance 得分
-   - 动画帧率（60fps 验证）
-
-4. **跨浏览器测试**
-   - Chrome/Firefox/Safari/Edge
-   - 移动端验证
-
-## 测试策略
-
-### 单元测试
-
-**Theme Store 测试** (`src/stores/theme.test.ts`)
-```typescript
-describe('ThemeStore', () => {
-  it('初始化为默认主题', () => {})
-  it('setTheme 切换主题', () => {})
-  it('持久化主题到 localStorage', () => {})
-  it('从 localStorage 恢复主题', () => {})
-})
-```
-
-### 组件测试
-
-**ThemeSwitcher 测试** (`src/components/ThemeSwitcher.test.ts`)
-```typescript
-describe('ThemeSwitcher', () => {
-  it('渲染所有主题按钮', () => {})
-  it('点击切换主题', () => {
-    // 验证 store.setTheme 被调用
-  })
-  it('高亮当前主题', () => {})
-})
-```
-
-**Tile 快照测试** (`src/components/Tile.test.ts`)
-```typescript
-describe('Tile', () => {
-  it.each([2, 4, 8, 2048])('渲染 %d 方块快照', (value) => {
-    // 为每个主题生成快照
-  })
-})
-```
-
-### 集成测试（可选）
-
-**主题切换流程测试**
-```typescript
-describe('主题切换流程', () => {
-  it('切换主题后所有组件颜色更新', () => {
-    // 挂载完整应用
-    // 切换主题
-    // 验证 Tile/GameBoard 背景色
-  })
-})
-```
-
-### 性能测试
-
-**动画帧率测试**
-```typescript
-describe('动画性能', () => {
-  it('方块移动动画保持 60fps', () => {
-    // 使用 performance.now() 测量
-    // 验证动画时长 < 16.67ms
-  })
-})
-```
-
-## 架构原则遵循
-
-### Functional Core, Imperative Shell
-
-**核心逻辑（纯函数）：**
-- ✅ 主题配置数据（不可变对象）
-- ✅ 颜色映射函数（输入 value → 输出 color）
-
-**UI 层（响应式）：**
-- ✅ Theme Store（状态管理）
-- ✅ useTheme() Composable（封装）
-- ✅ 组件（视图渲染）
-
-**为什么符合？**
-- 主题系统不涉及游戏逻辑（grid, score, move）
-- 纯粹的 UI 关注点（颜色、样式）
-- 易于测试（配置对象可序列化）
-
-### TDD 开发模式
-
-**测试覆盖目标：**
-- Theme Store: 100%
-- ThemeSwitcher: 80%+
-- Tile 主题渲染: 快照测试
-- 持久化函数: 单元测试
-
-**测试顺序：**
-1. 先写主题配置类型测试
-2. 再写 Theme Store 测试
-3. 最后写组件测试
-
-### 小步迭代
-
-**Phase 1 → Phase 2 → Phase 3 → Phase 4**
-- 每个 Phase 可独立验证
-- 每个 Phase 可独立提交
-- 降低风险，快速反馈
-
-## 潜在风险与缓解
-
-### 风险 1：主题切换性能
-
-**风险描述：** 切换主题时重新渲染所有 Tile，可能卡顿
-
-**缓解措施：**
-- ✅ 使用 computed 缓存主题配置
-- ✅ 内联样式更新成本低（不需要重排）
-- ✅ 测试验证：16 个方块同时切换主题 < 100ms
-
-**验证方法：**
-```typescript
-it('切换主题性能测试', () => {
-  const start = performance.now()
-  store.setTheme('neon')
-  await nextTick()
-  const duration = performance.now() - start
-  expect(duration).toBeLessThan(100)
-})
-```
-
-### 风险 2：移动端兼容性
-
-**风险描述：** 某些 CSS 优化在移动端不支持
-
-**缓解措施：**
-- ✅ 渐进增强：基础功能无需高级 CSS
-- ✅ Feature detection：`@supports (will-change: transform)`
-- ✅ 真机测试：iOS Safari、Chrome Mobile
-
-### 风险 3：现有测试失败
-
-**风险描述：** Tile 快照测试因颜色变化而失败
-
-**缓解措施：**
-- ✅ 更新快照：为每个主题生成独立快照
-- ✅ 或改为逻辑测试：验证颜色值是否来自主题配置
-
-## 信心度评估
-
-| 领域 | 信心度 | 理由 |
-|------|--------|------|
-| 主题 Store 架构 | HIGH | 标准 Pinia 模式，已在项目中验证 |
-| 组件修改范围 | HIGH | 最小化修改，只改 Tile 和 GameHeader |
-| 持久化集成 | HIGH | 扩展现有 storage.ts，模式一致 |
-| 内联样式兼容性 | HIGH | 机制不变，颜色值动态化 |
-| 动画性能优化 | MEDIUM | 需要实际测量验证 GPU 加速效果 |
-| 测试策略 | HIGH | 组件测试 + Store 测试，项目已验证 |
-
-## 依赖关系图
-
-```
-[Phase 1] 主题系统基础
-    ├─ src/core/theme.ts (新增)
-    ├─ src/stores/theme.ts (新增)
-    ├─ src/core/storage.ts (修改)
-    └─ src/composables/useTheme.ts (新增)
-         ↓
-[Phase 2] 应用主题到组件
-    ├─ src/components/ThemeSwitcher.vue (新增)
-    ├─ src/components/GameHeader.vue (修改)
-    ├─ src/components/Tile.vue (修改)
-    ├─ src/components/GameBoard.vue (修改)
-    └─ src/App.vue (修改)
-         ↓
-[Phase 3] 动画优化
-    ├─ src/components/Tile.vue (优化)
-    └─ src/App.vue (优化)
-         ↓
-[Phase 4] 测试与验证
-    ├─ src/stores/theme.test.ts (新增)
-    ├─ src/components/ThemeSwitcher.test.ts (新增)
-    ├─ src/core/storage.test.ts (更新)
-    └─ 性能测试
-```
-
-## 与项目约束的一致性
-
-### 约束检查
-
-| 约束 | 符合性 | 说明 |
-|------|--------|------|
-| Vue 3 + TypeScript | ✅ | 使用标准 Pinia + Composable |
-| Functional Core | ✅ | 主题配置为纯数据，不混入逻辑 |
-| TDD 开发 | ✅ | Store 和组件有完整测试 |
-| 小步迭代 | ✅ | 4 个 Phase，每个可独立验证 |
-| 不修改核心逻辑 | ✅ | 主题系统完全独立于 game.ts |
-
-### 新增文件清单
+**分层结构：**
 
 ```
 src/
-├── core/
-│   ├── theme.ts                    [NEW] 主题类型和配置
-│   └── storage.ts                  [MOD] 添加主题持久化
-├── stores/
-│   └── theme.ts                    [NEW] 主题状态管理
-├── composables/
-│   └── useTheme.ts                 [NEW] 主题 composable
-├── components/
-│   ├── ThemeSwitcher.vue           [NEW] 主题切换器
-│   ├── GameHeader.vue              [MOD] 集成 ThemeSwitcher
-│   ├── Tile.vue                    [MOD] 使用主题颜色
-│   └── GameBoard.vue               [MOD] 使用主题背景色
-└── App.vue                         [MOD] 应用主题背景
+├── core/           # Functional Core（纯函数核心逻辑）
+│   ├── game.ts     # 移动、合并、胜负判定
+│   ├── utils.ts    # 工具函数
+│   ├── types.ts    # 类型定义
+│   ├── storage.ts  # 本地存储封装
+│   └── theme.ts    # 主题逻辑
+├── stores/         # 状态管理层（Pinia）
+│   ├── game.ts     # 游戏状态
+│   └── theme.ts    # 主题状态
+├── composables/    # 组合式函数（逻辑复用）
+│   ├── useGameControls.ts  # 键盘/触摸控制
+│   └── useTheme.ts         # 主题切换
+└── components/     # 展示层（Vue 组件）
+    ├── GameContainer.vue
+    ├── GameBoard.vue
+    └── ...
 ```
 
-## 后续优化方向
+**数据流：**
+```
+用户交互 → Component → Composable → Store Action → Core Logic → State Update → Component Re-render
+```
 
-### v1.2 可能的功能
+**架构特征：**
+- **Core 层：** 纯函数，无副作用，易于测试
+- **Store 层：** 响应式状态管理，调用 Core 层函数
+- **Composable 层：** 封装可复用逻辑（控制、主题）
+- **Component 层：** 纯展示，通过 Composable 访问状态和方法
 
-1. **自定义主题编辑器**
-   - 用户选择颜色
-   - 实时预览
-   - 保存到 localStorage
+## 新功能架构集成
 
-2. **CSS 变量优化**
-   - 将主题配置迁移到 CSS 变量
-   - 更好的运行时性能
-   - 支持主题切换动画
+### 1. 音效系统集成
 
-3. **主题动画**
-   - 切换主题时的过渡效果
-   - 方块颜色渐变动画
+#### 集成点识别
 
-4. **暗色模式**
-   - 系统偏好检测
-   - 自动切换主题
+**新增文件：**
+- `src/core/audio.ts` - 音效类型定义和常量
+- `src/stores/audio.ts` - 音效状态管理（音量、静音）
+- `src/composables/useAudio.ts` - 音效播放 composable
+- `src/assets/audio/` - 音效资源目录
 
-## 总结
+**修改文件：**
+- `src/stores/game.ts` - 在移动、合并、游戏结束时触发音效事件
+- `src/composables/useGameControls.ts` - 集成音效播放
+- `src/components/GameHeader.vue` - 添加音量控制 UI
 
-主题系统和动画优化可以优雅地集成到现有架构中，无需大规模重构。采用独立的 Theme Store + composable 模式，保持与现有架构的一致性。修改范围最小化，只影响 GameHeader 和 Tile 组件。建议按照 4 个 Phase 顺序实现，每个 Phase 可独立验证和提交。
+#### 推荐技术栈
 
-**核心原则：**
-- 主题系统 ≠ 游戏逻辑（完全解耦）
-- 内联样式机制不变（颜色值动态化）
-- 小步迭代，频繁验证
-- 100% 测试覆盖（新增代码）
+| 技术 | 版本 | 用途 | 理由 |
+|------|------|------|------|
+| **Howler.js** | ^2.2.4 | 音频播放库 | 跨浏览器兼容，支持 Web Audio API 和 HTML5 Audio 回退，API 简洁 |
+| **VueUse** | 已安装 | 持久化音效设置 | useStorage 提供类型安全的 localStorage 同步 |
 
-**下一步行动：**
-1. 创建 `src/core/theme.ts` 定义 5 个主题配置
-2. 实现 `src/stores/theme.ts` 状态管理
-3. 扩展 `src/core/storage.ts` 添加持久化
-4. 创建 `ThemeSwitcher` 组件并集成到 GameHeader
+#### 架构设计
+
+```typescript
+// src/core/audio.ts - 类型定义（Core 层）
+export type SoundEffect = 'move' | 'merge' | 'win' | 'lose'
+
+export const SOUND_FILES: Record<SoundEffect, string> = {
+  move: '/audio/move.mp3',
+  merge: '/audio/merge.mp3',
+  win: '/audio/win.mp3',
+  lose: '/audio/lose.mp3',
+}
+
+// src/stores/audio.ts - 状态管理（Store 层）
+export const useAudioStore = defineStore('audio', () => {
+  const volume = useStorage('audio-volume', 0.5) // 持久化到 localStorage
+  const muted = useStorage('audio-muted', false)
+
+  function setVolume(value: number) {
+    volume.value = Math.max(0, Math.min(1, value))
+  }
+
+  function toggleMute() {
+    muted.value = !muted.value
+  }
+
+  return { volume, muted, setVolume, toggleMute }
+})
+
+// src/composables/useAudio.ts - 音效播放（Composable 层）
+export function useAudio() {
+  const audioStore = useAudioStore()
+  const sounds = ref<Record<SoundEffect, Howl | null>>({
+    move: null,
+    merge: null,
+    win: null,
+    lose: null,
+  })
+
+  // 初始化音效对象
+  onMounted(() => {
+    Object.entries(SOUND_FILES).forEach(([key, src]) => {
+      sounds.value[key as SoundEffect] = new Howl({
+        src,
+        volume: audioStore.muted ? 0 : audioStore.volume,
+      })
+    })
+  })
+
+  function play(effect: SoundEffect) {
+    const sound = sounds.value[effect]
+    if (sound && !audioStore.muted) {
+      sound.play()
+    }
+  }
+
+  // 监听音量变化
+  watch(() => audioStore.volume, (newVolume) => {
+    Object.values(sounds.value).forEach(sound => {
+      sound?.volume(audioStore.muted ? 0 : newVolume)
+    })
+  })
+
+  return { play }
+}
+```
+
+#### 数据流变更
+
+**现有流程（无音效）：**
+```
+用户按键 → useGameControls → store.moveGrid() → core.move() → 状态更新
+```
+
+**新增流程（带音效）：**
+```
+用户按键 → useGameControls → store.moveGrid() → core.move() → 状态更新
+                                                          ↓
+                                                  watch 监听状态变化
+                                                          ↓
+                                                  useAudio.play('move')
+```
+
+#### 集成策略
+
+**方案 A：Store 层集成（推荐）**
+- 在 `useGameStore` 中监听状态变化，触发音效
+- 优点：集中管理，所有音效触发点可见
+- 缺点：Store 层承担部分副作用责任
+
+**方案 B：Composable 层集成**
+- 在 `useGameControls` 中调用 `useAudio().play()`
+- 优点：副作用在 Composable 层，符合现有架构
+- 缺点：需要修改现有 Composable
+
+**推荐：** 方案 B，在 Composable 层集成，保持 Store 层纯粹。
+
+#### 实现要点
+
+1. **音效资源预加载：** 在 `useAudio` 的 `onMounted` 中预加载所有音效
+2. **音量控制：** 使用 VueUse 的 `useStorage` 自动同步到 localStorage
+3. **性能优化：** Howler.js 使用 Web Audio API，避免重复加载
+4. **静音逻辑：** 静音时设置音量为 0，而非停止播放（保证状态一致性）
+
+### 2. E2E 测试集成
+
+#### 现状分析
+
+**已配置：**
+- Playwright 1.58.2 已安装
+- 配置文件：`playwright.config.ts`
+- 测试目录：`e2e/`
+- 示例测试：`e2e/vue.spec.ts`（模板代码，需重写）
+
+**配置亮点：**
+- 支持 Chromium、Firefox、WebKit
+- 自动启动开发服务器（`npm run dev` 或 `npm run preview`）
+- CI 模式下自动重试失败测试
+- HTML 报告生成
+
+#### 测试策略
+
+**测试金字塔：**
+```
+         E2E (10%)  - Playwright
+        /         \
+  集成测试 (20%)   - (暂未实现)
+ /                  \
+单元测试 (70%)  - Vitest (Core 层 100% 覆盖)
+```
+
+**E2E 测试覆盖重点：**
+- 用户交互流程（键盘、触摸、鼠标）
+- 游戏状态变化（开始、移动、胜利、失败）
+- 主题切换功能
+- 音效控制（UI 交互，不测试实际音频）
+
+#### 推荐测试结构
+
+```
+e2e/
+├── game-flow.spec.ts      # 核心游戏流程测试
+├── controls.spec.ts        # 控制方式测试
+├── theme.spec.ts           # 主题切换测试
+├── audio-ui.spec.ts        # 音效 UI 测试
+└── helpers/
+    ├── game-actions.ts     # 游戏操作封装（移动、重置）
+    └── selectors.ts        # 选择器常量
+```
+
+#### 测试示例
+
+```typescript
+// e2e/game-flow.spec.ts
+import { test, expect } from './fixtures/game-fixtures'
+
+test.describe('游戏流程', () => {
+  test.beforeEach(async ({ gamePage }) => {
+    await gamePage.goto()
+    await gamePage.startNewGame()
+  })
+
+  test('应该能完成一次移动', async ({ gamePage }) => {
+    const initialScore = await gamePage.getScore()
+
+    await gamePage.moveLeft()
+
+    const newScore = await gamePage.getScore()
+    expect(newScore).toBeGreaterThanOrEqual(initialScore)
+  })
+
+  test('应该能检测游戏结束', async ({ gamePage }) => {
+    // 模拟无法移动的局面
+    await gamePage.loadGameState('no-moves')
+
+    await expect(gamePage.gameOverOverlay).toBeVisible()
+  })
+
+  test('应该能检测游戏胜利', async ({ gamePage }) => {
+    await gamePage.loadGameState('near-win')
+
+    // 触发胜利
+    await gamePage.moveRight()
+
+    await expect(gamePage.gameWonOverlay).toBeVisible()
+  })
+})
+
+// e2e/helpers/game-actions.ts
+export class GamePage {
+  constructor(private page: Page) {}
+
+  async goto() {
+    await this.page.goto('/')
+  }
+
+  async startNewGame() {
+    await this.page.click('[data-testid="new-game-button"]')
+  }
+
+  async moveLeft() {
+    await this.page.keyboard.press('ArrowLeft')
+    await this.page.waitForTimeout(300) // 等待动画完成
+  }
+
+  async getScore() {
+    const text = await this.page.textContent('[data-testid="score"]')
+    return parseInt(text || '0', 10)
+  }
+}
+```
+
+#### Page Object Model
+
+**优势：**
+- 封装页面交互逻辑，提高测试可维护性
+- 选择器集中管理，应对 UI 变更
+- 复用测试逻辑
+
+**实现要点：**
+1. 创建 `e2e/fixtures/game-fixtures.ts` 扩展 Playwright fixtures
+2. 创建 `e2e/helpers/game-actions.ts` 封装游戏操作
+3. 创建 `e2e/helpers/selectors.ts` 定义选择器常量
+4. 使用 `data-testid` 属性定位元素（避免依赖 CSS 类名）
+
+#### 集成建议
+
+**测试编写顺序（依赖关系）：**
+1. **Phase 1：** `game-flow.spec.ts` - 测试核心游戏逻辑（依赖最小）
+2. **Phase 2：** `controls.spec.ts` - 测试键盘/触摸/鼠标控制
+3. **Phase 3：** `theme.spec.ts` - 测试主题切换
+4. **Phase 4：** `audio-ui.spec.ts` - 测试音效控制 UI（不测试音频播放）
+
+**CI/CD 集成：**
+- 在 GitHub Actions 中添加 E2E 测试步骤
+- 使用 Playwright 官方 GitHub Action
+- 失败时上传测试报告和截图
+
+### 3. 构建优化集成
+
+#### 现状分析
+
+**当前配置：** `vite.config.ts`
+- 使用 Vite 7.3.1（基于 Rollup）
+- 未显式配置代码分割
+- 未配置 bundle 分析
+- 生产构建使用标准配置
+
+#### 优化目标
+
+| 指标 | 目标 | 策略 |
+|------|------|------|
+| 首屏加载时间 | < 1s | 代码分割、懒加载 |
+| 包体积 | < 200KB (gzipped) | Tree-shaking、外部化依赖 |
+| Time to Interactive | < 2s | 预加载关键资源 |
+| 构建时间 | < 30s | 并行构建、缓存 |
+
+#### 推荐工具
+
+| 工具 | 用途 | 安装命令 |
+|------|------|----------|
+| **rollup-plugin-visualizer** | Bundle 可视化分析 | `npm i -D rollup-plugin-visualizer` |
+| **vite-plugin-compression** | Gzip/Brotli 压缩 | `npm i -D vite-plugin-compression` |
+| **vite-plugin-cdn** | CDN 外部化（可选） | `npm i -D vite-plugin-cdn` |
+
+#### 代码分割策略
+
+**路由级分割（如果有多页面）：**
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['vue', 'vue-router', 'pinia'],
+          'ui': ['@vueuse/core'],
+        }
+      }
+    }
+  }
+})
+```
+
+**组件级分割（按需加载）：**
+```typescript
+// 懒加载覆盖层组件
+const GameOverOverlay = defineAsyncComponent(
+  () => import('@/components/GameOverOverlay.vue')
+)
+```
+
+#### Bundle 分析
+
+**配置：**
+```typescript
+// vite.config.ts
+import { visualizer } from 'rollup-plugin-visualizer'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    visualizer({
+      open: true,
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    })
+  ]
+})
+```
+
+**使用：**
+```bash
+npm run build
+# 自动打开 stats.html
+```
+
+#### 性能优化清单
+
+**已实现：**
+- ✅ Vue 3 生产模式（Vite 自动处理）
+- ✅ CSS 压缩（Vite 默认）
+- ✅ 模块预加载（`<link rel="modulepreload">`）
+
+**待实现：**
+- ⬜ Gzip/Brotli 压缩（服务器配置或插件）
+- ⬜ 图片优化（WebP 格式、响应式图片）
+- ⬜ 字体优化（子集化、预加载）
+- ⬜ 预连接到 CDN（如果使用）
+
+#### 加载性能优化
+
+**关键资源预加载：**
+```html
+<!-- index.html -->
+<link rel="preload" href="/audio/move.mp3" as="audio">
+<link rel="prefetch" href="/audio/merge.mp3" as="audio">
+```
+
+**懒加载非关键资源：**
+```typescript
+// 音效资源懒加载（在 useAudio 中）
+const loadSoundEffect = async (name: SoundEffect) => {
+  const { default: src } = await import(`@/assets/audio/${name}.mp3`)
+  return new Howl({ src })
+}
+```
+
+#### 监控与验证
+
+**工具：**
+- **Lighthouse CI：** 自动化性能监控
+- **Bundle Size CLI：** 包体积回归检测
+- **vite-plugin-inspect：** 插件中间件检查
+
+**GitHub Actions 集成：**
+```yaml
+- name: Run Lighthouse CI
+  run: |
+    npm install -g @lhci/cli
+    lhci autorun
+```
+
+## 构建顺序建议
+
+基于依赖关系和风险控制，推荐以下实现顺序：
+
+### 阶段 1：E2E 测试基础设施（优先级：HIGH）
+**理由：**
+- E2E 测试提供回归保护，后续开发更安全
+- 不依赖其他功能，可独立完成
+- 验证现有功能正常工作
+
+**任务：**
+1. 创建 `e2e/fixtures/game-fixtures.ts`
+2. 创建 `e2e/helpers/game-actions.ts`
+3. 编写 `e2e/game-flow.spec.ts`
+4. 编写 `e2e/controls.spec.ts`
+
+**验收标准：**
+- 核心游戏流程测试通过
+- CI/CD 中自动运行 E2E 测试
+
+### 阶段 2：音效系统（优先级：MEDIUM）
+**理由：**
+- 独立功能，不破坏现有代码
+- 增强用户体验
+- 为后续功能提供音效基础设施
+
+**任务：**
+1. 准备音效资源（`/public/audio/`）
+2. 创建 `src/stores/audio.ts`
+3. 创建 `src/composables/useAudio.ts`
+4. 在 `useGameControls` 中集成音效
+5. 在 `GameHeader.vue` 中添加音量控制 UI
+
+**验收标准：**
+- 移动、合并、胜利、失败有对应音效
+- 音量控制工作正常
+- 设置持久化到 localStorage
+
+### 阶段 3：E2E 测试扩展（优先级：MEDIUM）
+**理由：**
+- 依赖音效系统 UI
+- 完善测试覆盖
+
+**任务：**
+1. 编写 `e2e/theme.spec.ts`
+2. 编写 `e2e/audio-ui.spec.ts`
+
+**验收标准：**
+- 所有 E2E 测试通过
+- 测试覆盖率达到目标
+
+### 阶段 4：构建优化（优先级：LOW）
+**理由：**
+- 优化工作，不影响功能
+- 可在功能稳定后进行
+- 需要性能基准对比
+
+**任务：**
+1. 安装 `rollup-plugin-visualizer`
+2. 配置代码分割策略
+3. 生成 bundle 分析报告
+4. 根据报告优化包体积
+5. 配置 Gzip/Brotli 压缩
+
+**验收标准：**
+- Bundle 体积减少 > 10%
+- 首屏加载时间 < 1s
+- Lighthouse 性能分数 > 90
+
+## 数据流变更总结
+
+### 音效系统集成后的数据流
+
+```
+用户按键
+  ↓
+useGameControls (监听键盘/触摸)
+  ↓
+store.moveGrid(direction)
+  ↓
+core.move(grid, direction) → 返回新状态
+  ↓
+store 更新响应式状态
+  ↓
+watch 监听状态变化
+  ↓
+useAudio.play('move') → Howler.js 播放音效
+  ↓
+Component 重新渲染
+```
+
+### E2E 测试数据流
+
+```
+Playwright 启动浏览器
+  ↓
+导航到 localhost:5173
+  ↓
+GamePage 对象封装页面操作
+  ↓
+执行用户操作模拟（键盘、点击）
+  ↓
+断言页面状态（文本、可见性、属性）
+  ↓
+生成测试报告
+```
+
+### 构建优化数据流
+
+```
+vite build
+  ↓
+Rollup 打包
+  ↓
+应用代码分割策略
+  ↓
+生成 bundle 和 chunk
+  ↓
+rollup-plugin-visualizer 生成分析报告
+  ↓
+vite-plugin-compression 生成 .gz/.br 文件
+  ↓
+输出到 dist/
+```
+
+## 潜在风险与缓解
+
+### 风险 1：音效加载延迟
+**描述：** 首次播放音效时可能有延迟
+**缓解：**
+- 在 `useAudio` 的 `onMounted` 中预加载所有音效
+- 使用 Howler.js 的 `preload` 配置
+
+### 风险 2：E2E 测试不稳定
+**描述：** 测试因动画或异步操作失败
+**缓解：**
+- 使用 Playwright 的 `waitForTimeout` 等待动画完成
+- 使用 `waitForSelector` 等待元素出现
+- CI 中增加重试次数（已配置）
+
+### 风险 3：Bundle 体积增加
+**描述：** 添加音效和测试依赖后包体积增大
+**缓解：**
+- 音效资源放在 `/public/`，不打包进 bundle
+- E2E 测试不打包，仅在 CI/CD 运行
+- 使用 bundle 分析工具监控体积变化
+
+### 风险 4：浏览器兼容性
+**描述：** 音效或 E2E 测试在某些浏览器失败
+**缓解：**
+- Howler.js 提供 HTML5 Audio 回退
+- Playwright 测试多浏览器（已配置）
+- 使用 `data-testid` 而非 CSS 选择器
+
+## 验收标准
+
+### 音效系统
+- [ ] 移动音效播放正常
+- [ ] 合并音效播放正常
+- [ ] 胜利/失败音效播放正常
+- [ ] 音量控制工作正常
+- [ ] 静音切换工作正常
+- [ ] 设置持久化到 localStorage
+- [ ] 音效不阻塞游戏逻辑
+
+### E2E 测试
+- [ ] 核心游戏流程测试通过
+- [ ] 键盘控制测试通过
+- [ ] 触摸控制测试通过
+- [ ] 鼠标控制测试通过
+- [ ] 主题切换测试通过
+- [ ] 音效 UI 测试通过
+- [ ] 所有测试在 CI 中通过
+- [ ] 测试执行时间 < 5 分钟
+
+### 构建优化
+- [ ] Bundle 分析报告可生成
+- [ ] 代码分割策略已应用
+- [ ] 包体积减少 > 10%
+- [ ] 首屏加载时间 < 1s（Lighthouse 验证）
+- [ ] Gzip/Brotli 压缩已配置
+- [ ] 构建时间 < 30s
+
+## 未解决问题
+
+### 需要进一步研究
+1. **音效资源版权：** 需要确认音效资源的版权和来源
+2. **Bundle 大小基准：** 需要先测量当前 bundle 大小，再设定优化目标
+3. **E2E 测试覆盖目标：** 需要确定 E2E 测试的覆盖率目标（场景数）
+
+### 可选增强
+1. **音效预加载策略：** 是否需要更智能的预加载（如首次交互后预加载）
+2. **PWA 支持：** 是否在 v1.3 考虑 PWA（离线可玩）
+3. **A/B 测试：** 是否需要测试不同音效对用户留存的影响
+
+## 参考资料
+
+### 音效系统
+- [Howler.js 官方文档](https://howlerjs.com/)
+- [Vue 3 + Howler.js 音频播放指南](https://blog.51cto.com/u_16717092/12061753)
+- [前端音频痛点解决方案](https://blog.csdn.net/gitblog_00727/article/details/151848137)
+- [Vue 3 localStorage 数据持久化](https://alexop.dev/posts/how-to-persist-user-data-with-localstorage-in-vue/)
+
+### E2E 测试
+- [Playwright 官方最佳实践](https://playwright.dev/docs/best-practices)
+- [Playwright E2E 测试指南 2026](https://www.deviqa.com/blog/guide-to-playwright-end-to-end-testing-in-2025/)
+- [E2E 测试最佳实践](https://elionavarrete.com/blog/e2e-best-practices-playwright.html)
+- [Vue 3 Playwright 测试](https://mcpmarket.com/tools/skills/vue-3-playwright-testing)
+
+### 构建优化
+- [Vite 代码分割最佳实践](https://juejin.cn/post/7456709526756114466)
+- [前端性能优化：Tree Shaking、Bundle 分析与代码拆分](https://calpa.me/blog/frontend-performance-optimization-tree-shaking-bundle-analysis-code-splitting-in-vite/)
+- [Vite 代码分割深度解析](https://comate.baidu.com/zh/page/x4tjfbn4gmz)
+- [Rollup 配置解析与最佳实践](https://juejin.cn/post/7541297378126315561)
+
+---
+
+**研究完成时间：** 2026-03-30
+**下一步行动：** 根据 `.planning/roadmap/` 中的里程碑，按阶段实施集成计划
