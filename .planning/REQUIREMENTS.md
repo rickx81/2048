@@ -17,9 +17,9 @@
 
 ### 音量控制
 
-- [ ] **AUDIO-05**: 用户可以调节音效音量
-- [ ] **AUDIO-06**: 用户可以静音所有音效
-- [ ] **AUDIO-07**: 音效设置（音量、静音）持久化到 localStorage
+- [x] **AUDIO-05**: 用户可以调节音效音量
+- [x] **AUDIO-06**: 用户可以静音所有音效
+- [x] **AUDIO-07**: 音效设置（音量、静音）持久化到 localStorage
 
 ---
 
@@ -142,9 +142,9 @@
 | AUDIO-02 | Phase 10 | Pending |
 | AUDIO-03 | Phase 10 | Pending |
 | AUDIO-04 | Phase 10 | Pending |
-| AUDIO-05 | Phase 10 | Pending |
-| AUDIO-06 | Phase 10 | Pending |
-| AUDIO-07 | Phase 10 | Pending |
+| AUDIO-05 | Phase 10 | Complete |
+| AUDIO-06 | Phase 10 | Complete |
+| AUDIO-07 | Phase 10 | Complete |
 | BUILD-01 | Phase 11 | Pending |
 | BUILD-02 | Phase 11 | Pending |
 | BUILD-03 | Phase 11 | Pending |
