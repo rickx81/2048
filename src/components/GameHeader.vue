@@ -50,6 +50,8 @@
         </svg>
         <span>新游戏</span>
       </button>
+
+      <VolumeControl />
     </div>
   </header>
 </template>
@@ -57,6 +59,7 @@
 <script setup lang="ts">
 import { useGameStore } from '@/stores/game'
 import ThemeSwitcher from './ThemeSwitcher.vue'
+import VolumeControl from './VolumeControl.vue'
 
 const store = useGameStore()
 
