@@ -16,7 +16,7 @@ import type { SoundEffect } from '@/core/types'
 
 // 音频精灵定义（基于 sprite.mp3 文件的实际时间戳）
 // 格式: [开始时间(ms), 持续时间(ms)]
-const SPRITE_DATA = {
+const SPRITE_DATA: Record<string, [number, number]> = {
   move: [0, 150],       // 0ms-150ms
   merge: [200, 300],    // 200ms-500ms
   win: [600, 2000],     // 600ms-2600ms
@@ -66,7 +66,7 @@ export function useAudio() {
     })
 
     // 监听播放错误
-    soundInstance.on('loaderror', (_, err) => {
+    soundInstance.on('loaderror', (_: number, err: unknown) => {
       console.error('[Audio] 音效加载失败:', err)
       console.error('[Audio] 请确认 public/sounds/sprite.mp3 文件存在')
     })
