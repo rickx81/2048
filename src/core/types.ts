@@ -42,3 +42,9 @@ export interface GameState {
   /** 游戏状态 */
   status: GameStatus;
 }
+
+/**
+ * 音效类型
+ * 用于标识不同的游戏音效
+ */
+export type SoundEffect = 'move' | 'merge' | 'win' | 'lose'
