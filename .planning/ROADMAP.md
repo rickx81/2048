@@ -88,7 +88,7 @@
 
 **Plans**:
 - [x] 10-01-PLAN.md — Howler.js 依赖 + 音效基础设施（composable + store）
-- [ ] 10-02-PLAN.md — 音效资源 + 音量控制 UI 组件
+- [x] 10-02-PLAN.md — 音效资源 + 音量控制 UI 组件
 - [ ] 10-03-PLAN.md — 游戏流程集成 + 浏览器自动播放策略处理
 
 **UI 提示**: yes
