@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^14.2.1",
+    "howler": "^2.2.4",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.2.2",
     "vue": "^3.5.31",
