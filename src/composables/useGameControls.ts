@@ -1,6 +1,7 @@
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 import { useSwipe } from '@vueuse/core'
 import { useGameStore } from '@/stores/game'
+import { useAudio } from '@/composables/useAudio'
 import type { Direction } from '@/core/types'
 
 /**
@@ -9,6 +10,7 @@ import type { Direction } from '@/core/types'
  */
 export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
   const store = useGameStore()
+  const audio = useAudio()
 
   // ===== 键盘控制 =====
   function handleKeydown(event: KeyboardEvent) {
@@ -35,7 +37,19 @@ export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
     const direction = keyMap[event.key]
     if (direction) {
       event.preventDefault() // 防止页面滚动
+
+      // 记录移动前的分数，用于检测是否合并
+      const previousScore = store.score
       store.moveGrid(direction)
+
+      // 检测是否发生合并（分数增加）
+      if (store.score > previousScore) {
+        // 有合并 → 播放合并音效
+        audio.play('merge')
+      } else {
+        // 仅有移动 → 播放移动音效
+        audio.play('move')
+      }
     }
   }
 
@@ -85,7 +99,15 @@ export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
       }
 
       if (direction && store.status === 'playing') {
+        const previousScore = store.score
         store.moveGrid(direction)
+
+        // 播放音效
+        if (store.score > previousScore) {
+          audio.play('merge')
+        } else {
+          audio.play('move')
+        }
       }
     }
 
@@ -126,7 +148,15 @@ export function useGameControls(targetRef: Ref<HTMLElement | undefined>) {
 
       // 执行移动
       if (direction && store.status === 'playing') {
+        const previousScore = store.score
         store.moveGrid(direction)
+
+        // 播放音效
+        if (store.score > previousScore) {
+          audio.play('merge')
+        } else {
+          audio.play('move')
+        }
       }
     },
   })
