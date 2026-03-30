@@ -5,15 +5,44 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { watch, onMounted } from 'vue'
+import { useGameStore } from '@/stores/game'
+import { useAudio } from '@/composables/useAudio'
 import { useTheme } from '@/composables/useTheme'
 
 // 初始化主题系统（设置 DOM 监听和 localStorage 同步）
 useTheme()
 
+// 初始化 store 和 audio
+const store = useGameStore()
+const audio = useAudio()
+
+// 监听游戏状态变化，播放胜利/失败音效
+watch(() => store.status, (newStatus, oldStatus) => {
+  // 只在从 PLAYING 状态变为 WON 或 LOST 时播放音效
+  if (newStatus === 'won' && oldStatus === 'playing') {
+    audio.play('win')
+  } else if (newStatus === 'lost' && oldStatus === 'playing') {
+    audio.play('lose')
+  }
+})
+
+// 在首次用户交互时初始化音效系统
+function handleFirstInteraction() {
+  if (!audio.isInitialized.value) {
+    audio.initialize()
+  }
+}
+
 onMounted(() => {
   // 确保 DOM 已准备好
   document.documentElement.classList.add('theme-ready')
+
+  // 监听首次用户交互（点击、按键、触摸）
+  const events = ['click', 'keydown', 'touchstart'] as const
+  events.forEach(event => {
+    window.addEventListener(event, handleFirstInteraction, { once: true })
+  })
 })
 </script>
 
