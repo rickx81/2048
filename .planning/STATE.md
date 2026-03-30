@@ -118,6 +118,9 @@ progress:
 13. **E2E 测试先行** - 建立回归保护，降低集成风险 ✓（v1.2）
 14. **Howler.js 音效系统** - 跨浏览器兼容，Audio Sprites 优化 ✓（v1.2）
 15. **rollup-plugin-visualizer** - Bundle 分析，识别优化机会 ✓（v1.2）
+16. **E2E 测试文件组织** - 按用户功能分组（game-flow、controls） ✓（Phase 9）
+17. **data-testid 命名** - 语义化扁平命名，组件内唯一 ✓（Phase 9）
+18. **E2E 选择器策略** - data-testid 优先，ARIA/文本辅助 ✓（Phase 9）
 
 ### 研究关键发现
 
@@ -205,9 +208,9 @@ progress:
 
 ### 下一步行动
 
-**当前阶段：** Phase 8 - 依赖升级
+**当前阶段：** Phase 9 - E2E 测试基础设施
 
-**推荐命令：** `/gsd:plan-phase 8`
+**推荐命令：** `/gsd:plan-phase 9`
 
 ---
 
