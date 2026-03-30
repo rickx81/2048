@@ -1,5 +1,5 @@
 <template>
-  <div class="game-board" ref="boardRef">
+  <div class="game-board" ref="boardRef" data-testid="game-board">
     <div class="grid-container">
       <Tile
         v-for="tile in tiles"

@@ -11,12 +11,12 @@
     <div class="scores-container">
       <div class="score-box">
         <span class="score-label">分数</span>
-        <span class="score-value">{{ store.score }}</span>
+        <span class="score-value" data-testid="score">{{ store.score }}</span>
       </div>
 
       <div class="score-box">
         <span class="score-label">最高分</span>
-        <span class="score-value">{{ store.highScore }}</span>
+        <span class="score-value" data-testid="high-score">{{ store.highScore }}</span>
       </div>
     </div>
 
@@ -25,6 +25,7 @@
         @click="handleUndo"
         :disabled="!store.canUndo"
         class="control-btn undo-btn"
+        data-testid="undo-btn"
         :class="{ 'disabled': !store.canUndo }"
         title="撤销"
       >
@@ -38,6 +39,7 @@
       <button
         @click="handleNewGame"
         class="control-btn new-game-btn"
+        data-testid="new-game-btn"
         title="新游戏"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

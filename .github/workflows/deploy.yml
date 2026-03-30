@@ -46,6 +46,14 @@ jobs:
       - name: 运行单元测试
         run: pnpm run test:unit -- --run
 
+      - name: 安装 Playwright 浏览器
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: 运行 E2E 测试
+        run: pnpm exec playwright test --project=chromium
+        env:
+          CI: true
+
       - name: 构建项目
         run: pnpm run build
 

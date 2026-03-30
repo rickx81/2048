@@ -7,6 +7,10 @@
       isAnimating ? 'tile-animating' : ''
     ]"
     :style="getTileStyle()"
+    :data-testid="`tile`"
+    :data-row="row"
+    :data-col="col"
+    :data-value="value"
   >
     <span class="tile-number" :style="getTextStyle()">{{ value || '' }}</span>
   </div>

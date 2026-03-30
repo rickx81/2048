@@ -1,21 +1,21 @@
 <template>
   <Transition name="overlay">
-    <div v-if="visible" class="overlay-mask">
+    <div v-if="visible" class="overlay-mask" data-testid="game-won-overlay">
       <div class="overlay-content">
-        <h2 class="overlay-title">你赢了!</h2>
+        <h2 class="overlay-title" data-testid="game-won-title">你赢了!</h2>
 
         <div class="score-display">
           <div class="final-score">
             <span class="score-label">最终分数</span>
-            <span class="score-value">{{ store.score }}</span>
+            <span class="score-value" data-testid="game-won-score">{{ store.score }}</span>
           </div>
         </div>
 
         <div class="overlay-actions">
-          <button @click="handleContinue" class="continue-btn">
+          <button @click="handleContinue" class="continue-btn" data-testid="continue-btn">
             继续游戏
           </button>
-          <button @click="handleRetry" class="retry-btn">
+          <button @click="handleRetry" class="retry-btn" data-testid="new-game-btn-overlay">
             新游戏
           </button>
         </div>

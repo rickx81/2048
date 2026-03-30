@@ -1,12 +1,12 @@
 <template>
-  <div class="game-container">
+  <div class="game-container" data-testid="game-container">
     <!-- 头部区域：分数和控制按钮 -->
-    <header class="game-header">
+    <header class="game-header" data-testid="game-header">
       <GameHeader />
     </header>
 
     <!-- 游戏网格区域 -->
-    <main class="game-board-wrapper">
+    <main class="game-board-wrapper" data-testid="game-board-wrapper">
       <GameBoard />
     </main>
 
