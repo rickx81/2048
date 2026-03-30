@@ -8,20 +8,16 @@
 
 通过实际项目深入掌握 Vue 3 组合式 API、响应式系统、组件设计模式和现代前端工程化实践。
 
-## 当前里程碑: v1.1 主题与性能 ✅ 已完成
+## 当前里程碑: v1.2 音效、测试与优化
 
-**已发布：** 2026-03-17
+**目标：** 为 2048 游戏添加音效系统、E2E 测试覆盖和构建优化
 
-**交付功能：**
-- 5 个预设颜色主题（经典主题、天空蓝、森林绿、日落橙、樱花粉）
-- 主题切换器组件（自定义下拉菜单）
-- 主题持久化（localStorage）
-- FOUC 防止机制（内联脚本）
-- GPU 加速动画优化（translate3d）
-- 动态 will-change 管理
-- 性能验证通过（平均帧时间 0.18ms，Lighthouse 100/100）
+**目标功能：**
+- **音效系统：** 移动音效、合并音效、游戏结束音效（胜利/失败）、音量控制
+- **E2E 测试：** 核心游戏流程测试、控制测试（键盘/触摸/鼠标）、主题测试
+- **构建优化：** 代码分割、包体积优化、Bundle 分析、加载性能优化
 
-## 当前状态 (v1.1 已发布)
+## 当前状态 (v1.2 规划中)
 
 **已发布功能：**
 - 完整的 2048 游戏核心逻辑（移动、合并、计分、胜负判定）
@@ -73,23 +69,32 @@
 
 ### 活跃
 
-<!-- v1.2 待规划 -->
+**v1.2 音效系统 (AUDIO)：**
+- [ ] AUDIO-01: 用户可听到方块移动时的音效
+- [ ] AUDIO-02: 用户可听到数字合并时的音效
+- [ ] AUDIO-03: 用户可听到游戏胜利/失败时的音效
+- [ ] AUDIO-04: 用户可控制音量或静音音效
+- [ ] AUDIO-05: 音效设置持久化到 localStorage
 
-暂无活跃需求，等待下一个里程碑规划。
+**v1.2 E2E 测试 (E2E)：**
+- [ ] E2E-01: 核心游戏流程可被 Playwright 测试覆盖
+- [ ] E2E-02: 键盘/触摸/鼠标控制可被 E2E 测试验证
+- [ ] E2E-03: 主题切换功能可被 E2E 测试验证
+- [ ] E2E-04: E2E 测试可在 CI/CD 中自动运行
 
-### v1.2 可能方向
-
-- 音效系统（移动、合并、胜利/失败音效）
-- 代码分割和构建优化
-- E2E 测试（Playwright）
+**v1.2 构建优化 (BUILD)：**
+- [ ] BUILD-01: 应用代码被分割为按需加载的块
+- [ ] BUILD-02: 包体积经过优化和分析
+- [ ] BUILD-03: Bundle 分析报告可生成
+- [ ] BUILD-04: 首次加载时间经过优化
 
 ### 范围外
 
 - 多人对战模式 — 单人学习项目
 - 完全自定义主题编辑器 — v1.1 只提供预设主题
-- 音效系统 — v1.1 聚焦主题和性能，可作为 v1.2 功能
 - 社交分享功能 — 超出学习目标
 - 大于 4x4 的网格选项 — 经典原版规则
+- 高级音效编辑器 — v1.2 只提供预设音效
 
 ## 上下文
 
@@ -139,11 +144,28 @@
 
 ## 下一个里程碑目标
 
-**可能的 v1.2 功能：**
-- 音效系统（移动、合并、胜利/失败音效）
-- 代码分割和构建优化
-- E2E 测试（Playwright）
+**可能的 v1.3 功能方向：**
+- PWA 支持（离线可玩、安装到桌面）
+- 更多游戏模式（无尽模式、限时挑战）
+- 云端排行榜（后端集成）
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
 
 ---
 
-*最后更新: 2026-03-17 v1.1 里程碑完成后*
+*最后更新: 2026-03-30 v1.2 里程碑开始*
