@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.2
-milestone_name: 音效、测试与优化
-status: defining_requirements
+milestone_name: 依赖升级、音效、测试与优化
+status: roadmap_created
 stopped_at: null
 last_updated: "2026-03-30T00:00:00.000Z"
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -14,238 +14,208 @@ progress:
 
 # 2048 游戏项目状态
 
-**项目目标：** 通过实际项目深入掌握 Vue 3 组合式 API、响应式系统、组件设计模式和现代前端工程化实践。
+**里程碑：** v1.2 依赖升级、音效、测试与优化
+**最后更新：** 2026-03-30
+**阶段编号：** Phase 8-11
+
+---
 
 ## 项目参考
 
-**核心价值：** 通过实际项目深入掌握 Vue 3 组合式 API、响应式系统、组件设计模式和现代前端工程化实践。
+### 核心价值
+通过实际项目深入掌握 Vue 3 组合式 API、响应式系统、组件设计模式和现代前端工程化实践。
 
-**当前焦点：** 里程碑 v1.2 - 音效、测试与优化
+### 当前里程碑目标
+
+**v1.2 依赖升级、音效、测试与优化**
+- 升级所有核心依赖到最新稳定版本
+- 建立完整的 E2E 测试覆盖
+- 实现游戏音效系统（移动、合并、胜利、失败音效）
+- 优化构建打包体积和加载性能
+
+### 技术栈
+- Vue 3.5.29 (Composition API)
+- TypeScript 5.9.3 (strict mode)
+- Vite 7.3.1
+- Pinia (状态管理)
+- Tailwind CSS v4
+- VueUse (工具库)
+- Vitest (测试)
+- Playwright (E2E 测试)
+- Howler.js (音效系统 - 待集成)
+
+### 架构模式
+**Functional Core, Imperative Shell**
+- Core 层：纯函数，TDD 驱动，100% 测试覆盖
+- UI 层：Vue 3 Composition API，响应式设计
+- 测试金字塔：70% 单元 + 20% 集成 + 10% E2E
 
 ---
 
 ## 当前位置
 
-Phase: 未开始（定义需求中）
-Plan: —
-Status: 定义需求
-Last activity: 2026-03-30 — 里程碑 v1.2 开始
+**当前阶段：** Phase 8 - 依赖升级
+
+**当前计划：** 尚未规划
+
+**阶段状态：** 未开始
+
+**进度条：** 0/0 计划完成
+
+### 里程碑进度
+
+**v1.2 依赖升级、音效、测试与优化**
+- Phase 8: 依赖升级 (0/0 计划) - 未开始
+- Phase 9: E2E 测试基础设施 (0/0 计划) - 未开始
+- Phase 10: 音效系统 (0/0 计划) - 未开始
+- Phase 11: 构建优化 (0/0 计划) - 未开始
+
+**总体进度：** 0/4 阶段完成
 
 ---
 
 ## 性能指标
 
-### v1.0 基线（已达成）
-- 测试覆盖：100%（111 个测试全部通过）
-- 构建大小：待测量
-- 首次渲染：待测量
-- 60fps 稳定性：待验证
+### 测试覆盖
+- 单元测试：111 个测试，100% 核心逻辑覆盖
+- E2E 测试：0 个（v1.2 目标）
 
-### v1.1 目标
-- 测试覆盖：100%（主题系统 + 性能测试）
-- 动画性能：稳定 60fps
-- Long Tasks：< 50ms
-- Lighthouse 性能评分：≥ 90
+### 构建性能
+- 当前 Lighthouse 评分：100/100（v1.1）
+- 目标：保持 ≥ 90 分（v1.2 优化后）
 
-### Performance Metrics
-
-| Phase | Plan | Duration | Tasks | Files | Date |
-|-------|------|----------|-------|-------|------|
-| 04 | 01 | 8min | 1 | 1 | 2026-03-14 |
-| 04 | 02 | 5min | 1 | 1 | 2026-03-14 |
-| 04 | 03 | 1min | 1 | 1 | 2026-03-14 |
-| 05 | 01 | 1min | 4 | 4 | 2026-03-15 |
-| 05 | 02 | 2min | 4 | 4 | 2026-03-15 |
-| 06 | 01 | 10min | 2 | 1 | 2026-03-16 |
-| 06 | 02 | 1min | 3 | 2 | 2026-03-16 |
-| 07 | 01 | 144min | 3 | 5 | 2026-03-17 |
-| Phase 07 P01 | 144 | 3 tasks | 5 files |
-| Phase 07 P01 | 144 | 3 tasks | 5 files |
-
-### Session Info
-
-**Last Session:** 2026-03-17T04:34:30.542Z
-**Stopped At:** Completed 07-01-PLAN.md - v1.1 里程碑所有阶段完成
+### 代码量
+- TypeScript/Vue：~5,310 行
+- 测试代码：~2,000 行
+- 总计：~7,310 行
 
 ---
 
 ## 累积上下文
 
-### 已知陷阱（来自 v1.1 研究）
+### 架构决策记录
 
-1. **主题切换闪烁（FOUC）**
-   - 缓解：在 index.html 添加同步主题初始化脚本
-   - 状态：✓ 已实现 (05-01)
+1. **Vue 3 虚拟 DOM** - Vapor 现阶段不够成熟，虚拟 DOM 稳定可靠 ✓
+2. **TDD 开发模式** - 保证代码质量，学习测试最佳实践 ✓
+3. **Functional Core 模式** - 核心逻辑纯函数，易于测试和复用 ✓
+4. **Tailwind CSS v4** - 最新版本，更好的开发体验 ✓
+5. **Pinia 状态管理** - Vue 3 官方推荐，类型友好 ✓
+6. **经典 2048 外观** - 用户反馈更偏好经典风格 ✓
+7. **CSS 变量主题系统** - 与现有架构兼容，性能最优 ✓
+8. **独立 Theme Store** - 关注点分离，便于测试 ✓
+9. **useTheme Composable** - 统一访问接口，代码复用 ✓
+10. **GPU 加速动画** - transform/opacity，60fps 保证 ✓
+11. **动态 will-change 管理** - 避免内存泄漏 ✓
+12. **VueUse useStorage** - 自动同步、类型安全 ✓
+13. **E2E 测试先行** - 建立回归保护，降低集成风险 ✓（v1.2）
+14. **Howler.js 音效系统** - 跨浏览器兼容，Audio Sprites 优化 ✓（v1.2）
+15. **rollup-plugin-visualizer** - Bundle 分析，识别优化机会 ✓（v1.2）
 
-2. **内联样式与主题系统冲突**
-   - 缓解：将 Tile.vue 硬编码颜色迁移到 CSS 变量
-   - 状态：✓ 已实现 (05-02)
+### 研究关键发现
 
-3. **localStorage 边界情况**
-   - 缓解：使用 try-catch 包装，处理 QuotaExceededError
-   - 状态：✓ 已实现 (05-01)
+**v1.2 研究完成度：** HIGH
 
-4. **Tailwind v4 主题配置错误**
-   - 缓解：使用 @theme 指令和 CSS 变量
-   - 状态：✓ 已实现 (05-02)
+**音效系统（Howler.js）：**
+- 必须在用户交互后初始化 AudioContext（浏览器自动播放策略）
+- 复用单一 AudioContext 实例，避免内存泄漏
+- 使用 MP3/AAC 压缩格式，短音效 <20KB，长音效 <50KB
+- 音效与 CSS transition 时长匹配，避免不同步
 
-5. **动画性能伪优化**
-   - 缓解：只对 transform/opacity 使用 will-change，动画后移除
-   - 状态：✓ 已实现 (06-02)
+**E2E 测试（Playwright）：**
+- 使用 Page Object Model 模式封装页面交互
+- 使用 `data-testid` 选择器，避免动态类名
+- 移除所有 `waitForTimeout()`，使用 Playwright 自动等待
+- 配置合理的 timeout，使用 `--repeat` 验证稳定性
 
-6. **永久 will-change 导致内存问题**
-   - 缓解：动态管理 will-change（动画前添加，结束后移除）
-   - 状态：✓ 已实现 (06-02)
-
-7. **Layout Thrashing（布局抖动）**
-   - 缓解：批量读取 → 批量写入，避免循环中交替读写
-   - 状态：✓ 已审查 (06-01) - 无发现
-
-### v1.1 技术决策记录
-
-| 决策 | 理由 | 状态 |
-|------|------|------|
-| CSS 变量 + Pinia Store | 与现有架构兼容，性能最优 | ✓ 采用 |
-| 独立 Theme Store | 关注点分离，便于测试 | ✓ 采用 |
-| useTheme Composable | 统一访问接口，代码复用 | ✓ 采用 |
-| GPU 加速动画（transform/opacity） | 不触发布局重排，60fps 保证 | ✓ 已验证 |
-| 动态 will-change 管理 | 避免内存泄漏，仅动画期间启用 | ✓ 已验证 |
-| translate3d 强制 GPU 层 | 启用硬件加速，确保 60fps | ✓ 已验证 |
-| cubic-bezier 缓动函数 | 浏览器原生优化，性能更佳 | ✓ 已验证 |
-| Chrome DevTools Trace 验证 | 精确性能数据分析，帧级测量 | ✓ 已采用 |
-| VueUse useStorage 持久化 | 自动同步、类型安全、错误处理 | ✓ 采用 |
-| 内联脚本防止 FOUC | 应用加载前读取 localStorage，避免闪烁 | ✓ 采用 |
-| 自定义下拉菜单 | 更好的样式控制和响应式设计 | ✓ 采用 |
+**构建优化（Vite）：**
+- 对于 2048 小型应用，避免过度代码分割
+- 路由懒加载开销可能大于收益，评估后决定
+- 先测量基线性能，再针对性优化
+- 使用 rollup-plugin-visualizer 生成 bundle 分析报告
 
 ### 待办事项
 
-**Phase 6 完成项（性能优化）：**
-- [x] Chrome DevTools Performance 录制基线 (06-01)
-- [x] 审查现有动画实现（Tile.vue, GameBoard.vue, App.vue）(06-01)
-- [x] 确保所有动画使用 transform/opacity (06-02)
-- [x] 添加动态 will-change 管理（仅动画期间）(06-02)
-- [x] 验证 60fps 稳定性（用户本地验证）(06-02)
+**Phase 8 - 依赖升级：**
+- 升级 Vue 到最新稳定版
+- 升级 Vite 到最新稳定版
+- 升级 TypeScript 到最新稳定版
+- 升级 Pinia 到最新稳定版
+- 升级 VueUse 到最新稳定版
+- 验证所有单元测试通过
+- 验证所有 E2E 测试通过
 
-**Phase 7 完成项（性能验证）：**
-- [x] 性能验证目录结构创建 (07-01)
-- [x] 性能验证指南文档 (07-01)
-- [x] Chrome DevTools Performance Trace 验证 (07-01)
-- [x] 性能对比报告（SUMMARY.md）(07-01)
+**Phase 9 - E2E 测试基础设施：**
+- 创建 `e2e/fixtures/game-fixtures.ts` 扩展 Playwright fixtures
+- 创建 `e2e/helpers/game-actions.ts` 封装游戏操作
+- 编写 `e2e/game-flow.spec.ts` 测试核心游戏逻辑
+- 编写 `e2e/controls.spec.ts` 测试键盘/触摸/鼠标控制
+- 在所有组件中添加 `data-testid` 属性
+- 配置 CI/CD 自动运行 E2E 测试
 
-**v1.1 里程碑发布准备：**
-- [ ] 创建 v1.1 发布说明
-- [ ] 创建 CHANGELOG.md
-- [ ] 更新版本号
-- [ ] 标记 v1.1 发布
+**Phase 10 - 音效系统：**
+- 准备音效资源（4 个音效文件，MP3 格式）
+- 创建 `src/core/audio.ts` 定义音效类型和常量
+- 创建 `src/stores/audio.ts` 管理音效状态
+- 创建 `src/composables/useAudio.ts` 封装音效播放逻辑
+- 在 `useGameControls` 中集成音效
+- 在 `GameHeader.vue` 中添加音量控制 UI
+- 在首次用户交互时初始化 AudioContext
 
-### 快速任务完成
-
-| # | 描述 | 日期 | 提交 | 目录 |
-|---|------|------|------|-----------|
-| 260326-ncu | 部署到 GitHub Pages 配置 CI/CD 自动构建 | 2026-03-26 | d1b065d | [260326-ncu-github-pages-ci-cd](./quick/260326-ncu-github-pages-ci-cd/) |
+**Phase 11 - 构建优化：**
+- 安装 `rollup-plugin-visualizer`
+- 配置 `vite.config.ts` 代码分割策略
+- 生成初始 bundle 分析报告
+- 根据报告优化包体积
+- 配置 Gzip/Brotli 压缩
+- 使用 Lighthouse 验证性能改善
 
 ### 阻塞问题
 
-无
-
----
-
-## v1.0 历史记录（归档）
-
-### v1.0 已完成阶段
-
-**Phase 1: 核心游戏逻辑** (4/4 计划完成)
-- 01-01: 定义核心数据结构和工具函数（25 个测试）
-- 01-02: 实现移动和合并核心逻辑（24 个测试）
-- 01-03: 实现游戏状态检测逻辑（35 个测试）
-- 01-04: 创建 Pinia store 集成（17 个测试）
-
-**Phase 2: 游戏增强功能** (3/3 计划完成)
-- 02-01: 创建本地存储工具模块（17 个测试）
-- 02-02: 实现撤销功能（8 个测试）
-- 02-03: 集成本地存储到 store（9 个测试）
-
-**Phase 3: 用户界面** (5/5 计划完成)
-- 03-01: 设置 UI 基础设施（Tailwind CSS v4 + VueUse）
-- 03-02: 创建游戏网格组件（Tile.vue + GameBoard.vue）
-- 03-03: 创建头部组件和动画系统（GameHeader.vue + 动画）
-- 03-04: 实现游戏控制系统（键盘 + 触摸）
-- 03-05: 创建游戏状态反馈覆盖层（GameOver + GameWon）
-
-### v1.0 关键决策
-
-**2026-03-13 - 项目初始化**
-- 采用 Vue 3 + TypeScript + Vite 技术栈
-- 使用 TDD 开发模式
-- 采用 Functional Core, Imperative Shell 架构模式
-- 使用 Vitest + @testing-library/vue + happy-dom 测试框架
-
-**2026-03-13 - 数据结构和核心逻辑**
-- 数据结构：二维数组 `number[][]`，0 表示空，不可变设计
-- 方向表示：字符串字面量 `'UP' | 'DOWN' | 'LEFT' | 'RIGHT'`
-- 核心函数：多个小函数，单次合并规则，角落优先生成策略
-- 状态管理：单一 Pinia store，历史数组存储
-
-**2026-03-13 - UI 和动画**
-- 使用纯 CSS 动画（无需额外库，性能更好）
-- 使用 transform 和 opacity 实现 GPU 加速（60fps）
-- 动画时长：新方块 200ms，合并 200ms，移动 150ms
-- 使用 Vue watch 监听值变化触发动画
-- 使用 will-change 和 translateZ(0) 强制 GPU 加速
-
-**2026-03-13 - 覆盖层和交互**
-- 覆盖层模式：fixed 全屏遮罩 + flex 居中内容
-- 状态监听：使用 watch + computed 自动触发覆盖层显示
-- 事件委托：覆盖层组件通过 emit 与父组件通信
-- 胜利后可继续游戏：关闭覆盖层后 store.status 保持为 'won'
-- 内联样式替代 Tailwind 类名：确保 Tailwind v4 兼容性
+无阻塞问题。
 
 ---
 
 ## 会话连续性
 
-### 上次工作
-- v1.0 里程碑归档（2026-03-13）
-- v1.1 研究完成（2026-03-14）
-- v1.1 路线图创建（2026-03-14）
-- Phase 4 上下文收集完成（2026-03-14）
-- **04-01 完成：主题类型定义和 CSS 变量基础（2026-03-14）**
-- **04-02 完成：创建 Pinia Theme Store（2026-03-14）**
-- **04-03 完成：创建 useTheme Composable（2026-03-14）**
-- **05-01 完成：主题切换器与持久化（2026-03-15）**
-- **05-02 完成：UI 组件使用 CSS 变量（2026-03-15）**
-- **06-01 完成：性能基线与动画审查（2026-03-16）**
-- **06-02 完成：GPU 加速动画优化（2026-03-16）**
-- **07-01 完成：性能验证与对比报告（2026-03-17）**
+### 上次会话摘要
 
-### 最近优化（2026-03-17）
-- **主题命名重构**：将经典主题 ID 从 `neon` 重命名为 `classic`，更符合实际语义
-- **Vue 组件语法修复**：修复 GameBoard、GameHeader、Tile 组件的 `</script setup>` 结束标签错误
-- **鼠标拖拽控制**：新增鼠标拖拽支持，完善桌面端用户体验（与键盘、触摸并存）
-- **GPU 加速动画优化**：使用 translate3d 强制 GPU 层，优化缓动函数为 cubic-bezier
-- **动态 will-change 管理**：移除硬编码 will-change，实现动画期间动态添加/移除
-- **性能验证通过** ✅：Chrome DevTools Trace 验证平均帧时间 0.18ms，远超 60fps 目标
+**v1.1 里程碑完成：**
+- 实现完整的主题系统（5 个预设主题）
+- 主题基础设施：CSS 变量系统、Pinia Theme Store、useTheme Composable
+- 主题集成：ThemeSwitcher 组件、localStorage 持久化
+- 性能优化：GPU 加速动画、动态 will-change 管理
+- 性能验证通过：平均帧时间 0.18ms（理论 FPS 5695）
+- Lighthouse 评分：生产环境 100/100（完美评分）
 
-### 性能验证结果（2026-03-17）
-- **平均帧渲染时间:** 0.18 ms（目标 < 16.67ms）✅
-- **最大帧渲染时间:** 3.08 ms ✅
-- **Long Tasks (> 50ms):** 0 个 ✅
-- **FPS:** 稳定 60fps（理论 5695fps）✅
-- **总体评级:** 优秀 ✅
+### 下一步行动
 
-### 下一步
-准备 v1.1 里程碑发布，创建发布说明和变更日志
+**当前阶段：** Phase 8 - 依赖升级
 
-### 上下文转移
-**v1.0 成果：** 3 个阶段，12 个计划，111 个测试全部通过。游戏功能完整：核心逻辑、撤销、持久化、网格、头部、控制、覆盖层。
-
-**v1.1 聚焦：**
-- 主题系统架构：CSS 变量 + Pinia Store + useTheme Composable
-- 性能优化重点：GPU 加速（transform/opacity），避免布局重排
-- 5 个主题：经典主题、天空蓝、森林绿、日落橙、樱花粉
-- 粗粒度规划：4 个阶段（Phase 4-7），7 个计划
+**推荐命令：** `/gsd:plan-phase 8`
 
 ---
 
-**状态文档创建：** 2026-03-13
-**最后更新：** 2026-03-17 Phase 7 性能验证完成，v1.1 里程碑所有阶段完成 ✅
+## 进度时间线
+
+```
+v1.0 (2026-03-13): 可玩原型
+├─ Phase 1: 核心游戏逻辑 ✅
+├─ Phase 2: 游戏增强功能 ✅
+└─ Phase 3: 用户界面 ✅
+
+v1.1 (2026-03-14 ~ 2026-03-17): 主题与性能
+├─ Phase 4: 主题基础设施 ✅
+├─ Phase 5: 主题集成 ✅
+├─ Phase 6: 性能优化 ✅
+└─ Phase 7: 主题验证与修复 ✅
+
+v1.2 (2026-03-30 ~ ): 依赖升级、音效、测试与优化
+├─ Phase 8: 依赖升级 🔄 (当前)
+├─ Phase 9: E2E 测试基础设施 ⏳
+├─ Phase 10: 音效系统 ⏳
+└─ Phase 11: 构建优化 ⏳
+```
+
+---
+
+*状态文档最后更新：2026-03-30*

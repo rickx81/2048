@@ -125,32 +125,32 @@
 
 | REQ-ID | 阶段 | 状态 |
 |--------|------|------|
-| DEPS-01 | Phase 依赖升级 | 待规划 |
-| DEPS-02 | Phase 依赖升级 | 待规划 |
-| DEPS-03 | Phase 依赖升级 | 待规划 |
-| DEPS-04 | Phase 依赖升级 | 待规划 |
-| DEPS-05 | Phase 依赖升级 | 待规划 |
-| DEPS-06 | Phase 依赖升级 | 待规划 |
-| DEPS-07 | Phase 依赖升级 | 待规划 |
-| AUDIO-01 | Phase 音效系统 | 待规划 |
-| AUDIO-02 | Phase 音效系统 | 待规划 |
-| AUDIO-03 | Phase 音效系统 | 待规划 |
-| AUDIO-04 | Phase 音效系统 | 待规划 |
-| AUDIO-05 | Phase 音效系统 | 待规划 |
-| AUDIO-06 | Phase 音效系统 | 待规划 |
-| AUDIO-07 | Phase 音效系统 | 待规划 |
-| E2E-01 | Phase E2E测试 | 待规划 |
-| E2E-02 | Phase E2E测试 | 待规划 |
-| E2E-03 | Phase E2E测试 | 待规划 |
-| E2E-04 | Phase E2E测试 | 待规划 |
-| E2E-05 | Phase E2E测试 | 待规划 |
-| E2E-06 | Phase E2E测试 | 待规划 |
-| BUILD-01 | Phase 构建优化 | 待规划 |
-| BUILD-02 | Phase 构建优化 | 待规划 |
-| BUILD-03 | Phase 构建优化 | 待规划 |
-| BUILD-04 | Phase 构建优化 | 待规划 |
-| BUILD-05 | Phase 构建优化 | 待规划 |
-| BUILD-06 | Phase 构建优化 | 待规划 |
+| DEPS-01 | Phase 8 | Pending |
+| DEPS-02 | Phase 8 | Pending |
+| DEPS-03 | Phase 8 | Pending |
+| DEPS-04 | Phase 8 | Pending |
+| DEPS-05 | Phase 8 | Pending |
+| DEPS-06 | Phase 8 | Pending |
+| DEPS-07 | Phase 8 | Pending |
+| E2E-01 | Phase 9 | Pending |
+| E2E-02 | Phase 9 | Pending |
+| E2E-03 | Phase 9 | Pending |
+| E2E-04 | Phase 9 | Pending |
+| E2E-05 | Phase 9 | Pending |
+| E2E-06 | Phase 9 | Pending |
+| AUDIO-01 | Phase 10 | Pending |
+| AUDIO-02 | Phase 10 | Pending |
+| AUDIO-03 | Phase 10 | Pending |
+| AUDIO-04 | Phase 10 | Pending |
+| AUDIO-05 | Phase 10 | Pending |
+| AUDIO-06 | Phase 10 | Pending |
+| AUDIO-07 | Phase 10 | Pending |
+| BUILD-01 | Phase 11 | Pending |
+| BUILD-02 | Phase 11 | Pending |
+| BUILD-03 | Phase 11 | Pending |
+| BUILD-04 | Phase 11 | Pending |
+| BUILD-05 | Phase 11 | Pending |
+| BUILD-06 | Phase 11 | Pending |
 
 ---
 
