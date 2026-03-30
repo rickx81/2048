@@ -1,15 +1,14 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.2
-milestone_name: 依赖升级、音效、测试与优化
-status: roadmap_created
-stopped_at: null
-last_updated: "2026-03-30T00:00:00.000Z"
+milestone_name: milestone
+status: unknown
+last_updated: "2026-03-30T08:02:35.760Z"
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  completed_phases: 1
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # 2048 游戏项目状态
@@ -23,17 +22,20 @@ progress:
 ## 项目参考
 
 ### 核心价值
+
 通过实际项目深入掌握 Vue 3 组合式 API、响应式系统、组件设计模式和现代前端工程化实践。
 
 ### 当前里程碑目标
 
 **v1.2 依赖升级、音效、测试与优化**
+
 - 升级所有核心依赖到最新稳定版本
 - 建立完整的 E2E 测试覆盖
 - 实现游戏音效系统（移动、合并、胜利、失败音效）
 - 优化构建打包体积和加载性能
 
 ### 技术栈
+
 - Vue 3.5.29 (Composition API)
 - TypeScript 5.9.3 (strict mode)
 - Vite 7.3.1
@@ -45,7 +47,9 @@ progress:
 - Howler.js (音效系统 - 待集成)
 
 ### 架构模式
+
 **Functional Core, Imperative Shell**
+
 - Core 层：纯函数，TDD 驱动，100% 测试覆盖
 - UI 层：Vue 3 Composition API，响应式设计
 - 测试金字塔：70% 单元 + 20% 集成 + 10% E2E
@@ -65,6 +69,7 @@ progress:
 ### 里程碑进度
 
 **v1.2 依赖升级、音效、测试与优化**
+
 - Phase 8: 依赖升级 (0/0 计划) - 未开始
 - Phase 9: E2E 测试基础设施 (0/0 计划) - 未开始
 - Phase 10: 音效系统 (0/0 计划) - 未开始
@@ -77,14 +82,17 @@ progress:
 ## 性能指标
 
 ### 测试覆盖
+
 - 单元测试：111 个测试，100% 核心逻辑覆盖
 - E2E 测试：0 个（v1.2 目标）
 
 ### 构建性能
+
 - 当前 Lighthouse 评分：100/100（v1.1）
 - 目标：保持 ≥ 90 分（v1.2 优化后）
 
 ### 代码量
+
 - TypeScript/Vue：~5,310 行
 - 测试代码：~2,000 行
 - 总计：~7,310 行
@@ -116,18 +124,21 @@ progress:
 **v1.2 研究完成度：** HIGH
 
 **音效系统（Howler.js）：**
+
 - 必须在用户交互后初始化 AudioContext（浏览器自动播放策略）
 - 复用单一 AudioContext 实例，避免内存泄漏
 - 使用 MP3/AAC 压缩格式，短音效 <20KB，长音效 <50KB
 - 音效与 CSS transition 时长匹配，避免不同步
 
 **E2E 测试（Playwright）：**
+
 - 使用 Page Object Model 模式封装页面交互
 - 使用 `data-testid` 选择器，避免动态类名
 - 移除所有 `waitForTimeout()`，使用 Playwright 自动等待
 - 配置合理的 timeout，使用 `--repeat` 验证稳定性
 
 **构建优化（Vite）：**
+
 - 对于 2048 小型应用，避免过度代码分割
 - 路由懒加载开销可能大于收益，评估后决定
 - 先测量基线性能，再针对性优化
@@ -136,6 +147,7 @@ progress:
 ### 待办事项
 
 **Phase 8 - 依赖升级：**
+
 - 升级 Vue 到最新稳定版
 - 升级 Vite 到最新稳定版
 - 升级 TypeScript 到最新稳定版
@@ -145,6 +157,7 @@ progress:
 - 验证所有 E2E 测试通过
 
 **Phase 9 - E2E 测试基础设施：**
+
 - 创建 `e2e/fixtures/game-fixtures.ts` 扩展 Playwright fixtures
 - 创建 `e2e/helpers/game-actions.ts` 封装游戏操作
 - 编写 `e2e/game-flow.spec.ts` 测试核心游戏逻辑
@@ -153,6 +166,7 @@ progress:
 - 配置 CI/CD 自动运行 E2E 测试
 
 **Phase 10 - 音效系统：**
+
 - 准备音效资源（4 个音效文件，MP3 格式）
 - 创建 `src/core/audio.ts` 定义音效类型和常量
 - 创建 `src/stores/audio.ts` 管理音效状态
@@ -162,6 +176,7 @@ progress:
 - 在首次用户交互时初始化 AudioContext
 
 **Phase 11 - 构建优化：**
+
 - 安装 `rollup-plugin-visualizer`
 - 配置 `vite.config.ts` 代码分割策略
 - 生成初始 bundle 分析报告
@@ -180,6 +195,7 @@ progress:
 ### 上次会话摘要
 
 **v1.1 里程碑完成：**
+
 - 实现完整的主题系统（5 个预设主题）
 - 主题基础设施：CSS 变量系统、Pinia Theme Store、useTheme Composable
 - 主题集成：ThemeSwitcher 组件、localStorage 持久化
