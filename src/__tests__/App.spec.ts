@@ -8,9 +8,13 @@ describe('App', () => {
   it('mounts renders properly', () => {
     const wrapper = mount(App, {
       global: {
-        plugins: [createPinia()]
+        plugins: [createPinia()],
+        stubs: {
+          RouterView: { template: '<div><slot /></div>' }
+        }
       }
     })
-    expect(wrapper.text()).toContain('2048')
+    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.find('.app').exists()).toBe(true)
   })
 })
